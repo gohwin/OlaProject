@@ -1,10 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 
+
  <link href="/css/main.css" rel="stylesheet" />
+
+    <style>
+        * {
+            text-decoration: none;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #663a3a;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        header h1 a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 1em;
+        }
+
+        .product-container {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .product {
+            margin-right: 20px;
+        }
+
+        .product:last-child {
+            margin-right: 0;
+        }
+
+        .product a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: #fff;
+        }
+
+        .product-name {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .product-price {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+
 </head>
+
 <body>
+
 	<header>
 		<div>
 			<h1>쇼핑몰 로고</h1>
@@ -43,5 +119,38 @@
 	</section>
 
 	<footer> &copy; 2023 쇼핑몰. All rights reserved. </footer>
+
+	<header th:include="header :: body"></header>
+
+    <section>
+        <h2>추천 상품</h2>
+        <div class="product-container">
+            <div class="product">
+                <a th:href="@{/item/details}">
+                    <img src="image-url" alt="Product Image" class="product-image">
+                    <h3 class="product-name">상품 이름</h3>
+                    <p class="product-price">가격: ₩100,000</p>
+                </a>
+            </div>
+            <!-- 다른 상품들도 동일하게 작성 -->
+        </div>
+    </section>
+
+    <section>
+        <h2>인기 상품</h2>
+        <div class="product-container">
+            <div class="product">
+                <a th:href="@{/item/details}">
+                    <img src="image-url" alt="Product Image" class="product-image">
+                    <h3 class="product-name">상품 이름</h3>
+                    <p class="product-price">가격: ₩80,000</p>
+                </a>
+            </div>
+            <!-- 다른 상품들도 동일하게 작성 -->
+        </div>
+    </section>
+     <th:block th:include="footer.html"></th:block>
+
 </body>
+
 </html>
