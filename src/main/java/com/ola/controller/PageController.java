@@ -12,4 +12,9 @@ public class PageController {
 	public void mainView() {
 
 	}
+	
+	@GetMapping("/clothes")
+	public void ClothesView() {
+
+	}
 }
