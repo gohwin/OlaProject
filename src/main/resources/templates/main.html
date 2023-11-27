@@ -1,70 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<style>
-* {
-	text-decoration: none;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
+	<style>
+		* {
+			text-decoration: none;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
 
-body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f4f4f4;
-}
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
 
-header {
-	background-color: #663a3a;
-	color: #302b2b;
-	padding: 1em;
-	text-align: center;
-}
+		header {
+			background-color: #663a3a;
+			color: #302b2b;
+			padding: 1em;
+			text-align: center;
+		}
 
-nav {
-	background-color: #555;
-	color: #fff;
-	padding: 1em;
-	text-align: center;
-}
+		nav {
+			background-color: #555;
+			color: #fff;
+			padding: 1em;
+			text-align: center;
+		}
 
-.header_login {
-	position: absolute;
-	top: 12px;
-	right: 0;
-}
+		.header_login {
+			position: absolute;
+			top: 12px;
+			right: 0;
+		}
 
-.header_login ul {
-	display: flex;
-}
+		.header_login ul {
+			display: flex;
+		}
 
-.header_login ul>li {
-	margin-right: 15px;
-}
+		.header_login ul>li {
+			margin-right: 15px;
+		}
 
-section {
-	padding: 1em;
-}
+		section {
+			padding: 1em;
+		}
 
-footer {
-	background-color: #333;
-	color: #fff;
-	padding: 1em;
-	text-align: center;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-}
+		footer {
+			background-color: #333;
+			color: #fff;
+			padding: 1em;
+			text-align: center;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+		}
 
-.LeftMenu {
-	display: inline-block;
-	float: left;
-	color: white;
-}
-</style>
+		.LeftMenu {
+			display: inline-block;
+			float: left;
+			color: white;
+		}
+	</style>
 </head>
+
 <body>
 	<header>
 		<div>
@@ -79,18 +81,18 @@ footer {
 
 			<!-- 사용자 인증 성공했는지 확인 후 사용자정보 출력 -->
 			<span sec:authorize="isAuthenticated()"> <!-- isAuthenticated() : 사용자 인증 성공확인 -->
-				<b><font color="blue"> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
-						<!-- principal : 인증된 사용자 정보가 저장됨 --> <span
-						sec:authentication="principal.member.name"></span>
-				</font> </b>님 환영합니다. <a th:href="@{/system/logout}">로그아웃</a> &nbsp;&nbsp; <a
-				th:href="@{/admin/adminPage}">게시판 관리</a>
+				<b>
+					<font color="blue"> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
+						<!-- principal : 인증된 사용자 정보가 저장됨 --> <span sec:authentication="principal.member.name"></span>
+					</font>
+				</b>님 환영합니다. <a th:href="@{/system/logout}">로그아웃</a> &nbsp;&nbsp; <a th:href="@{/admin/adminPage}">게시판
+					관리</a>
 			</span>
 		</div>
 	</header>
 	<nav>
-		<a th:href="@{/}">홈</a> | <a th:href="@{/category1}">제품 카테고리 1</a> | <a
-			th:href="@{/category2}">제품 카테고리 2</a> | <a th:href="@{/category3}">제품
-			카테고리 3</a>
+		<a th:href="@{/item/clothes}">상의</a> | <a th:href="@{/item/pants}">하의</a> | <a th:href="@{/item/shoes}">신발</a> | 
+		<a th:href="@{/item/accessories}">악세사리</a> | <a th:href="@{/item/sales}">세일</a>
 	</nav>
 
 	<section>
@@ -105,4 +107,5 @@ footer {
 
 	<footer> &copy; 2023 쇼핑몰. All rights reserved. </footer>
 </body>
+
 </html>
