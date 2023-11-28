@@ -28,7 +28,7 @@ public class BoardController {
 	@Autowired
 	private TradeBoardRepository boardRepo;
 
-	@RequestMapping("/TradeBoardList")
+	@RequestMapping("/tradeBoardList")
 	public void TradeBoardList(Model model) {
 
 		Pageable pageable = PageRequest.of(0, 26, Sort.by("tradeBoardNo").descending());
