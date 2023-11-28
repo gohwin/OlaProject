@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ola.board.service.BoardService;
+import com.ola.entity.Community;
 import com.ola.entity.Search;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.TradeBoardRepository;
@@ -32,6 +33,15 @@ public class BoardController {
 
 		Pageable pageable = PageRequest.of(0, 26, Sort.by("tradeBoardNo").descending());
 		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
+
+		model.addAttribute("boardList", boardList);
+	}
+	
+	@RequestMapping("/communityBoardList")
+	public void CommunityBoardList(Model model) {
+
+		Pageable pageable = PageRequest.of(0, 26, Sort.by("communityNo").descending());
+		Page<Community> boardList = boardService.communityBoardList(pageable);
 
 		model.addAttribute("boardList", boardList);
 	}

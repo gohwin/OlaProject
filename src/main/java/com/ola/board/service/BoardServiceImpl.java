@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
+import com.ola.entity.Community;
 import com.ola.entity.Search;
 import com.ola.entity.TradeBoard;
+import com.ola.repository.CommunityRepository;
 import com.ola.repository.MemberRepository;
 import com.ola.repository.TradeBoardRepository;
 
@@ -21,7 +23,7 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private TradeBoardRepository boardRepo;
 	@Autowired
-	private MemberRepository memberRepo;
+	private CommunityRepository comRepo;
 
 	@Override
 	@Transactional
@@ -55,6 +57,12 @@ public class BoardServiceImpl implements BoardService {
 	public Page<TradeBoard> tradeBoardList(Pageable pageable) {
 		
 		return boardRepo.findAll(pageable);
+	}
+
+	@Override
+	public Page<Community> communityBoardList(Pageable pageable) {
+		
+		return comRepo.findAll(pageable);
 	}
 
 //	@Override
