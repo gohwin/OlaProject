@@ -35,5 +35,7 @@ public class Member {
 
     private String memberType;
 
+    private String memberName;
     
+    private String memberNumber;
 }

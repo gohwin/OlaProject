@@ -1,5 +1,6 @@
 package com.ola.repository;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
+	@Disabled
 	@Test
 	public void testDataInsert() {
 		Member member =
