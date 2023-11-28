@@ -13,14 +13,19 @@ public class PageController {
 
 	}
 
-	@GetMapping("/item/clothes")
-	public String showClothesPage() {
-		return "item/clothes";
+	@GetMapping("/item/all")
+	public String showAllPage() {
+		return "item/all";
+	}
+	
+	@GetMapping("/item/top")
+	public String showTopPage() {
+		return "item/top";
 	}
 
-	@GetMapping("/item/pants")
-	public String showPantsPage() {
-		return "item/pants";
+	@GetMapping("/item/bottom")
+	public String showBottomPage() {
+		return "item/bottom";
 	}
 
 	@GetMapping("/item/shoes")
@@ -28,9 +33,9 @@ public class PageController {
 		return "item/shoes";
 	}
 
-	@GetMapping("/item/accessories")
-	public String showAccessoriesPage() {
-		return "item/accessories";
+	@GetMapping("/item/etc")
+	public String showEtcPage() {
+		return "item/etc";
 	}
 
 	@GetMapping("/item/sales")
