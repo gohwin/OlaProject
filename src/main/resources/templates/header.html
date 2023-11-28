@@ -71,6 +71,7 @@
             <nav class="header_login" sec:authorize="!isAuthenticated()">
                 <ul>
                     <!-- Display only if not authenticated -->
+                    <li><a th:href="@{/board/tradeBoardList}">중고 거래 게시판</a></li>
                     <li><a th:href="@{/system/login}">로그인</a></li>
                     <li><a th:href="@{/join/contract}">회원가입</a></li>
                 </ul>
