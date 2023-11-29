@@ -15,6 +15,7 @@ import com.ola.entity.Member;
 import com.ola.entity.OrderList;
 import com.ola.entity.Product;
 import com.ola.entity.Reply;
+import com.ola.entity.Role;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.BasketRepository;
 import com.ola.repository.CommunityRepository;
@@ -65,8 +66,8 @@ public class RepositoryTest {
 	@Test
 	public void createMember() {
 		Member member = Member.builder().address("경기 부천시 소사구").detailedAddress("경인로216번길 105")
-				.email("jangsh4752@naver.com").memberId("member1").password("1111").name("장선호")
-				.phoneNumber("010-1111-1111").memberType("MEMBER").build();
+				.email("jangsh4752@naver.com").memberId("member1").password(encoder.encode("1111")).name("장선호")
+				.phoneNumber("010-1111-1111").role(Role.ROLE_MEMBER).build();
 
 		memberRepo.save(member);
 	}
@@ -95,7 +96,6 @@ public class RepositoryTest {
 
 		orderRepo.save(order);
 	}
-
 	@Disabled
 	@Test
 	public void createTradeBoard() {
@@ -131,19 +131,18 @@ public class RepositoryTest {
 		replyRepo.save(reply);
 
 	}
-	
 	@Disabled
 	@Test
    public void testDataInsert() {
 	   Member member = Member.builder()
-			   .memberId("member2")
+			   .memberId("member1")
 			   .password(encoder.encode("1111"))
 			   .name("이순신")
 			   .email("sslee@email.com")
 			   .phoneNumber("010-1111-1234")
 			   .address("경기 부천시 소사구 경인로216번길")
 			   .detailedAddress("105, 1동 204호")
-			   .memberType("MEMBER")
+			   .role(Role.ROLE_MEMBER)
 			   .build();
 	   
 	   memberRepo.save(member);

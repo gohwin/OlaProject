@@ -42,7 +42,7 @@ function checkPasswordStrength() {
   var charTypeScore = (hasNumber ? 1 : 0) + (hasLowerCase ? 1 : 0) + (hasUpperCase ? 1 : 0) + (hasSpecialChar ? 1 : 0);
 
   // 연속된 문자나 숫자 판단
-  var consecutiveChars = password.match(/(.)\1{2,}/g);
+  var consecutiveChars = password.match(/(\d)\1{2,}/g);
   var hasConsecutiveChars = consecutiveChars && consecutiveChars.length > 0;
 
   // 전체 위험도 계산
