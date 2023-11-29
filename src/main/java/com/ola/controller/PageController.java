@@ -39,7 +39,12 @@ public class PageController {
 	}
 
 	@GetMapping("/item/sales")
-	public String showsalesPage() {
+	public String showSalesPage() {
 		return "item/sales";
+	}
+	
+	@GetMapping("/item/details")
+	public String showDetailsPage() {
+		return "item/details";
 	}
 }
