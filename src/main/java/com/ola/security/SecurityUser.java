@@ -22,7 +22,7 @@ public class SecurityUser extends User{
 		
 		// 암호화 한 처리
 		super(member.getMemberId(), member.getPassword(),
-				AuthorityUtils.createAuthorityList(member.getMemberType().toString()));
+				AuthorityUtils.createAuthorityList(member.getRole().toString()));
 		this.member = member;
 	}
 	

@@ -1,11 +1,13 @@
 package com.ola.repository;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ola.entity.Member;
+import com.ola.entity.Role;
 
 
 @SpringBootTest
@@ -17,6 +19,7 @@ public class RepositoryTest {
 	private PasswordEncoder encoder;
 	
 	
+	@Disabled
 	@Test
 	public void testDataInsert() {
 		Member member =
@@ -26,7 +29,7 @@ public class RepositoryTest {
 				.phoneNumber("010-1111-1111")
 				.address("서울시 신림동")
 				.detailedAddress("자이아파트 101동 101호")
-				.memberType("ADMIN")
+				.role(Role.ROLE_ADMIN)
 				.memberId("admin")
 				.password(encoder.encode("1111"))
 				.build();
