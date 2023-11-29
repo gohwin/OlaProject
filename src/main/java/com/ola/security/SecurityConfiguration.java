@@ -26,8 +26,8 @@ public class SecurityConfiguration {
 		security.authorizeRequests().requestMatchers("/").permitAll(); // url이 "/"인 경우 모두 접근 허가
 
 		// authenticated() : id, pwd를 통해 사용자 인증이 된 사람만 접근할 수 있는 url
-		security.authorizeRequests().requestMatchers("/user/**").authenticated();
-		security.authorizeRequests().requestMatchers("/admin/**").hasRole("ADMIN");
+		security.authorizeRequests().requestMatchers("../user/**").authenticated();
+		security.authorizeRequests().requestMatchers("../admin/**").hasRole("ADMIN");
 
 		security.csrf().disable(); // csrf : Cross Site Request Forgery 의 약자(SNS 사용자 ID를 도용한 웹사이트 공격)
 
