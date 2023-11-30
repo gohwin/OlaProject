@@ -145,39 +145,21 @@ function checkPwd() {
 }
 
 // 전화번호 형식과 숫자만 입력을 검증하는 함수
-function validatePhoneNumber() {
-  var phoneInput = document.getElementById('phoneNumber');
-  var phoneValue = phoneInput.value.replace(/-/g, ''); // 입력된 '-' 제거
 
-  // 정규표현식을 사용하여 전화번호 형식 검증 (숫자만 허용)
-  var phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
-
-  if (!phonePattern.test(phoneValue)) {
-      // 유효하지 않은 경우 메시지를 표시
-      document.getElementById('phoneErrorMessage').innerText = '올바른 전화번호 형식이 아닙니다. (숫자만 입력 가능)';
-      return false;
-  } else {
-      // 유효한 경우 메시지를 초기화
-      document.getElementById('phoneErrorMessage').innerText = '';
-      return true;
-  }
-}
 
 // 전화번호를 세 칸으로 나누고 각 칸 사이에 '-'를 추가하는 함수
 function formatPhoneNumber() {
   var phoneInput = document.getElementById('phoneNumber');
-  var phoneValue = phoneInput.value.replace(/-/g, ''); // 입력된 '-' 제거
+  var phoneValue = phoneInput.value.replace(/[^0-9]/g, ''); // 입력된 숫자 이외의 문자 제거
 
   // 전화번호를 세 칸으로 나누고 각 칸 사이에 '-'를 추가
   var formattedPhoneNumber = phoneValue.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
 
   phoneInput.value = formattedPhoneNumber;
 }
-
 // 이메일 직접 입력 옵션이 선택되었을 때 실행되는 함수
 function checkDirectInput() {
   var selectedDomain = document.getElementById("emailDomain").value;
-  var emailInput = document.getElementById("email");
   var emailDomainInput = document.getElementById("directEmail");
 
   // "직접 입력" 옵션이 선택되었을 때 도메인 입력란을 표시하고, 그 외에는 숨김
@@ -203,26 +185,29 @@ function validateForm() {
 	var password = document.getElementById("password").value;
 	var pwdCheck = document.getElementById("pwdCheck").value;
 	var name = document.getElementById("name").value;
+	var phoneNumber = document.getElementById("phoneNumber").value;
+	var email = document.getElementById("email").value;
+	var address = document.getElementById("address").value;
 
-	// 비밀번호 길이에 따라서 부여되는 점수를 계산합니다.
+	// 비밀번호 길이에 따라서 부여되는 점수를 계산.
 	// 길이가 6 미만일 경우 2점, 6 이상 12 이하일 경우 1점, 그 이상일 경우 0점입니다.
 	var lengthScore = password.length < 6 ? 2 : password.length <= 12 ? 1 : 0;
 	
-	// 연속된 문자나 숫자가 3개 이상 사용되었는지를 확인합니다.
+	// 연속된 문자나 숫자가 3개 이상 사용되었는지를 확인.
 	var consecutiveChars = password.match(/(.)\1{2,}/g);
 	var hasConsecutiveChars = consecutiveChars && consecutiveChars.length > 0;
 	
-	// ID의 중복 확인 결과 메시지를 가져옵니다.
+	// ID의 중복 확인 결과 메시지를 가져옴.
 	var idAvailabilityMessage = document.getElementById('idAvailabilityMessage');
 	
-	// 비밀번호 확인 부분에 대한 메시지를 가져옵니다.
+	// 비밀번호 확인 부분에 대한 메시지를 가져옴.
 	var matchMessage = document.getElementById("pwdMatchMessage");
 
     // ID를 입력하지 않은 경우
     if (memberId === "") {
         alert("ID를 입력하세요.");
         return false;
-    }
+    } else
 
     // 중복확인을 하지 않은 경우
     if (!isIdChecked) {
@@ -266,6 +251,24 @@ function validateForm() {
         alert("이름을 입력해 주세요!");
         return false;
     }
+    
+    // 전화 번호가 입력되지 않았을때
+    if (phoneNumber === "") {
+		alert("전화번호를 입력해주세요!")
+		return false;
+	}
+	
+	// 이메일 입력되지 않았을때
+	if (email === "") {
+		alert("이메일을 입력해주세요!")
+		return false;
+	}
+	
+	// 주소 입력되지 않았을때 
+	if (address === "") {
+		alert("주소를 입력해주세요!")
+		return false;
+	}
 
     return true; // 회원가입 진행
 }
