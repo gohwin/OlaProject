@@ -4,7 +4,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>상품 상세보기</title>
 	<link href="/css/main.css" rel="stylesheet" />
 
 </head>
@@ -12,15 +11,10 @@
 <body>
 	<header th:include="header :: body"></header>
 
-	<section>
-		<h2>상품 상세보기</h2>
-		<div class="product-detail">
-			<img src="이미지-파일-경로" alt="상품 이미지">
-			<h3>상품 이름</h3>
-			<p>가격: ₩80,000</p>
-			<h3>상품 상세 정보</h3>
-		</div>
-	</section>
+	<img th:src="${param.imageUrl}" alt="Product Image" class="product-image">
+	<h3 class="product-name" th:text="${param.productName}"></h3>
+	<p class="product-price" th:text="'가격: ₩' + ${param.productPrice}"></p>
+
 
 	<th:block th:include="footer.html"></th:block>
 </body>

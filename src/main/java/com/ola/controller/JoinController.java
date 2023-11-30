@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Member;
 import com.ola.entity.Role;
-import com.ola.repository.MemberRepository;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +26,13 @@ public class JoinController {
 	
 	@Autowired
 	private MemberRepository memberRepo;
+
+
+
+	@Autowired
+    private UserDetailsService userDetailsService;
+	
+
 	
 	// 회원가입 약관 페이지 이동
 	@GetMapping("/join/contract")
@@ -42,12 +49,16 @@ public class JoinController {
 		 
         return "join/joinForm";
     }
+
 	@GetMapping("/join/NewFile")
     public String showContract() {
         return "join/NewFile"; // "contract"는 Thymeleaf 템플릿의 이름을 가정합니다.
     }
 
 	// 회원가입 처리
+
+  
+
 	 @PostMapping("/register")
 	   public String registerUser(@ModelAttribute Member member, 
 								  @RequestParam(value = "email") String email,
@@ -69,7 +80,17 @@ public class JoinController {
 		    } else {
 		        memberEmail = email + "@" + domain;
 		    }
-		    
+
+		    // 회원 정보 저장
+		    member.setMemberId(memberId);
+		    member.setEmail(memberEmail);
+		    member.setRole(Role.ROLE_MEMBER);
+		    member.setPassword(encoder.encode(member.getPassword()));
+		    memberRepo.save(member);
+
+		    return "redirect:/system/login";
+	 }
+    
 	      Member newMem = Member.builder()
 	               .name(member.getName())
 	               .memberId(member.getMemberId())

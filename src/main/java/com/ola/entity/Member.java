@@ -44,9 +44,10 @@ public class Member {
     private String address;
 
     private String detailedAddress;
+
   
     @Enumerated(EnumType.STRING)
-	private Role role;
+	  private Role role;
 
     // 유효성 검사
     public boolean isValid() {
@@ -58,7 +59,6 @@ public class Member {
                zipNum != null &&
                address != null &&
                detailedAddress != null;
-               
     }
 
     private boolean isValidPassword(String password) {
