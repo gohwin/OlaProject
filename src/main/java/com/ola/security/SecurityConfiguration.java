@@ -42,7 +42,6 @@ public class SecurityConfiguration {
 
 		security.formLogin() // 사용자가 화면을 통한 로그인 사용 설정
 		.loginPage("/system/login")
-        .successHandler(new CustomAuthenticationSuccessHandler())
         .defaultSuccessUrl("/main", true);
 				// 로그인에 사용할 URL 지정 -> 로그인 페이지 제공하는 메소드
 
@@ -64,17 +63,4 @@ public class SecurityConfiguration {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 
-	// 커스텀 AuthenticationSuccessHandler 구현
-    private static class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-        @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            // 여기에서 추가적인 로직을 수행할 수 있습니다.
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-            // 로그인 성공 후의 동작을 정의하세요.
-
-            response.sendRedirect("/main");
-        }
-    }
 }

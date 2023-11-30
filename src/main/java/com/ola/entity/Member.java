@@ -42,8 +42,9 @@ public class Member {
     private String address;
 
     private String detailedAddress;
-
-    private String memberType;
+  
+    @Enumerated(EnumType.STRING)
+	private Role role;
 
     // 유효성 검사
     public boolean isValid() {
@@ -53,8 +54,8 @@ public class Member {
                email != null && isValidEmail(email) &&
                phoneNumber != null && isValidPhoneNumber(phoneNumber) &&
                address != null &&
-               detailedAddress != null &&
-               memberType != null;
+               detailedAddress != null;
+               
     }
 
     private boolean isValidPassword(String password) {
@@ -74,8 +75,8 @@ public class Member {
         // 정규표현식 사용
         return phoneNumber.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
     }
-    @Enumerated(EnumType.STRING)
-	private Role role;
+    
+    
     
     
 
