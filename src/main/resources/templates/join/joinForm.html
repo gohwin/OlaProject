@@ -30,16 +30,19 @@
 
                     <form class="form-horizontal" th:action="@{/register}" method="post" onsubmit="return validateForm()">
 
-                        <div class="form-group">
-                            <label for="id" class="cols-sm-2 control-label">ID</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group input-group-with-margin">
-                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="id" id="id" placeholder="ID를 입력해 주세요!" oninput="validateId()" />
-                                </div>
-                                <p id="idErrorMessage" class="error-message"></p>
-                            </div>
-                        </div>
+						<div class="form-group">
+							<label for="id" class="cols-sm-2 control-label">ID</label>
+							<div class="cols-sm-10">
+								<div class="input-group input-group-with-margin">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="memberId" id="memberId" placeholder="ID를 입력해 주세요!"
+										oninput="validateId()" />
+									<button type="button" class="btn btn-primary" onclick="checkIdAvailability()">중복확인</button>
+								</div>
+								<p id="idErrorMessage" class="error-message"></p>
+								<p id="idAvailabilityMessage"></p>
+							</div>
+						</div>
 
                         <div class="form-group">
                           <label for="password" class="cols-sm-2 control-label">비밀번호</label>
@@ -80,32 +83,32 @@
                               <div class="input-group input-group-with-margin">
                                   <span class="input-group-addon"><i class="fa fa-phone fa" aria-hidden="true"></i></span>
                                   <!-- 전화번호를 세 칸으로 나누고 각 칸 사이에 '-'를 추가 -->
-                                  <input type="tel" class="form-control" name="phone" id="phone" placeholder="전화번호를 입력해 주세요!" oninput="formatPhoneNumber()" />
+                                  <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="전화번호를 입력해 주세요!" oninput="formatPhoneNumber()" />
                               </div>
                               <div id="phoneErrorMessage" style="color: red;"></div>
                           </div>
                       </div>
 
-                      <div class="form-group">
-                        <label for="email" class="cols-sm-2 control-label">이메일</label>
-                        <div class="cols-sm-10">
-                            <div class="input-group input-group-with-margin">
-                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="email" id="email" placeholder="아이디" />
-                                 <!-- '@' 기호를 고정으로 표시 -->
-                                <span class="input-group-addon">@</span>
-                                <input type="text" class="form-control" name="directEmail" id="directEmail" placeholder="도메인을 직접 입력하세요" style="display: none;" />
-                                <select class="form-control" name="emailDomain" id="emailDomain" onchange="checkDirectInput()">
-                                    <option value="gmail.com">gmail.com</option>
-                                    <option value="naver.com">naver.com</option>
-                                    <option value="yahoo.com">yahoo.com</option>
-                                    <!-- 원하는 이메일 도메인을 추가하세요 -->
-                                    <option value="direct">직접 입력</option>
-                                </select>
-                                <!-- 직접 입력 옵션이 선택된 경우 나타날 입력란 -->
-                            </div>
-                        </div>
-                    </div>
+					<div class="form-group">
+						<label for="email" class="cols-sm-2 control-label">이메일</label>
+						<div class="cols-sm-10">
+							<div class="input-group input-group-with-margin">
+								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+								<input type="text" class="form-control" name="email" id="email" placeholder="이메일 주소" />
+								<span class="input-group-addon">@</span>
+								<input type="text" class="form-control" name="directEmail" id="directEmail" placeholder="도메인을 직접 입력하세요"
+									style="display: none;" />
+							</div>
+							<div class="input-group input-group-with-margin">
+								<select class="form-control" name="emailDomain" id="emailDomain" onchange="checkDirectInput()">
+									<option value="gmail.com">gmail.com</option>
+									<option value="naver.com">naver.com</option>
+									<option value="yahoo.com">yahoo.com</option>
+									<option value="direct">직접 입력</option>
+								</select>
+							</div>
+						</div>
+					</div>
 
                         <div class="form-group">
                             <label for="address" class="cols-sm-2 control-label">주소</label>
@@ -122,7 +125,7 @@
                             <div class="cols-sm-10">
                                 <div class="input-group input-group-with-margin">
                                     <span class="input-group-addon"><i class="fa fa-info fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="detail" id="detail" placeholder="상세주소를 입력해 주세요!" />
+                                    <input type="text" class="form-control" name="detailedAddress" id="detailedAddress" placeholder="상세주소를 입력해 주세요!" />
                                 </div>
                             </div>
                         </div>
