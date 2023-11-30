@@ -32,7 +32,7 @@ public class AdminController {
             model.addAttribute("community", community);
             return "admin/adminGetBoard"; // 게시글 상세보기 페이지의 뷰 이름
         } else {
-            return "errorPage"; // 에러 페이지의 뷰 이름
+            return "errorPage"; // 에러 페이지의 뷰 이름.
         }
     }
     
