@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<style>
+header {
+	background-color: #663a3a;
+	color: #fff;
+	padding: 1em;
+	text-align: center;
+}
+
+header h1 a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 24px;
+	/* Adjust the font size as needed */
+}
+
+nav {
+	background-color: #555;
+	color: #fff;
+	padding: 1em;
+	text-align: center;
+}
+
+.header_login {
+	position: absolute;
+	top: 12px;
+	right: 0;
+}
+
+.header_login ul {
+	display: flex;
+}
+
+.header_login ul>li {
+	margin-right: 15px;
+}
+
+.header_login ul>li>a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+	/* Adjust the font size as needed */
+	transition: color 0.3s ease;
+}
+
+.header_login ul>li>a:hover {
+	color: #ffd700;
+	/* Change the color on hover as needed */
+}
+
+table {
+	width: 100%; /* 테이블의 전체 너비를 설정 */
+	border-collapse: collapse; /* 셀 사이의 간격 제거 */
+}
+
+th, td {
+	text-align: left;
+	padding: 8px; /* 셀의 패딩 설정 */
+}
+
+th {
+	background-color: #4CAF50; /* 헤더의 배경색 */
+	color: white;
+}
+</style>
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+	<h2>게시판입니다</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Views</th>
+				<th>Likes</th>
+				<th>Comments</th>
+				<th>Posted Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="community : ${communities}">
+				<td>
+					<!-- 게시글 제목에 링크 추가 -->
+					<a th:href="@{/adminGetBoard(communityNo=${community.communityNo})}" th:text="${community.title}">Title</a>
+				</td>
+				<td th:text="${community.viewCount}">0</td>
+				<td th:text="${community.likeCount}">0</td>
+				<td th:text="${community.commentCount}">0</td>
+				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>

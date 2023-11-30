@@ -42,9 +42,10 @@ public class Member {
     private String address;
 
     private String detailedAddress;
+
   
     @Enumerated(EnumType.STRING)
-	private Role role;
+	  private Role role;
 
     // 유효성 검사
     public boolean isValid() {
@@ -55,7 +56,6 @@ public class Member {
                phoneNumber != null && isValidPhoneNumber(phoneNumber) &&
                address != null &&
                detailedAddress != null;
-               
     }
 
     private boolean isValidPassword(String password) {
