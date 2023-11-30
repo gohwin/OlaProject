@@ -42,9 +42,6 @@ public class Member {
     private String address;
 
     private String detailedAddress;
-
-    private String memberType;
-
     // 유효성 검사
     public boolean isValid() {
         return memberId != null &&
@@ -53,8 +50,7 @@ public class Member {
                email != null && isValidEmail(email) &&
                phoneNumber != null && isValidPhoneNumber(phoneNumber) &&
                address != null &&
-               detailedAddress != null &&
-               memberType != null;
+               detailedAddress != null;
     }
 
     private boolean isValidPassword(String password) {

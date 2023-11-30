@@ -11,20 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.ola.entity.Member;
 
 import com.ola.repository.MemberRepository;
 
 import com.ola.entity.Role;
-import com.ola.repository.MemberRepository;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 @Controller
@@ -35,11 +28,6 @@ public class JoinController {
 	@Autowired
 	private MemberRepository memberRepo;
 	
-	@Autowired
-    private UserDetailsService userDetailsService;
-	
-	@Autowired
-	private MemberRepository memberRepo;
 	
 	// 회원가입 약관 페이지 이동
 	@GetMapping("/join/contract")
@@ -57,27 +45,6 @@ public class JoinController {
         return "join/joinForm";
     }
 	
-	@PostMapping("/register")
-	public String registerUser(@ModelAttribute Member member) {
-		Member newMem = Member.builder()
-	            .name(member.getName())
-	            .memberId(member.getMemberId())
-	            .password(encoder.encode(member.getPassword()))
-	            .phoneNumber(member.getPhoneNumber())
-	            .role(Role.ROLE_MEMBER)
-	            .address(member.getAddress())
-	            .detailedAddress(member.getDetailedAddress())
-	            .email(member.getEmail())
-	            .build();
-		
-		memberRepo.save(newMem);
-
-		
-		return "redirect:/system/login";
-	}
-	
-	
-
 	 @PostMapping("/register")
 	 public String processRegistration(
 		        @RequestParam(value = "email") String email,
@@ -103,6 +70,8 @@ public class JoinController {
 		    // 회원 정보 저장
 		    member.setMemberId(memberId);
 		    member.setEmail(memberEmail);
+		    member.setRole(Role.ROLE_MEMBER);
+		    member.setPassword(encoder.encode(member.getPassword()));
 		    memberRepo.save(member);
 
 		    return "redirect:/system/login";
