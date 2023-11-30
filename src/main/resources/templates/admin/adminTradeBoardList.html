@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/admin.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header th:include="adminHeader :: body"></header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Member</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Posted Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 여기서는 tradeBoardList를 Thymeleaf에서 사용하는 이름으로 가정합니다. -->
+            <tr th:each="tradeBoard : ${tradeBoardList}">
+                <td>
+                    <!-- 거래 게시글 제목에 링크 추가 -->
+                    <a th:href="@{/adminGetTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
+                        th:text="${tradeBoard.title}">Title</a>
+                </td>
+                <td th:text="${tradeBoard.memberId}">Member</td>
+                <td th:text="${tradeBoard.tradeType}">Type</td>
+                <td th:text="${tradeBoard.progressStatus}">Status</td>
+                <td th:text="${#dates.format(tradeBoard.regDate, 'yyyy-MM-dd')}">Date</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <th:block th:include="footer.html"></th:block>
+</body>
+
+</html>

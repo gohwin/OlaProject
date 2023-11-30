@@ -1,31 +1,24 @@
 package com.ola.security;
 
-import java.io.IOException;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfiguration {
 
 	@Autowired
 	private DataSource dataSource;
-	
+
 	@Autowired
 	private SecurityUserDetailsService securityUserDetailsService;
 
@@ -40,23 +33,26 @@ public class SecurityConfiguration {
 
 		security.csrf().disable(); // csrf : Cross Site Request Forgery 의 약자(SNS 사용자 ID를 도용한 웹사이트 공격)
 
-		security.formLogin() // 사용자가 화면을 통한 로그인 사용 설정
-		.loginPage("/system/login")
-        .defaultSuccessUrl("/main", true);
-				// 로그인에 사용할 URL 지정 -> 로그인 페이지 제공하는 메소드
+		security.formLogin().loginPage("/system/login").successHandler((request, response, authentication) -> {
+			Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+			if (roles.contains("ROLE_ADMIN")) {
+				response.sendRedirect("/adminMain");
+			} else {
+				response.sendRedirect("/main");
+			}
+		}).permitAll();
 
-		security.exceptionHandling()
-				.accessDeniedPage("/system/accessDenied");
+		security.exceptionHandling().accessDeniedPage("/system/accessDenied");
 
 		security.logout().logoutUrl("/system/logout").invalidateHttpSession(true).logoutSuccessUrl("/main");
-		
+
 		// Member 테이블에서 사용자 조회 후, UserDetails 객체 변환 서비스 지정
 		security.userDetailsService(securityUserDetailsService);
 		return security.build();
 	}
-	
+
 	/*
-	 *  비밀번호 암호화
+	 * 비밀번호 암호화
 	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {

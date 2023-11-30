@@ -1,6 +1,9 @@
 package com.ola.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +32,11 @@ public class JoinController {
 
 
 
+
 	@Autowired
     private UserDetailsService userDetailsService;
 	
+
 
 	
 	// 회원가입 약관 페이지 이동
@@ -90,7 +95,7 @@ public class JoinController {
 
 		    return "redirect:/system/login";
 	 }
-    
+
 	      Member newMem = Member.builder()
 	               .name(member.getName())
 	               .memberId(member.getMemberId())
@@ -109,6 +114,5 @@ public class JoinController {
 	      
 	      return "redirect:/system/login";
 	   }
-	
-}
+
 

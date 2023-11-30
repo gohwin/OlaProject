@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="/css/main.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="adminHeader :: body"></header>
+
+	<section>
+		<h2>추천 상품</h2>
+		<div class="product-container">
+			<div class="product">
+				<a th:href="@{/item/details}">
+					<img src="/images/shoes/tlsqkf.jpg" alt="Product Image" class="product-image">
+					<h3 class="product-name">상품 이름</h3>
+					<p class="product-price">가격: ₩2,000</p>
+				</a>
+			</div>
+			<div class="product">
+				<a th:href="@{/item/details}">
+					<img src="/images/top/룬닥스 풀루 클라이밍 티셔츠 주니어(64000).jpg" alt="Product Image" class="product-image">
+					<h3 class="product-name">상품 이름</h3>
+					<p class="product-price">가격: ₩100,000</p>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<h2>인기 상품</h2>
+		<div class="product-container">
+			<div class="product">
+				<a th:href="@{/item/details}">
+					<img src="/images/top/오들로 엔지니어드 칠텍 여성 아웃도어반팔티  클라이밍 스포츠 반팔(94000).jpg" alt="Product Image"
+						class="product-image">
+					<h3 class="product-name">상품 이름</h3>
+					<p class="product-price">가격: ₩80,000</p>
+				</a>
+			</div>
+			<div class="product">
+				<a th:href="@{/item/details}">
+					<img src="/images/top/아이더 POP 클라이밍 ZIP TEE(25000).jpg" alt="Product Image" class="product-image">
+					<h3 class="product-name">상품 이름</h3>
+					<p class="product-price">가격: ₩100,000</p>
+				</a>
+			</div>
+		</div>
+	</section>
+	<th:block th:include="footer.html"></th:block>
+
+</body>
+
+</html>
