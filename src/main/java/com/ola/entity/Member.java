@@ -42,6 +42,11 @@ public class Member {
     private String address;
 
     private String detailedAddress;
+
+  
+    @Enumerated(EnumType.STRING)
+	  private Role role;
+
     // 유효성 검사
     public boolean isValid() {
         return memberId != null &&
@@ -70,8 +75,8 @@ public class Member {
         // 정규표현식 사용
         return phoneNumber.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
     }
-    @Enumerated(EnumType.STRING)
-	private Role role;
+    
+    
     
     
 

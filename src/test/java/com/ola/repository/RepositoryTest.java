@@ -42,6 +42,21 @@ public class RepositoryTest {
 				.build();
 		  
 		memberRepo.save(member);
+		
+		Member member1 =
+				Member.builder()
+				.name("이순신")
+				.email("sslee@email.com")
+				.phoneNumber("010-1111-1111")
+				.address("서울시 강남구")
+				.detailedAddress("롯데캐슬 101동 101호")
+				.role(Role.ROLE_MEMBER)
+				.memberId("member")
+				.password(encoder.encode("1111"))
+				.build();
+		  
+		memberRepo.save(member1);
+
 	}
 	
 	@Disabled
