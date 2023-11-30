@@ -39,6 +39,8 @@ public class Member {
 
     private String phoneNumber;
 
+    private String zipNum;
+    
     private String address;
 
     private String detailedAddress;
@@ -54,6 +56,7 @@ public class Member {
                name != null &&
                email != null && isValidEmail(email) &&
                phoneNumber != null && isValidPhoneNumber(phoneNumber) &&
+               zipNum != null &&
                address != null &&
                detailedAddress != null;
     }
