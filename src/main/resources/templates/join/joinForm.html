@@ -30,6 +30,7 @@
 
                     <form class="form-horizontal" th:action="@{/register}" method="post" onsubmit="return validateForm()">
 
+
 						<div class="form-group">
 							<label for="id" class="cols-sm-2 control-label">ID</label>
 							<div class="cols-sm-10">
@@ -43,6 +44,18 @@
 								<p id="idAvailabilityMessage"></p>
 							</div>
 						</div>
+
+                        <div class="form-group">
+                            <label for="id" class="cols-sm-2 control-label">ID</label>
+                            <div class="cols-sm-10">
+                                <div class="input-group input-group-with-margin">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="memberId" id="id" placeholder="ID를 입력해 주세요!" oninput="validateId()" />
+                                </div>
+                                <p id="idErrorMessage" class="error-message"></p>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                           <label for="password" class="cols-sm-2 control-label">비밀번호</label>
@@ -83,7 +96,11 @@
                               <div class="input-group input-group-with-margin">
                                   <span class="input-group-addon"><i class="fa fa-phone fa" aria-hidden="true"></i></span>
                                   <!-- 전화번호를 세 칸으로 나누고 각 칸 사이에 '-'를 추가 -->
+
                                   <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="전화번호를 입력해 주세요!" oninput="formatPhoneNumber()" />
+
+                                  <input type="tel" class="form-control" name="phoneNumber" id="phone" placeholder="전화번호를 입력해 주세요!" oninput="formatPhoneNumber()" />
+
                               </div>
                               <div id="phoneErrorMessage" style="color: red;"></div>
                           </div>
@@ -125,7 +142,11 @@
                             <div class="cols-sm-10">
                                 <div class="input-group input-group-with-margin">
                                     <span class="input-group-addon"><i class="fa fa-info fa" aria-hidden="true"></i></span>
+
                                     <input type="text" class="form-control" name="detailedAddress" id="detailedAddress" placeholder="상세주소를 입력해 주세요!" />
+
+                                    <input type="text" class="form-control" name="detailedAddress" id="detail" placeholder="상세주소를 입력해 주세요!" />
+
                                 </div>
                             </div>
                         </div>

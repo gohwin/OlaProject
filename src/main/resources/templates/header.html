@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        * {
+            text-decoration: none;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #663a3a;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        header h1 a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px; /* Adjust the font size as needed */
+        }
+
+        nav {
+            background-color: #555;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        .header_login {
+            position: absolute;
+            top: 12px;
+            right: 0;
+        }
+
+        .header_login ul {
+            display: flex;
+        }
+
+        .header_login ul>li {
+            margin-right: 15px;
+        }
+
+        .header_login ul>li>a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px; /* Adjust the font size as needed */
+            transition: color 0.3s ease;
+        }
+
+        .header_login ul>li>a:hover {
+            color: #ffd700; /* Change the color on hover as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1><a th:href="@{/main}">쇼핑몰 로고</a></h1>
+            <nav class="header_login" sec:authorize="!isAuthenticated()">
+                <ul>
+                    <!-- Display only if not authenticated -->
+                    <li><a th:href="@{/board/communityBoardList}">게시판</a></li>
+                    <li><a th:href="@{/board/tradeBoardList}">중고 거래 게시판</a></li>
+                    <li><a th:href="@{/system/login}">로그인</a></li>
+                    <li><a th:href="@{/join/contract}">회원가입</a></li>
+                </ul>
+            </nav>
+
+            <!-- 사용자 인증 성공했는지 확인 후 사용자정보 출력 -->
+            <span sec:authorize="isAuthenticated()"> <!-- isAuthenticated() : 사용자 인증 성공확인 -->
+                <b>
+                    <font color="blue"> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
+                        <!-- principal : 인증된 사용자 정보가 저장됨 -->
+                        <span sec:authentication="principal.member.name"></span>
+                    </font>
+                </b>님 환영합니다. <a th:href="@{/system/logout}">로그아웃</a> &nbsp;&nbsp; <a th:href="@{/admin/adminPage}">게시판
+                    관리</a>
+            </span>
+        </div>
+    </header>
+    <nav>
+        <a th:href="@{/item/all}">전체</a> | <a th:href="@{/item/top}">상의</a> | <a th:href="@{/item/bottom}">하의</a> | <a th:href="@{/item/shoes}">신발</a> |
+        <a th:href="@{/item/etc}">악세사리</a> | <a th:href="@{/item/sales}">세일</a>
+    </nav>
+</body>
+
+</html>

@@ -1,16 +1,28 @@
 package com.ola.entity;
 
+
 import jakarta.persistence.Column;
+
+
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @Builder
 @Entity
 public class Member {
@@ -62,4 +74,9 @@ public class Member {
         // 정규표현식 사용
         return phoneNumber.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
     }
+    @Enumerated(EnumType.STRING)
+	private Role role;
+    
+    
+
 }
