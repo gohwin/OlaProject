@@ -1,30 +1,22 @@
 package com.ola.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.ola.entity.Member;
-
-import com.ola.repository.MemberRepository;
-
 import com.ola.entity.Role;
 import com.ola.repository.MemberRepository;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 
 @Controller
@@ -34,10 +26,6 @@ public class JoinController {
 	
 	@Autowired
 	private MemberRepository memberRepo;
-	
-	@Autowired
-    private UserDetailsService userDetailsService;
-	
 	
 	// 회원가입 약관 페이지 이동
 	@GetMapping("/join/contract")
@@ -54,7 +42,12 @@ public class JoinController {
 		 
         return "join/joinForm";
     }
+	@GetMapping("/join/NewFile")
+    public String showContract() {
+        return "join/NewFile"; // "contract"는 Thymeleaf 템플릿의 이름을 가정합니다.
+    }
 
+	// 회원가입 처리
 	 @PostMapping("/register")
 	   public String registerUser(@ModelAttribute Member member, 
 								  @RequestParam(value = "email") String email,
@@ -83,16 +76,18 @@ public class JoinController {
 	               .password(encoder.encode(member.getPassword()))
 	               .phoneNumber(member.getPhoneNumber())
 	               .role(Role.ROLE_MEMBER)
+	               .zipNum(member.getZipNum())
 	               .address(member.getAddress())
 	               .detailedAddress(member.getDetailedAddress())
 	               .email(memberEmail)
 	               .build();
-	      
+	      System.out.println(member.getAddress()+"dd");
 	      
 	      memberRepo.save(newMem);
 
 	      
 	      return "redirect:/system/login";
 	   }
+	
 }
 
