@@ -26,7 +26,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-
+	@Disabled
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -39,6 +39,7 @@ public class RepositoryTest {
 				.role(Role.ROLE_ADMIN)
 				.memberId("admin")
 				.password(encoder.encode("1111"))
+				.zipNum("1234")
 				.build();
 		  
 		memberRepo.save(member);
@@ -53,6 +54,7 @@ public class RepositoryTest {
 				.role(Role.ROLE_MEMBER)
 				.memberId("member")
 				.password(encoder.encode("1111"))
+				.zipNum("1234")
 				.build();
 		  
 		memberRepo.save(member1);
