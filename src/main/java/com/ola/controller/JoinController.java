@@ -82,35 +82,3 @@ public class JoinController {
 		    return "redirect:/system/login";
 	 }
 }
-
-	@PostMapping("/register")
-	public String registerUser(@ModelAttribute Member member, @RequestParam(value = "email") String email,
-			@RequestParam(value = "emailDomain") String domain,
-			@RequestParam(value = "directEmail", required = false) String directEmail,
-			@RequestParam(value = "memberId") String memberId, Model model) {
-
-		// 이미 존재하는 memberId 확인
-		if (memberRepo.existsById(memberId)) {
-			model.addAttribute("idExistsError", "이미 사용 중인 아이디입니다.");
-			return "join/joinForm"; // 동일한 아이디가 있을 경우 회원가입 폼으로 다시 이동
-		}
-
-		String memberEmail;
-
-		if ("direct".equals(domain)) {
-			memberEmail = email + "@" + directEmail;
-		} else {
-			memberEmail = email + "@" + domain;
-		}
-
-		// 회원 정보 저장
-		member.setMemberId(memberId);
-		member.setEmail(memberEmail);
-		member.setRole(Role.ROLE_MEMBER);
-		member.setPassword(encoder.encode(member.getPassword()));
-		memberRepo.save(member);
-
-		return "redirect:/system/login";
-	}
-
-}

@@ -27,10 +27,10 @@
 					<a th:href="@{/getBoard(communityNo=${community.communityNo})}"
 						th:text="${community.title}">Title</a>
 				</td>
-				<td th:text="${community.viewCount}">0</td>
-				<td th:text="${community.likeCount}">0</td>
-				<td th:text="${community.commentCount}">0</td>
-				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+				<td th:text="${community.viewCount}"></td>
+				<td th:text="${community.likeCount}"></td>
+				<td th:text="${community.commentCount}"></td>
+				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
 			</tr>
 		</tbody>
 	</table>

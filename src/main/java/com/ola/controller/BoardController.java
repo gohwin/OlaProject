@@ -38,7 +38,7 @@ public class BoardController {
 		Pageable pageable = PageRequest.of(0, 26, Sort.by("tradeBoardNo").descending());
 		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
 
-		model.addAttribute("boardList", boardList);
+		model.addAttribute("tradeBoardList", boardList);
 
 		return "board/tradeBoardList";
 	}
@@ -49,11 +49,12 @@ public class BoardController {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+		
 		Pageable pageable = PageRequest.of(0, 26, Sort.by("communityNo").descending());
 		Page<Community> boardList = boardService.communityBoardList(pageable);
 
-		model.addAttribute("boardList", boardList);
-
+		model.addAttribute("communities", boardList);
+		System.out.println(boardList);
 		return "board/communityBoardList";
 	}
 
@@ -82,7 +83,7 @@ public class BoardController {
 		board.setMember(principal.getMember());
 		boardService.insertBoard(board);
 
-		return "redirect:getBoardList";
+		return "redirect:communityBoardList";
 	}
 	
 	@PostMapping("/tradeInsert")
