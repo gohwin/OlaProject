@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Member;
 import com.ola.entity.Role;
-
+import com.ola.repository.MemberRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,15 +30,6 @@ public class JoinController {
 	@Autowired
 	private MemberRepository memberRepo;
 
-
-
-
-	@Autowired
-    private UserDetailsService userDetailsService;
-	
-
-
-	
 	// 회원가입 약관 페이지 이동
 	@GetMapping("/join/contract")
     public String showContractPage() {
@@ -95,24 +86,5 @@ public class JoinController {
 
 		    return "redirect:/system/login";
 	 }
-
-	      Member newMem = Member.builder()
-	               .name(member.getName())
-	               .memberId(member.getMemberId())
-	               .password(encoder.encode(member.getPassword()))
-	               .phoneNumber(member.getPhoneNumber())
-	               .role(Role.ROLE_MEMBER)
-	               .zipNum(member.getZipNum())
-	               .address(member.getAddress())
-	               .detailedAddress(member.getDetailedAddress())
-	               .email(memberEmail)
-	               .build();
-	      System.out.println(member.getAddress()+"dd");
-	      
-	      memberRepo.save(newMem);
-
-	      
-	      return "redirect:/system/login";
-	   }
-
+}
 
