@@ -58,25 +58,39 @@ public class BoardController {
 	}
 
 	@GetMapping("/getBoard")
-	public void getBoard(TradeBoard board, Model model) {
+	public void getBoard(Community commu, TradeBoard board, Model model) {
 
 		model.addAttribute("board", boardService.getBoard(board));
+		model.addAttribute("board", boardService.getBoard(commu));
 	}
 
-	@GetMapping("/insertBoard")
-	public void insertBoardView() {
+	@GetMapping("/communityInsert")
+	public void communityInsertView() {
+
+	}
+
+	@GetMapping("/tradeInsert")
+	public void tradeInsertView() {
 
 	}
 
 	/*
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
-	@PostMapping("/insertBoard")
-	public String insertBoardAction(TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
+	@PostMapping("/communityInsert")
+	public String communityInsertAction(Community board, @AuthenticationPrincipal SecurityUser principal) {
 		board.setMember(principal.getMember());
 		boardService.insertBoard(board);
 
 		return "redirect:getBoardList";
+	}
+	
+	@PostMapping("/tradeInsert")
+	public String tradeInsertAction(TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
+		board.setMember(principal.getMember());
+		boardService.insertBoard(board);
+
+		return "redirect:tradeBoardList";
 	}
 
 	@PostMapping("/updateBoard")

@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+</head>
+
+<body th:align="center">
+	<header th:include="header :: body"></header>
+	<h1>게시글 등록</h1>
+	<form th:action="@{/board/tradeInsert}" method="post">
+		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+			<tr>
+				<td bgcolor="orange" th:text="제목" width="80"></td>
+				<td><input name="title" type="text" size="50"></td>
+			</tr>
+			<tr>
+				<td bgcolor="orange" th:text="작성자"></td>
+				<td><span sec:authentication='principal.member.name'></span></td>
+			</tr>
+			<tr>
+				<td bgcolor="orange" th:text="'거래 유형'" width="80"></td>
+				<td>
+					<select name="tradeType">
+						<option th:value="1">판매중</option>
+						<option th:value="2">구매중</option>
+						<option th:value="3">판매완료</option>
+						<option th:value="4">구매완료</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td bgcolor="orange" th:text="내용"></td>
+				<td><textarea name="content" cols="50" rows="10"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="게시글 등록">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<a th:href="@{/board/tradeBoardList}">글목록</a>
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
