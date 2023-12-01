@@ -26,7 +26,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	@Disabled
+
 	@Test
 	public void testAdminInsert() {
 		Member member =

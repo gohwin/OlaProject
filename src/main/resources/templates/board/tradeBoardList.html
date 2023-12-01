@@ -27,10 +27,10 @@
 					<a th:href="@{/getBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
 						th:text="${tradeBoard.title}"></a>
 				</td>
-				<td th:text="${tradeBoard.memberId}"></td>
+				
 				<td th:text="${tradeBoard.tradeType}"></td>
 				<td th:text="${tradeBoard.progressStatus}"></td>
-				<td th:text="${#dates.format(tradeBoard.regDate, 'yyyy-MM-dd')}"></td>
+				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>
 			</tr>
 		</tbody>
 	</table>
