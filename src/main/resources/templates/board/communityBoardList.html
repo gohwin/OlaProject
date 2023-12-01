@@ -2,32 +2,41 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <link href="/css/main.css" rel="stylesheet" />
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/board.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header th:include="header :: body"></header>
+	<header th:include="header :: body"></header>
+	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
+	<table class="styled-table">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Views</th>
+				<th>Likes</th>
+				<th>Comments</th>
+				<th>Posted Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="community : ${communities}">
+				<td>
+					<!-- 게시글 제목에 링크 추가 -->
+					<a th:href="@{/getBoard(communityNo=${community.communityNo})}"
+						th:text="${community.title}">Title</a>
+				</td>
+				<td th:text="${community.viewCount}">0</td>
+				<td th:text="${community.likeCount}">0</td>
+				<td th:text="${community.commentCount}">0</td>
+				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <h2>커뮤니티 게시판</h2>
 
-    <div th:each="post : ${boardList}">
-        <div>
-            <h3 th:text="${post.title}"></h3>
-            <p th:text="${post.content}"></p>
-            <p>작성자: <span th:text="${post.memberId}"></span></p>
-            <p>작성일: <span th:text="${#dates.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
-            <p>조회수: <span th:text="${post.viewCount}"></span></p>
-            <p>좋아요: <span th:text="${post.likeCount}"></span></p>
-            <p>댓글 수: <span th:text="${post.commentCount}"></span></p>
-        </div>
-        <hr>
-    </div>
-
-    <!-- 게시물 등록으로 이동하는 버튼 -->
-    <a th:href="@{/board/insertBoard}">게시물 등록</a>
-
-    <th:block th:include="footer.html"></th:block>
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>

@@ -9,11 +9,19 @@ import com.ola.entity.TradeBoard;
 
 public interface BoardService {
 
+	void insertBoard(Community commu);
+
+	void updateBoard(Community commu);
+
+	void deleteBoard(Community commu);
+
 	void insertBoard(TradeBoard board);
 
 	void updateBoard(TradeBoard board);
 
 	void deleteBoard(TradeBoard board);
+
+	Community getBoard(Community commu);
 
 	TradeBoard getBoard(TradeBoard board);
 

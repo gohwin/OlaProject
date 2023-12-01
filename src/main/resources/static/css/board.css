@@ -1,58 +1,60 @@
 @charset "UTF-8";
-/* main.css */
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+/* 등록버튼 스타일 */
+a.register-link {
+	display: inline-block;
+	padding: 6px 10px;
+	/* 작은 크기로 조절 */
+	background-color: #4CAF50;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+	margin-left: auto;
+	/* 왼쪽 여백을 auto로 설정하여 오른쪽 정렬 */
+	display: block;
+	/* 블록 요소로 변경하여 줄 바꿈 허용 */
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
+a.register-link:hover {
+	background-color: #45a049;
 }
 
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+/* 보드 스타일 */
+.styled-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 25px 0;
+	font-size: 18px;
+	text-align: left;
 }
 
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.styled-table th,
+.styled-table td {
+	padding: 12px 15px;
+	border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: #333;
-    color: white;
+.styled-table th {
+	background-color: #f2f2f2;
 }
 
-tbody tr:hover {
-    background-color: #f5f5f5;
+.styled-table tbody tr:hover {
+	background-color: #f5f5f5;
+	cursor: pointer;
 }
 
-a {
-    text-decoration: none;
-    color: #333;
+
+.styled-table tr:nth-child(odd) {
+	background-color: #f9f9f9;
 }
 
-a:hover {
-    color: #0066cc;
+.styled-table a {
+	color: #3498db;
+	text-decoration: none;
+	font-weight: bold;
 }
 
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.styled-table a:hover {
+	text-decoration: underline;
 }
