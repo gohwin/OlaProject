@@ -2,9 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/admin.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<link href="/css/main.css" rel="stylesheet" />
+<link href="/css/admin.css" rel="stylesheet" />
+<style>
+table tbody tr:nth-child(odd) {
+	background-color: #f2f2f2; /* 홀수 행은 연한 회색 */
+}
+
+table tbody tr:nth-child(even) {
+	background-color: #ffffff; /* 짝수 행은 흰색 */
+}
+
+table tbody tr:hover {
+	background-color: #ddd; /* 호버 시 약간 어두운 회색 */
+}
+
+table tbody tr td a {
+	color: #0645ad; /* 링크는 파란색 */
+	text-decoration: none; /* 밑줄 제거 */
+}
+
+table tbody tr td a:hover {
+	text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+table {
+	border-collapse: collapse; /* 테두리가 깔끔하게 보이도록 설정 */
+}
+
+table, th, td {
+	border: 1px solid #ddd; /* 연한 회색 테두리 */
+}
+
+th, td {
+	padding: 8px; /* 셀 내부 공간 */
+	text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+th {
+	background-color: #4CAF50; /* 헤더는 녹색 배경 */
+	color: white; /* 헤더는 흰색 텍스트 */
+}
+/* 페이징 섹션 스타일 */
+.pagination {
+	text-align: center; /* 중앙 정렬 */
+	padding: 10px 0; /* 상하 패딩 */
+}
+
+.pagination ul {
+	list-style: none; /* 리스트 스타일 제거 */
+	padding: 0; /* 패딩 제거 */
+	margin: 0; /* 여백 제거 */
+	display: inline-block; /* 인라인 블록으로 표시 */
+}
+
+.pagination ul li {
+	display: inline; /* 리스트 아이템 가로로 표시 */
+	margin-right: 5px; /* 우측 여백 */
+}
+
+.pagination a {
+	text-decoration: none; /* 링크 밑줄 제거 */
+	padding: 5px 10px; /* 패딩 */
+	border: 1px solid #ddd; /* 테두리 */
+	color: #333; /* 글자 색상 */
+}
+
+.pagination a:hover {
+	background-color: #f0f0f0; /* 호버 배경색 */
+}
+
+.pagination .current-page {
+	font-weight: bold; /* 현재 페이지 강조 */
+}
+</style>
 </head>
 
 <body>
@@ -22,9 +94,9 @@
 		<tbody>
 			<tr th:each="community : ${communities}">
 				<td>
-					<!-- 게시글 제목에 링크 추가 -->
-					<a th:href="@{/adminGetBoard(communityNo=${community.communityNo})}"
-						th:text="${community.title}">Title</a>
+					<!-- 게시글 제목에 링크 추가 --> <a
+					th:href="@{/adminGetBoard(communityNo=${community.communityNo})}"
+					th:text="${community.title}">Title</a>
 				</td>
 				<td th:text="${community.viewCount}">0</td>
 				<td th:text="${community.likeCount}">0</td>
@@ -33,6 +105,25 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<!-- 페이징 처리를 위한 섹션, 게시글이 있을 때만 표시 -->
+	<div class="pagination" th:if="${not #lists.isEmpty(communities)}">
+		<!-- '이전' 버튼 (첫 페이지가 아닐 때만 표시) -->
+		<a th:if="${currentPage > 1}"
+			th:href="@{/adminCommunityBoardList(page=${currentPage - 1})}">이전</a>
+
+		<!-- 페이지 번호 -->
+		<ul>
+			<li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"><a
+				th:href="@{/adminCommunityBoardList(page=${pageNum})}"
+				th:text="${pageNum}"
+				th:class="${pageNum == currentPage ? 'current-page' : ''}"></a></li>
+		</ul>
+
+		<!-- '다음' 버튼 (마지막 페이지가 아닐 때만 표시) -->
+		<a th:if="${currentPage < totalPages}"
+			th:href="@{/adminCommunityBoardList(page=${currentPage + 1})}">다음</a>
+	</div>
 
 	<th:block th:include="footer.html"></th:block>
 </body>
