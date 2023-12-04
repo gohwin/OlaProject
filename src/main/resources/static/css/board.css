@@ -2,59 +2,58 @@
 
 /* 등록버튼 스타일 */
 a.register-link {
-	display: inline-block;
-	padding: 6px 10px;
-	/* 작은 크기로 조절 */
-	background-color: #4CAF50;
-	color: white;
-	text-decoration: none;
-	border-radius: 4px;
-	transition: background-color 0.3s;
-	margin-left: auto;
-	/* 왼쪽 여백을 auto로 설정하여 오른쪽 정렬 */
-	display: block;
-	/* 블록 요소로 변경하여 줄 바꿈 허용 */
+    display: inline-block;
+    padding: 6px 10px;
+    /* 작은 크기로 조절 */
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-left: auto;
+    /* 왼쪽 여백을 auto로 설정하여 오른쪽 정렬 */
+    display: block;
+    /* 블록 요소로 변경하여 줄 바꿈 허용 */
 }
 
 a.register-link:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 /* 보드 스타일 */
 .styled-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 25px 0;
-	font-size: 18px;
-	text-align: left;
+    width: 90%; /* 테이블 크기를 90%로 줄임 */
+    border-collapse: collapse;
+    margin: 25px auto; /* 위아래 25px, 좌우는 auto로 설정 */
+    font-size: 16px; /* 폰트 크기를 16px로 줄임 */
+    text-align: left;
 }
 
 .styled-table th,
 .styled-table td {
-	padding: 12px 15px;
-	border-bottom: 1px solid #ddd;
+    padding: 8px 12px; /* 셀 내부 여백을 조정 */
+    border: 1px solid #ddd; /* 모든 방향에 선 추가 */
 }
 
 .styled-table th {
-	background-color: #f2f2f2;
+    background-color: #f2f2f2;
 }
 
 .styled-table tbody tr:hover {
-	background-color: #f5f5f5;
-	cursor: pointer;
+    background-color: #f5f5f5;
+    cursor: pointer;
 }
 
-
 .styled-table tr:nth-child(odd) {
-	background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .styled-table a {
-	color: #3498db;
-	text-decoration: none;
-	font-weight: bold;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .styled-table a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }

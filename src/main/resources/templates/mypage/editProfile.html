@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/mypage.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+
+	<table>
+		<form th:action="@{/mypage/editProfile}" method="post">
+			<tr>
+				<td><label for="name">이름:</label></td>
+				<td><input type="text" id="name" name="name" th:value="${user.name}" required></td>
+			</tr>
+			<tr>
+				<td><label for="email">이메일:</label></td>
+				<td><input type="email" id="email" name="email" th:value="${user.email}" required></td>
+			</tr>
+			<tr>
+				<td><label for="phoneNumber">전화번호:</label></td>
+				<td><input type="tel" id="phoneNumber" name="phoneNumber" th:value="${user.phoneNumber}" required></td>
+			</tr>
+			<tr>
+				<td><label for="address">주소:</label></td>
+				<td><input type="text" id="address" name="address" th:value="${user.address}" required></td>
+			</tr>
+			<tr>
+				<td><label for="detailedAddress">상세주소:</label></td>
+				<td><input type="text" id="detailedAddress" name="detailedAddress" th:value="${user.detailedAddress}"
+						required></td>
+			</tr>
+			<tr>
+				<td><label for="zipNum">우편번호:</label></td>
+				<td><input type="text" id="zipNum" name="zipNum" th:value="${user.zipNum}" required></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button type="submit" class="btn">저장</button></td>
+			</tr>
+		</form>
+	</table>
+
+	<a th:href="@{/mypage/mypages}" class="btn">마이페이지로 돌아가기</a>
+
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
