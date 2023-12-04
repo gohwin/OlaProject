@@ -62,14 +62,14 @@ public class BoardController {
 		return "board/communityBoardList";
 	}
 
-	@GetMapping("/getTradeBoard/{tradeBoardNo}")
+	@GetMapping("/getTradeBoard")
 	public String getTradeBoard(@PathVariable Long tradeBoardNo, Model model) {
 		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
 		model.addAttribute("tradeBoard", tradeBoard);
 		return "board/getTradeBoard"; // 정확한 템플릿 경로로 수정
 	}
 
-	@GetMapping("/getBoard/{communityNo}")
+	@GetMapping("/getBoard")
 	public String getCommunity(@PathVariable Long communityNo, Model model) {
 		Community community = boardService.getCommunityByNo(communityNo);
 		model.addAttribute("community", community);
