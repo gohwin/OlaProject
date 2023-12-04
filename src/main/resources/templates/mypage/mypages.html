@@ -12,17 +12,39 @@
 
 	<h1>마이페이지</h1>
 
-	<div>
-		<p>아이디: <span th:text="${user.memberId}"></span></p>
-		<p>이름: <span th:text="${user.name}"></span></p>
-		<p>이메일: <span th:text="${user.email}"></span></p>
-		<p>전화번호: <span th:text="${user.phoneNumber}"></span></p>
-		<p>주소: <span th:text="${user.address}"></span></p>
-		<p>상세주소: <span th:text="${user.detailedAddress}"></span></p>
-		<!-- 기타 사용자 정보를 추가 -->
-	</div>
+	<table>
+		<tr>
+			<th>항목</th>
+			<th>내용</th>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td th:text="${user.name}"></td>
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td th:text="${user.email}"></td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td th:text="${user.phoneNumber}"></td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td th:text="${user.address}"></td>
+		</tr>
+		<tr>
+			<td>상세주소</td>
+			<td th:text="${user.detailedAddress}"></td>
+		</tr>
+		<tr>
+			<td>주소번호</td>
+			<td th:text="${user.zipNum}"></td>
+		</tr>
+	</table>
 
-	<a th:href="@{/editProfile}">프로필 수정</a>
+	<a th:href="@{/mypage/editProfile}" class="btn">프로필 수정</a>
+	<a th:href="@{/mypage/orderHistory}" class="btn">주문 내역</a>
 
 	<th:block th:include="footer.html"></th:block>
 </body>
