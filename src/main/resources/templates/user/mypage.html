@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/mypage.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+
+	<h1>마이페이지</h1>
+
+	<div>
+		<p>아이디: <span th:text="${user.memberId}"></span></p>
+		<p>이름: <span th:text="${user.name}"></span></p>
+		<p>이메일: <span th:text="${user.email}"></span></p>
+		<p>전화번호: <span th:text="${user.phoneNumber}"></span></p>
+		<p>주소: <span th:text="${user.address}"></span></p>
+		<p>상세주소: <span th:text="${user.detailedAddress}"></span></p>
+		<!-- 기타 사용자 정보를 추가 -->
+	</div>
+
+	<a th:href="@{/editProfile}">프로필 수정</a>
+
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
