@@ -15,12 +15,13 @@
 			<!-- 사용자 인증 성공했는지 확인 후 사용자정보 출력 -->
 			<span sec:authorize="isAuthenticated()"> <!-- isAuthenticated() : 사용자 인증 성공확인 -->
 				<b>
-					<font color="blue"> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
+					<font> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
 						<!-- principal : 인증된 사용자 정보가 저장됨 -->
 						<span sec:authentication="principal.member.name"></span>
 					</font>
-				</b>님 환영합니다. <a th:href="@{/system/logout}">로그아웃</a> &nbsp;&nbsp; <a th:href="@{/admin/adminPage}">게시판
-					관리</a>
+				</b>님 환영합니다. 
+				<a th:href="@{/system/logout}">로그아웃</a>
+				<a th:href="@{/mypage/mypages}">마이 페이지</a>
 			</span>
 		</div>
 	</header>

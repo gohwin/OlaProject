@@ -85,11 +85,10 @@ th {
 	<table>
 		<thead>
 			<tr>
-				<th>Title</th>
-				<th>Member</th>
-				<th>Type</th>
-				<th>Status</th>
-				<th>Posted Date</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>거래상태</th>
+				<th>작성일</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -97,10 +96,9 @@ th {
 				<td><a
 					th:href="@{/adminGetTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
 					th:text="${tradeBoard.title}">Title</a></td>
-				<td th:text="${tradeBoard.memberId}">Member</td>
+				<td th:text="${tradeBoard.member.memberId}">Member</td>
 				<td th:text="${tradeBoard.tradeType}">Type</td>
-				<td th:text="${tradeBoard.progressStatus}">Status</td>
-				<td th:text="${#dates.format(tradeBoard.regDate, 'yyyy-MM-dd')}">Date</td>
+				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}">Date</td>
 			</tr>
 		</tbody>
 	</table>

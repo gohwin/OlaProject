@@ -135,6 +135,30 @@
             </tr>
         </table>
     </form>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+	<form method="post">
+		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+			<tr>
+				<td bgcolor="orange" th:text="아이디"></td>
+				<td><input type="text" name="username" size="10"></td>
+			</tr>
+			<tr>
+				<td bgcolor="orange" th:text="비밀번호"></td>
+				<td><input name="password" type="password" size="10"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="로그인">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>

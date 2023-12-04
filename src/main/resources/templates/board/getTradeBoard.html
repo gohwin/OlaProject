@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/board.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header th:include="header :: body"></header>
+
+    <!-- 거래 게시글 상세 정보 표시 -->
+    <div>
+        <h2 th:text="${tradeBoard.title}"></h2>
+        <p th:text="${tradeBoard.member.name}"></p>
+        <p th:text="${tradeBoard.content}"></p>
+        <p>Trade Type: <span th:text="${tradeBoard.tradeType}"></span></p>
+        <p>Progress Status: <span th:text="${tradeBoard.progressStatus}"></span></p>
+        <p>Posted Date: <span th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span></p>
+    </div>
+
+    <th:block th:include="footer.html"></th:block>
+</body>
+
+</html>

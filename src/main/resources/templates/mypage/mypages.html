@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/mypage.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+
+	<h1>마이페이지</h1>
+
+	<table>
+		<tr>
+			<th>항목</th>
+			<th>내용</th>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td th:text="${user.name}"></td>
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td th:text="${user.email}"></td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td th:text="${user.phoneNumber}"></td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td th:text="${user.address}"></td>
+		</tr>
+		<tr>
+			<td>상세주소</td>
+			<td th:text="${user.detailedAddress}"></td>
+		</tr>
+		<tr>
+			<td>주소번호</td>
+			<td th:text="${user.zipNum}"></td>
+		</tr>
+	</table>
+
+	<a th:href="@{/mypage/editProfile}" class="btn">프로필 수정</a>
+	<a th:href="@{/mypage/orderHistory}" class="btn">주문 내역</a>
+
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>

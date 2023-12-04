@@ -1,4 +1,4 @@
-package com.ola.board.service;
+package com.ola.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +21,9 @@ public interface BoardService {
 
 	void deleteBoard(TradeBoard board);
 
-	Community getBoard(Community commu);
+	Community getCommunityByNo(Long communityNo);
 
-	TradeBoard getBoard(TradeBoard board);
+	TradeBoard getTradeBoardById(Long tradeBoardNo);
 
 	Page<TradeBoard> tradeBoardList(Pageable pageable);
 
