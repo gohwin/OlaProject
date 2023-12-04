@@ -27,7 +27,7 @@ public class TradeBoard {
     private Long tradeBoardNo;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "memberId")
     private Member member;
 
     private int tradeType;

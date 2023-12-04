@@ -61,7 +61,7 @@ public class RepositoryTest {
 
 	}
 
-	@Disabled
+//	@Disabled
 	@Test
 	public void testCommuBoard() {
 		
