@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/editProfile.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header th:include="header :: body"></header>
+
+    <h1>프로필 수정</h1>
+
+    <form th:action="@{/mypage/updateProfile}" method="post">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" th:value="${user.name}" required>
+
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" th:value="${user.email}" required>
+
+        <label for="phoneNumber">전화번호:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" th:value="${user.phoneNumber}" required>
+
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address" th:value="${user.address}" required>
+
+        <label for="detailedAddress">상세주소:</label>
+        <input type="text" id="detailedAddress" name="detailedAddress" th:value="${user.detailedAddress}" required>
+
+        <!-- 기타 수정할 항목 추가 -->
+
+        <button type="submit">저장</button>
+    </form>
+
+    <a th:href="@{/mypage}">마이페이지로 돌아가기</a>
+
+    <th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
