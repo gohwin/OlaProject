@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ola.board.service.BoardService;
 import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.CommunityRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
+import com.ola.service.BoardService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
