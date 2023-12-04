@@ -171,6 +171,67 @@ function checkDirectInput() {
     emailDomainInput.style.display = "none";
   }
 }
+// 이메일 인증 버튼 클릭 시 호출되는 함수
+ function checkDirectInput() {
+    var emailDomain = document.getElementById('emailDomain').value;
+    var directEmailField = document.getElementById('directEmail');
+
+    if (emailDomain === 'direct') {
+        directEmailField.style.display = 'inline-block';
+    } else {
+        directEmailField.style.display = 'none';
+    }
+}
+
+// 이메일 인증 버튼 클릭 시 호출되는 함수
+function sendVerificationCode() {
+    var emailId = document.getElementById("email").value;
+    var emailDomain = document.getElementById("directEmail").style.display === 'none' ?
+                      document.getElementById("emailDomain").value : 
+                      document.getElementById("directEmail").value;
+    var fullEmail = emailId + "@" + emailDomain;
+
+    fetch(`/send-verification-code?email=${encodeURIComponent(fullEmail)}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("메일이 발송되었습니다.");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// 이메일 인증번호가 일치하는지 확인 함수
+function verifyCode() {
+    var emailId = document.getElementById("email").value;
+    var emailDomain = document.getElementById("directEmail").style.display === 'none' ?
+                      document.getElementById("emailDomain").value : 
+                      document.getElementById("directEmail").value;
+    var fullEmail = emailId + "@" + emailDomain;
+    var verificationCode = document.getElementById("verificationCode").value;
+
+    fetch(`/verify-code?email=${fullEmail}&code=${verificationCode}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        var messageElement = document.getElementById("verificationMessage");
+        if (data.message === "인증 성공") {
+            messageElement.style.color = "green";
+            messageElement.innerHTML = "인증이 완료되었습니다.";
+            document.getElementById("email").disabled = true; // 이메일 입력 필드 비활성화
+            document.getElementById("emailVerified").value = "true";
+        } else {
+            messageElement.style.color = "red";
+            messageElement.innerHTML = "인증번호가 일치하지 않습니다.";
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 
 
@@ -269,6 +330,12 @@ function validateForm() {
 		alert("주소를 입력해주세요!")
 		return false;
 	}
+	
+	// 이메일 인증 하지 않았을때
+	if (document.getElementById("emailVerified").value !== "true") {
+        alert("이메일 인증을 완료해주세요.");
+        return false;
+    }
 
     return true; // 회원가입 진행
 }
