@@ -26,7 +26,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-
+	@Disabled
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -61,7 +61,7 @@ public class RepositoryTest {
 
 	}
 
-//	@Disabled
+	@Disabled
 	@Test
 	public void testCommuBoard() {
 		

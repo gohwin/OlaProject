@@ -14,6 +14,7 @@
 		<thead>
 			<tr>
 				<th>Title</th>
+				<th>작성자</th>
 				<th>Views</th>
 				<th>Likes</th>
 				<th>Comments</th>
@@ -27,6 +28,7 @@
 					<a th:href="@{/getBoard(communityNo=${community.communityNo})}"
 						th:text="${community.title}">Title</a>
 				</td>
+				<td th:text="${community.member.name}"></td>
 				<td th:text="${community.viewCount}"></td>
 				<td th:text="${community.likeCount}"></td>
 				<td th:text="${community.commentCount}"></td>
