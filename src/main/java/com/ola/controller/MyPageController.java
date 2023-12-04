@@ -46,6 +46,7 @@ public class MyPageController {
 		currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
 		currentUser.setAddress(updatedUser.getAddress());
 		currentUser.setDetailedAddress(updatedUser.getDetailedAddress());
+		currentUser.setZipNum(updatedUser.getZipNum());
 
 		userService.updateUser(currentUser);
 

@@ -4,32 +4,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <link href="/css/main.css" rel="stylesheet" />
-    <!-- 다른 필요한 스타일시트를 여기에 추가 -->
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/mypage.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header th:include="header :: body"></header>
+	<header th:include="header :: body"></header>
 
-    <h1>주문 내역</h1>
+	<h1>주문 내역</h1>
 
-    <table>
-        <tr>
-            <th>주문번호</th>
-            <th>상품명</th>
-            <th>주문 수량</th>
-            <th>주문 일시</th>
-        </tr>
-        <tr th:each="order : ${orderHistory}">
-            <td th:text="${order.orderNo}"></td>
-            <td th:text="${order.product.productName}"></td>
-            <td th:text="${order.orderQuantity}"></td>
-            <td th:text="${order.orderDate}"></td>
-        </tr>
-    </table>
-
-    <th:block th:include="footer.html"></th:block>
+	<table>
+		<tr>
+			<th>주문번호</th>
+			<th>상품명</th>
+			<th>주문 수량</th>
+			<th>주문 일시</th>
+		</tr>
+		<tr th:each="order : ${orderHistory}">
+			<td th:text="${order.orderNo}"></td>
+			<td th:text="${order.product.productName}"></td>
+			<td th:text="${order.orderQuantity}"></td>
+			<td th:text="${order.orderDate}"></td>
+		</tr>
+	</table>
+	<a th:href="@{/mypage/mypages}" class="btn">마이페이지로 돌아가기</a>
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>

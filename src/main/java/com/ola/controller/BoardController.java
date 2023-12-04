@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
+import com.ola.repository.CommunityRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
@@ -31,6 +33,9 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private TradeBoardRepository boardRepo;
+	@Autowired
+    private CommunityRepository comRepo;
+	
 
 	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication) {
@@ -63,17 +68,28 @@ public class BoardController {
 	}
 
 	@GetMapping("/getTradeBoard")
-	public String getTradeBoard(@PathVariable Long tradeBoardNo, Model model) {
-		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
-		model.addAttribute("tradeBoard", tradeBoard);
-		return "board/getTradeBoard"; // 정확한 템플릿 경로로 수정
+	public String getTradeBoard(@RequestParam Long tradeBoardNo, Model model) {
+		TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
+		
+		if (tradeBoard != null) {
+			model.addAttribute("tradeBoard",tradeBoard);
+			return "board/getTradeBoard";
+		} else {
+			return "errorPage";
+		}
+
 	}
 
 	@GetMapping("/getBoard")
-	public String getCommunity(@PathVariable Long communityNo, Model model) {
-		Community community = boardService.getCommunityByNo(communityNo);
-		model.addAttribute("community", community);
-		return "board/getBoard"; // 정확한 템플릿 경로로 수정
+	public String getCommunity(@RequestParam Long communityNo, Model model) {
+		Community community = comRepo.findById(communityNo).orElse(null);
+		
+		if (community != null) {
+            model.addAttribute("community", community);
+            return "board/getBoard"; 
+        } else {
+            return "errorPage"; 
+        }
 	}
 
 	@GetMapping("/communityInsert")
