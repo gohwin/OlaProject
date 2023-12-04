@@ -28,9 +28,10 @@ public class Community {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long communityNo;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "memberId")
+    private Member member;
+
 
 	private String title;
 
