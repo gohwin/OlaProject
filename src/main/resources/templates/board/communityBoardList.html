@@ -24,9 +24,7 @@
 		<tbody>
 			<tr th:each="community : ${communities}">
 				<td>
-					<!-- 게시글 제목에 링크 추가 -->
-					<a th:href="@{/getBoard(communityNo=${community.communityNo})}"
-						th:text="${community.title}">Title</a>
+					<a th:href="@{/getBoard(communityNo=${community.communityNo})}" th:text="${community.title}">제목</a>
 				</td>
 				<td th:text="${community.member.name}"></td>
 				<td th:text="${community.viewCount}"></td>

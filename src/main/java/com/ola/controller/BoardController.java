@@ -13,14 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ola.board.service.BoardService;
 import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
+import com.ola.service.BoardService;
 
 @Controller
 @RequestMapping("/board")
@@ -61,11 +62,18 @@ public class BoardController {
 		return "board/communityBoardList";
 	}
 
-	@GetMapping("/getBoard")
-	public void getBoard(Community commu, TradeBoard board, Model model) {
+	@GetMapping("/getTradeBoard")
+	public String getTradeBoard(@PathVariable Long tradeBoardNo, Model model) {
+		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
+		model.addAttribute("tradeBoard", tradeBoard);
+		return "board/getTradeBoard"; // 정확한 템플릿 경로로 수정
+	}
 
-		model.addAttribute("board", boardService.getBoard(board));
-		model.addAttribute("board", boardService.getBoard(commu));
+	@GetMapping("/getBoard")
+	public String getCommunity(@PathVariable Long communityNo, Model model) {
+		Community community = boardService.getCommunityByNo(communityNo);
+		model.addAttribute("community", community);
+		return "board/getBoard"; // 정확한 템플릿 경로로 수정
 	}
 
 	@GetMapping("/communityInsert")
@@ -82,12 +90,13 @@ public class BoardController {
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
 	@PostMapping("/communityInsert")
-	public String communityInsertAction(@ModelAttribute Community board, @AuthenticationPrincipal SecurityUser principal) {
-		
+	public String communityInsertAction(@ModelAttribute Community board,
+			@AuthenticationPrincipal SecurityUser principal) {
+
 		board.setRegDate(new Date());
-		
+
 		board.setMember(principal.getMember());
-		
+
 		boardService.insertBoard(board);
 
 		return "redirect:communityBoardList";

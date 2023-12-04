@@ -22,11 +22,9 @@
 		<tbody>
 			<tr th:each="tradeBoard : ${tradeBoardList}">
 				<td>
-					<!-- 거래 게시글 제목에 링크 추가 -->
-					<a th:href="@{/getBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
-						th:text="${tradeBoard.title}"></a>
+					<a th:href="@{/getTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
+						th:text="${tradeBoard.title}">제목</a>
 				</td>
-				
 				<td th:text="${tradeBoard.member.name}"></td>
 				<td th:text="${tradeBoard.tradeType}"></td>
 				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>

@@ -1,4 +1,4 @@
-package com.ola.board.service;
+package com.ola.service;
 
 import java.util.Date;
 
@@ -74,15 +74,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public TradeBoard getBoard(TradeBoard board) {
-
-		return boardRepo.findById(board.getTradeBoardNo()).get();
+	public TradeBoard getTradeBoardById(Long tradeBoardNo) {
+		return boardRepo.findById(tradeBoardNo).orElse(null);
 	}
 
 	@Override
-	public Community getBoard(Community commu) {
-
-		return comRepo.findById(commu.getCommunityNo()).get();
+	public Community getCommunityByNo(Long communityNo) {
+		return comRepo.findById(communityNo).orElse(null);
 	}
 
 	@Override
