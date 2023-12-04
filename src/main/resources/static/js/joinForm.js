@@ -185,7 +185,7 @@ function checkDirectInput() {
 
 // 이메일 인증 버튼 클릭 시 호출되는 함수
 function sendVerificationCode() {
-    var emailId = document.getElementById("email").value;
+    var emailId = document.getElementById("emailId").value;
     var emailDomain = document.getElementById("directEmail").style.display === 'none' ?
                       document.getElementById("emailDomain").value : 
                       document.getElementById("directEmail").value;
@@ -205,14 +205,14 @@ function sendVerificationCode() {
 
 // 이메일 인증번호가 일치하는지 확인 함수
 function verifyCode() {
-    var emailId = document.getElementById("email").value;
+    var emailId = document.getElementById("emailId").value;
     var emailDomain = document.getElementById("directEmail").style.display === 'none' ?
                       document.getElementById("emailDomain").value : 
                       document.getElementById("directEmail").value;
     var fullEmail = emailId + "@" + emailDomain;
     var verificationCode = document.getElementById("verificationCode").value;
 
-    fetch(`/verify-code?email=${fullEmail}&code=${verificationCode}`, {
+    fetch(`/verify-code?email=${encodeURIComponent(fullEmail)}&code=${verificationCode}`, {
         method: 'GET'
     })
     .then(response => response.json())

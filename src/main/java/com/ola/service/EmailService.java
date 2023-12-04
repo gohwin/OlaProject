@@ -15,7 +15,7 @@ public class EmailService {
 
     public void sendVerificationEmail(String to, String code) {
         String subject = "회원가입 이메일 인증";
-        String message = "귀하의 이메일 인증 코드는: " + code;
+        String message = "귀하의 이메일 인증 코드 : " + code;
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(to);
