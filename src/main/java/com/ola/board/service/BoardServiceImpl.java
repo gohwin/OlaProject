@@ -1,6 +1,7 @@
 package com.ola.board.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,6 @@ public class BoardServiceImpl implements BoardService {
 		newBoard.setContent(board.getContent());
 		newBoard.setMember(board.getMember());
 		newBoard.setTradeType(board.getTradeType());
-		newBoard.setProgressStatus(board.getProgressStatus());
 		newBoard.setRegistrationDate(new Date());
 
 		boardRepo.save(newBoard);

@@ -26,7 +26,7 @@ public class Community {
     private Long communityNo;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "memberId")
     private Member member;
 
     private String title;

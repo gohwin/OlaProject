@@ -76,56 +76,83 @@ th {
 .pagination .current-page {
 	font-weight: bold; /* 현재 페이지 강조 */
 }
+.register-notice {
+    text-align: right; /* Align to the right */
+    padding: 10px; /* Spacing */
+}
+
+.register-notice-btn {
+    background-color: #4CAF50; /* Green background like your table headers */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.register-notice-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
 </style>
 </head>
 
 <body>
-	<header th:include="adminHeader :: body"></header>
-	<table>
-		<thead>
-			<tr>
-				<th>제목</th>
-				<th>조회수</th>
-				<th>좋아요 수</th>
-				<th>댓글 수</th>
-				<th>작성일</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="community : ${communities}">
-				<td>
-					<!-- 게시글 제목에 링크 추가 --> <a
-					th:href="@{/adminGetBoard(communityNo=${community.communityNo})}"
-					th:text="${community.title}">Title</a>
-				</td>
-				<td th:text="${community.viewCount}">0</td>
-				<td th:text="${community.likeCount}">0</td>
-				<td th:text="${community.commentCount}">0</td>
-				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
-			</tr>
-		</tbody>
-	</table>
+    <header th:include="adminHeader :: body"></header>
 
-	<!-- 페이징 처리를 위한 섹션, 게시글이 있을 때만 표시 -->
-	<div class="pagination" th:if="${not #lists.isEmpty(communities)}">
-		<!-- '이전' 버튼 (첫 페이지가 아닐 때만 표시) -->
-		<a th:if="${currentPage > 1}"
-			th:href="@{/adminCommunityBoardList(page=${currentPage - 1})}">이전</a>
+   <!-- 공지글 섹션 -->
+<div class="notice-section">
+    <h2>공지 글</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- adminWrite를 사용하여 공지사항 출력 -->
+        <tr th:each="notice : ${adminWrite}">
+            <td><a th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}" th:text="${notice.title}"></a></td>
+            <td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-		<!-- 페이지 번호 -->
-		<ul>
-			<li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"><a
-				th:href="@{/adminCommunityBoardList(page=${pageNum})}"
-				th:text="${pageNum}"
-				th:class="${pageNum == currentPage ? 'current-page' : ''}"></a></li>
-		</ul>
+<!-- 나머지 게시글 목록 섹션 -->
+<div class="content-section">
+    <h2>게시글 목록</h2>
+    <table>
+        <tbody>
+        <!-- memberWrite를 이용하여 게시글 목록 출력 -->
+        <tr th:each="community : ${memberWrite.content}">
+            <td>
+                <a th:href="@{/adminGetBoard(communityNo=${community.communityNo})}" th:text="${community.title}">Title</a>
+            </td>
+            <td th:text="${community.viewCount}">0</td>
+            <td th:text="${community.likeCount}">0</td>
+            <td th:text="${community.commentCount}">0</td>
+            <td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-		<!-- '다음' 버튼 (마지막 페이지가 아닐 때만 표시) -->
-		<a th:if="${currentPage < totalPages}"
-			th:href="@{/adminCommunityBoardList(page=${currentPage + 1})}">다음</a>
-	</div>
+<!-- member 게시글 페이징 섹션 -->
+<div class="pagination" th:if="${not memberWrite.empty}">
+    <a th:if="${memberWrite.number > 0}" th:href="@{/adminCommunityBoardList(page=${memberWrite.number - 1})}">이전</a>
+    <ul>
+        <li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
+            <a th:href="@{/adminCommunityBoardList(page=${pageNum - 1})}" th:text="${pageNum}" th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
+        </li>
+    </ul>
+    <a th:if="${memberCurrentPage < memberTotalPages}" th:href="@{/adminCommunityBoardList(page=${memberCurrentPage})}">다음</a>
+</div>
 
-	<th:block th:include="footer.html"></th:block>
+<div class="register-notice">
+    <a href="/adminRegisterNotice" class="register-notice-btn">공지 등록</a>
+</div>
+
+    <th:block th:include="footer.html"></th:block>
 </body>
 
 </html>

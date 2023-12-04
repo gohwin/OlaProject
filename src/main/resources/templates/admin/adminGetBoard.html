@@ -5,22 +5,21 @@
     <title>Board Details</title>
     <style>
 header {
-	background-color: #663a3a;
-	color: #fff;
+	background-color: #4CAF50; /* 녹색 배경 */
+	color: white;
 	padding: 1em;
 	text-align: center;
 }
 
 header h1 a {
-	color: #fff;
+	color: white;
 	text-decoration: none;
 	font-size: 24px;
-	/* Adjust the font size as needed */
 }
 
 nav {
-	background-color: #555;
-	color: #fff;
+	background-color: #333; /* 어두운 회색 배경 */
+	color: white;
 	padding: 1em;
 	text-align: center;
 }
@@ -40,31 +39,82 @@ nav {
 }
 
 .header_login ul>li>a {
-	color: #fff;
+	color: white;
 	text-decoration: none;
 	font-size: 16px;
-	/* Adjust the font size as needed */
 	transition: color 0.3s ease;
 }
 
 .header_login ul>li>a:hover {
 	color: #ffd700;
-	/* Change the color on hover as needed */
 }
 
 table {
-	width: 100%; /* 테이블의 전체 너비를 설정 */
-	border-collapse: collapse; /* 셀 사이의 간격 제거 */
+	width: 100%; /* 테이블 전체 너비 */
+	border-collapse: collapse;
 }
 
 th, td {
 	text-align: left;
-	padding: 8px; /* 셀의 패딩 설정 */
+	padding: 8px;
 }
 
 th {
-	background-color: #4CAF50; /* 헤더의 배경색 */
+	background-color: #4CAF50; /* 녹색 배경 */
 	color: white;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: #f2f2f2; /* 홀수 행 연한 회색 */
+}
+
+tbody tr:nth-child(even) {
+	background-color: #ffffff; /* 짝수 행 흰색 */
+}
+
+tbody tr:hover {
+	background-color: #ddd; /* 호버 시 어두운 회색 */
+}
+
+tbody tr td a {
+	color: #0645ad; /* 링크 파란색 */
+	text-decoration: none;
+}
+
+tbody tr td a:hover {
+	text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+.pagination {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.pagination ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+}
+
+.pagination ul li {
+	display: inline;
+	margin-right: 5px;
+}
+
+.pagination a {
+	text-decoration: none;
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	color: #333;
+}
+
+.pagination a:hover {
+	background-color: #f0f0f0;
+}
+
+.pagination .current-page {
+	font-weight: bold;
 }
 </style>
 </head>

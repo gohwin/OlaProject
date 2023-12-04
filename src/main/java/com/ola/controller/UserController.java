@@ -14,9 +14,9 @@ import com.ola.service.MemberService;
 @RestController
 public class UserController {
 
+	@Autowired
     private MemberService memberService;
 
-    @Autowired
     public UserController(MemberService memberService) {
         this.memberService = memberService;
     }

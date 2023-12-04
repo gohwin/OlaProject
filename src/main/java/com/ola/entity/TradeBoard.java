@@ -34,8 +34,6 @@ public class TradeBoard {
     
     private String content;
 
-    private int progressStatus;
-
     private Date registrationDate;
 
     private String title;

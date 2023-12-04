@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -29,7 +29,6 @@
 				</td>
 				
 				<td th:text="${tradeBoard.tradeType}"></td>
-				<td th:text="${tradeBoard.progressStatus}"></td>
 				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>
 			</tr>
 		</tbody>

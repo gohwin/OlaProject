@@ -1,10 +1,11 @@
 package com.ola.board.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ola.entity.Community;
-import com.ola.entity.Search;
 import com.ola.entity.TradeBoard;
 
 public interface BoardService {
