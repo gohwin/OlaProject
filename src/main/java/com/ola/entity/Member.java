@@ -1,6 +1,9 @@
 package com.ola.entity;
 
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 
 
@@ -44,6 +47,13 @@ public class Member {
     private String address;
 
     private String detailedAddress;
+    
+    // 이메일 인증 관련 부분
+    private boolean emailVerified = false;
+
+    private String emailVerificationToken;
+    
+    private LocalDateTime emailVerificationTokenExpiration;
 
   
     @Enumerated(EnumType.STRING)
@@ -79,7 +89,14 @@ public class Member {
         return phoneNumber.matches("^\\d{3}-\\d{3,4}-\\d{4}$");
     }
     
-    
+    public void generateVerificationToken() {
+        emailVerificationToken = UUID.randomUUID().toString();
+    }
+
+    // 이메일 인증 확인
+    public void verifyEmail() {
+        this.emailVerified = true;
+    }
     
     
 

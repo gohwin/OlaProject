@@ -1,13 +1,9 @@
 package com.ola.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ola.entity.Member;
 import com.ola.entity.Role;
 import com.ola.repository.MemberRepository;
+import com.ola.service.EmailService;
+import com.ola.service.VerificationCodeService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class JoinController {
@@ -27,6 +24,13 @@ public class JoinController {
 
 	@Autowired
 	private MemberRepository memberRepo;
+
+	@Autowired
+	private EmailService emailService; // EmailService를 Autowired 합니다.
+	
+	@Autowired
+    private VerificationCodeService verificationCodeService; // VerificationCodeService를 Autowired 합니다.
+	
 
 	// 회원가입 약관 페이지 이동
 	@GetMapping("/join/contract")
@@ -44,41 +48,38 @@ public class JoinController {
 		return "join/joinForm";
 	}
 
-	@GetMapping("/join/NewFile")
-	public String showContract() {
-		return "join/NewFile"; // "contract"는 Thymeleaf 템플릿의 이름을 가정합니다.
-	}
-
 	// 회원가입 처리
-  @PostMapping("/register")
-	   public String registerUser(@ModelAttribute Member member, 
-								  @RequestParam(value = "email") String email,
-							      @RequestParam(value = "emailDomain") String domain,
-							      @RequestParam(value = "directEmail", required = false) String directEmail,
-							      @RequestParam(value = "memberId") String memberId,
-							       Model model) {
-		 
-		 // 이미 존재하는 memberId 확인
-		    if (memberRepo.existsById(memberId)) {
-		        model.addAttribute("idExistsError", "이미 사용 중인 아이디입니다.");
-		        return "join/joinForm"; // 동일한 아이디가 있을 경우 회원가입 폼으로 다시 이동
-		    }
+	@PostMapping(value = "/register", consumes = "application/x-www-form-urlencoded")
+    public String registerUser(@ModelAttribute Member member,
+                               @RequestParam(value = "email") String email,
+                               @RequestParam(value = "emailDomain") String domain,
+                               @RequestParam(value = "directEmail", required = false) String directEmail,
+                               @RequestParam(value = "memberId") String memberId,
+                               Model model, HttpServletRequest request) {
 
-		    String memberEmail;
+        if (memberRepo.existsById(memberId)) {
+            model.addAttribute("idExistsError", "이미 사용 중인 아이디입니다.");
+            return "join/joinForm";
+        }
 
-		    if ("direct".equals(domain)) {
-		        memberEmail = email + "@" + directEmail;
-		    } else {
-		        memberEmail = email + "@" + domain;
-		    }
+        String memberEmail = "direct".equals(domain) ? email + "@" + directEmail : email + "@" + domain;
 
-		    // 회원 정보 저장
-		    member.setMemberId(memberId);
-		    member.setEmail(memberEmail);
-		    member.setRole(Role.ROLE_MEMBER);
-		    member.setPassword(encoder.encode(member.getPassword()));
-		    memberRepo.save(member);
+        member.setMemberId(memberId);
+        member.setEmail(memberEmail);
+        member.setRole(Role.ROLE_MEMBER);
+        member.setPassword(encoder.encode(member.getPassword()));
 
-		    return "redirect:/system/login";
-	 }
+        memberRepo.save(member);
+
+        // 나중에 사용할 수 있도록 인증 코드 저장
+        String verificationCode = verificationCodeService.generateVerificationCode();
+        verificationCodeService.saveVerificationCode(memberEmail, verificationCode);
+
+        // 인증 이메일 전송
+        emailService.sendVerificationEmail(memberEmail, verificationCode);
+
+        return "redirect:/system/login";
+    }
+
+	
 }
