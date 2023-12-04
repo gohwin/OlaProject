@@ -14,9 +14,8 @@
 		<thead>
 			<tr>
 				<th>Title</th>
-				<th>Member</th>
+				<th>작성자</th>
 				<th>Type</th>
-				<th>Status</th>
 				<th>Posted Date</th>
 			</tr>
 		</thead>
@@ -28,8 +27,8 @@
 						th:text="${tradeBoard.title}"></a>
 				</td>
 				
+				<td th:text="${tradeBoard.member.name}"></td>
 				<td th:text="${tradeBoard.tradeType}"></td>
-				<td th:text="${tradeBoard.progressStatus}"></td>
 				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>
 			</tr>
 		</tbody>

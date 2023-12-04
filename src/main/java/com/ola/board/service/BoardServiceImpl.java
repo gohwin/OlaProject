@@ -42,7 +42,6 @@ public class BoardServiceImpl implements BoardService {
 		newBoard.setContent(board.getContent());
 		newBoard.setMember(board.getMember());
 		newBoard.setTradeType(board.getTradeType());
-		newBoard.setProgressStatus(board.getProgressStatus());
 		newBoard.setRegistrationDate(new Date());
 
 		boardRepo.save(newBoard);
