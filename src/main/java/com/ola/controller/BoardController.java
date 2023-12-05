@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +40,7 @@ public class BoardController {
 
 	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication,
-			@PageableDefault(size = 10) Pageable pageable) {
+			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
@@ -61,7 +62,7 @@ public class BoardController {
 
 	@RequestMapping("/communityBoardList")
 	public String CommunityBoardList(Model model, Authentication authentication,
-			@PageableDefault(size = 10) Pageable pageable) {
+			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
@@ -106,9 +107,9 @@ public class BoardController {
 		}
 	}
 
-	@GetMapping("/board/register")
+	@GetMapping("/board/communityInsert")
 	public String communityInsertView() {
-		return "board/register";
+		return "board/communityInsert";
 	}
 
 	@GetMapping("/board/tradeInsert")
@@ -120,7 +121,7 @@ public class BoardController {
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
 
-	@PostMapping("/board/communityInsert")
+	@PostMapping("/communityInsert")
 
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
@@ -143,7 +144,7 @@ public class BoardController {
 
 		boardService.insertBoard(board);
 
-		return "redirect:/board/tradeBoardList";
+		return "redirect:/tradeBoardList";
 	}
 
 	@PostMapping("/board/updateBoard")

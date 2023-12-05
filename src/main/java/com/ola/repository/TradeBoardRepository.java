@@ -11,9 +11,9 @@ import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
 
 public interface TradeBoardRepository extends JpaRepository<TradeBoard, Long> {
-	@Query("SELECT c FROM Community c WHERE c.member.memberId = 'member'")
+	@Query("SELECT c FROM TradeBoard c WHERE c.member.memberId = 'member'")
 	Page<TradeBoard> findByMemberWrite(Pageable pageable);
 
-	@Query("SELECT c FROM Community c WHERE c.member.memberId = 'admin'")
+	@Query("SELECT c FROM TradeBoard c WHERE c.member.memberId = 'admin'")
 	List<TradeBoard> findByAdminWrite();
 }
