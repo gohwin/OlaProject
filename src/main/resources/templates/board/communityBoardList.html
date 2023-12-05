@@ -2,52 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/board.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<link href="/css/main.css" rel="stylesheet" />
+<link href="/css/board.css" rel="stylesheet" />
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
 	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
-	<table class="styled-table">
-		<thead>
-			<tr>
-				<th>Title</th>
-				<th>작성자</th>
-				<th>Views</th>
-				<th>Likes</th>
-				<th>Comments</th>
-				<th>Posted Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="community : ${communities}">
-				<td>
-					<a th:href="@{/getBoard(communityNo=${community.communityNo})}" th:text="${community.title}">제목</a>
-				</td>
-				<td th:text="${community.member.name}"></td>
-				<td th:text="${community.viewCount}"></td>
-				<td th:text="${community.likeCount}"></td>
-				<td th:text="${community.commentCount}"></td>
-				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
-			</tr>
-		</tbody>
-	</table>
+	<!-- 공지글 섹션 -->
+	<div class="notice-section">
+		<h2>공지 글</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th>작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- adminWrite를 사용하여 공지사항 출력 -->
+				<tr th:each="notice : ${adminWrite}">
+					<td><a
+						th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}"
+						th:text="${notice.title}"></a></td>
+					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- 나머지 게시글 목록 섹션 -->
+	<div class="content-section">
+		<h2>게시글 목록</h2>
+		<table>
+			<tbody>
+				<!-- memberWrite를 이용하여 게시글 목록 출력 -->
+				<tr th:each="community : ${memberWrite.content}">
+					<td><a
+						th:href="@{/getBoard(communityNo=${community.communityNo})}"
+						th:text="${community.title}">Title</a></td>
+					<td th:text="${community.viewCount}">0</td>
+					<td th:text="${community.likeCount}">0</td>
+					<td th:text="${community.commentCount}">0</td>
+					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
+	<!-- member 게시글 페이징 섹션 -->
 	<div class="pagination" th:if="${not memberWrite.empty}">
 		<a th:if="${memberWrite.number > 0}"
 			th:href="@{/communityBoardList(page=${memberWrite.number - 1})}">이전</a>
 		<ul>
 			<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
-				<a th:href="@{/communityBoardList(page=${pageNum - 1})}" th:text="${pageNum}"
-					th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
+				<a th:href="@{/communityBoardList(page=${pageNum - 1})}"
+				th:text="${pageNum}"
+				th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
 			</li>
 		</ul>
 		<a th:if="${memberCurrentPage < memberTotalPages}"
 			th:href="@{/communityBoardList(page=${memberCurrentPage})}">다음</a>
 	</div>
-
 
 	<th:block th:include="footer.html"></th:block>
 </body>
