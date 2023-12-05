@@ -23,4 +23,13 @@ public class EmailService {
         mailMessage.setText(message);
         mailSender.send(mailMessage);
     }
+    
+    // 비밀번호 찾을떄 인증메일 보내는 메소드
+    public void sendVerificationCode(String email, String verificationCode) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("비밀번호 복구 인증번호");
+        message.setText("인증번호: " + verificationCode);
+        mailSender.send(message);
+    }
 }
