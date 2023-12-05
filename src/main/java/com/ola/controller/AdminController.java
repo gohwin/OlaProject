@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -43,13 +44,13 @@ public class AdminController {
 	}
 
 	@GetMapping("/adminCommunityBoardList")
-	public String adminCommuView(Model model, @PageableDefault(size = 10) Pageable pageable) {
+	public String adminCommuView(Model model, @PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		// admin이 작성한 게시글 가져오기
 		List<Community> adminWrite = communityRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
-		// 수정된 메소드를 호출하고 TradeBoard로 변환하여 결과를 가져옴
 		Page<Community> memberWrite = communityRepo.findByMemberWrite(pageable);
+		
 		model.addAttribute("memberWrite", memberWrite);
 		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());

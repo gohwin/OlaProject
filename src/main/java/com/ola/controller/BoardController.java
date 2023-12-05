@@ -60,7 +60,7 @@ public class BoardController {
 		return "board/tradeBoardList";
 	}
 
-	@RequestMapping("/communityBoardList")
+	@GetMapping("/communityBoardList")
 	public String CommunityBoardList(Model model, Authentication authentication,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
@@ -72,12 +72,10 @@ public class BoardController {
 
 		Page<Community> memberWrite = comRepo.findByMemberWrite(pageable);
 
-		Page<Community> boardList = boardService.communityBoardList(pageable);
-
-		model.addAttribute("communities", boardList);
 		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", pageable.getPageNumber() + 1);
+		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		
 		return "board/communityBoardList";
 	}
 
