@@ -32,6 +32,8 @@
 		<tr>
 			<th>좋아요 수</th>
 			<td><span th:text="${community.likeCount}">0</span></td>
+			</tr>
+			</table>
 
 	<div>
 		<a th:href="@{/deleteBoard(communityNo=${community.communityNo})}" onclick="return confirm('정말 삭제하시겠습니까?');">
@@ -47,7 +49,6 @@
 	</script>
 
 	<th:block th:include="footer.html"></th:block>
-	</form>
 	<a th:href="@{/register}">글등록</a>&nbsp;&nbsp;&nbsp;
 	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/deleteBoard(communityNo=${community.communityNo})}">글 삭제</a>&nbsp;&nbsp;&nbsp;
 	<a th:href="@{/communityBoardList}">글목록</a>

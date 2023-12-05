@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 	<meta charset="UTF-8">
@@ -9,7 +9,7 @@
 
 <body>
 	<header th:include="header :: body"></header>
-	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
+	<a th:href="@{/register}" class="register-link">게시물 등록</a>
 	<table class="styled-table">
 		<thead>
 			<tr>

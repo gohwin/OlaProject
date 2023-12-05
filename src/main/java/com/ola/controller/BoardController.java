@@ -35,7 +35,7 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
-	@RequestMapping("/board/tradeBoardList")
+	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -50,7 +50,7 @@ public class BoardController {
 		return "board/tradeBoardList";
 	}
 
-	@RequestMapping("/board/communityBoardList")
+	@RequestMapping("/communityBoardList")
 	public String CommunityBoardList(Model model, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -91,21 +91,6 @@ public class BoardController {
 		}
 	}
 
-	@GetMapping("/board/communityInsert")
-	public void communityInsertView() {
-
-	    Community community = comRepo.findById(communityNo).orElse(null);
-	    
-	    if (community != null) {
-	        model.addAttribute("community", community);
-	        return "board/getBoard"; 
-	    } else {
-	        return "errorPage"; 
-	    }
-	}
-
-
-
 	@GetMapping("/register")
 	public String communityInsertView() {
 		return "board/register";
@@ -120,7 +105,7 @@ public class BoardController {
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
 
-	@PostMapping("/board/communityInsert")
+	@PostMapping("/communityInsert")
 
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
@@ -143,7 +128,7 @@ public class BoardController {
 
 		boardService.insertBoard(board);
 
-		return "redirect:/board/tradeBoardList";
+		return "redirect:/tradeBoardList";
 	}
 
 	@PostMapping("/board/updateBoard")
