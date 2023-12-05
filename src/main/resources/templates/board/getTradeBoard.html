@@ -25,8 +25,14 @@
 		</tr>
 		<tr>
 			<th>제품 상태</th>
-			<td th:text="${tradeBoard.tradeType}"></td>
+			<td>
+				<span th:if="${tradeBoard.tradeType == 1}">판매중</span>
+				<span th:if="${tradeBoard.tradeType == 2}">구매중</span>
+				<span th:if="${tradeBoard.tradeType == 3}">판매완료</span>
+				<span th:if="${tradeBoard.tradeType == 4}">구매완료</span>
+			</td>
 		</tr>
+
 		<tr>
 			<th>작성일</th>
 			<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>

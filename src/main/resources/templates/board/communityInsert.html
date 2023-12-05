@@ -3,23 +3,23 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/board.css" rel="stylesheet" />
 </head>
 
 <body th:align="center">
 	<header th:include="header :: body"></header>
-	<h1>게시글 등록</h1>
 	<form th:action="@{/communityInsert}" method="post">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
-				<td bgcolor="orange" th:text="제목" width="80"></td>
+				<td th:text="제목" width="80"></td>
 				<td><input name="title" type="text" size="50"></td>
 			</tr>
 			<tr>
-				<td bgcolor="orange" th:text="작성자"></td>
+				<td th:text="작성자"></td>
 				<td><span sec:authentication='principal.member.name' /></td>
 			</tr>
 			<tr>
-				<td bgcolor="orange" th:text="내용"></td>
+				<td th:text="내용"></td>
 				<td><textarea name="content" cols="50" rows="10"></textarea></td>
 			</tr>
 			<tr>
@@ -29,7 +29,12 @@
 			</tr>
 		</table>
 	</form>
-	<a th:href="@{/board/getBoardList}">글목록</a>
+	<button type="button" onclick="goBack()">뒤로 가기</button>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
 	<th:block th:include="footer.html"></th:block>
 </body>
 
