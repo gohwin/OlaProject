@@ -3,11 +3,115 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+			margin: 0;
+		}
+
+		.container {
+			width: 80%;
+			margin: 50px auto;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+		}
+
+		form {
+			max-width: 400px;
+			margin: 0 auto;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		td {
+			padding: 10px;
+		}
+
+		input {
+			width: 100%;
+			padding: 10px;
+			margin-top: 5px;
+			margin-bottom: 10px;
+			box-sizing: border-box;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+
+		input[type="submit"] {
+			background-color: #4caf50;
+			color: white;
+			padding: 10px 15px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+			display: block;
+			margin: 0 auto;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #45a049;
+		}
+
+		.button-container {
+			text-align: center;
+			margin-top: 20px;
+		}
+	</style>
+	<script>
+		function openIdRecoveryForm() {
+			var popup = window.open("", "_blank", "width=400,height=300,scrollbars=yes,resizable=yes");
+
+			popup.document.write('<html><head><title>아이디 찾기</title></head><body>');
+			popup.document.write('<h1>아이디 찾기</h1>');
+			popup.document.write('<form id="idRecoveryForm" method="post">');
+			popup.document.write('<label for="name">이름:</label>');
+			popup.document.write('<input type="text" name="name" id="name" required><br>');
+			popup.document.write('<label for="email">이메일:</label>');
+			popup.document.write('<input type="email" name="email" id="email" required><br>');
+			popup.document.write('<input type="submit" value="확인">');
+			popup.document.write('</form>');
+			popup.document.write('<div id="result"></div>'); // 결과를 표시할 영역
+			popup.document.write('</body></html>');
+
+			popup.document.getElementById('idRecoveryForm').onsubmit = function (event) {
+				event.preventDefault();
+				var name = popup.document.getElementById('name').value;
+				var email = popup.document.getElementById('email').value;
+
+				fetch('/find-id', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email)
+				})
+					.then(response => response.text())
+					.then(data => {
+						popup.document.getElementById('result').innerHTML = data; // 결과 표시
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						popup.document.getElementById('result').innerHTML = '오류가 발생했습니다.';
+					});
+			};
+		}
+	</script>
 </head>
 
 <body>
-	<header th:include="header :: body"></header>
+	<h1>로그인</h1>
 	<form method="post">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
@@ -23,9 +127,16 @@
 					<input type="submit" value="로그인">
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<a href="javascript:void(0);" onclick="openIdRecoveryForm()">아이디 찾기</a>
+					<a href="">비밀번호 찾기</a>
+				</td>
+			</tr>
 		</table>
 	</form>
-	<th:block th:include="footer.html"></th:block>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
 </body>
 
 </html>

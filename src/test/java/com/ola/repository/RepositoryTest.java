@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.ola.entity.Community;
 import com.ola.entity.Member;
 import com.ola.entity.Role;
+import com.ola.entity.TradeBoard;
 
 
 @SpringBootTest
@@ -24,9 +25,12 @@ public class RepositoryTest {
 	private CommunityRepository commuRepo;
 	
 	@Autowired
+	private TradeBoardRepository tradeRepo;
+	
+	@Autowired
 	private PasswordEncoder encoder;
 	
-	@Disabled
+//	@Disabled
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -61,7 +65,7 @@ public class RepositoryTest {
 
 	}
 
-	@Disabled
+//	@Disabled
 	@Test
 	public void testCommuBoard() {
 		
@@ -78,6 +82,24 @@ public class RepositoryTest {
 				.build();
 		
 		commuRepo.save(comm);
+		});
+	}
+	
+//	@Disabled
+	@Test
+	public void testTradeBoard() {
+		
+		Member member = memberRepo.findById("member").get();
+		IntStream.rangeClosed(1, 30).forEach(i -> {
+			TradeBoard comm = TradeBoard.builder()
+					.content("신발사요." + i)
+					.tradeType(3)
+					.member(member)
+					.registrationDate(new Date())
+					.title("신발 삽니다." + i)
+					.build();
+			
+			tradeRepo.save(comm);
 		});
 	}
 }

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 	<meta charset="UTF-8">
 	<link href="/css/main.css" rel="stylesheet" />
 	<link href="/css/board.css" rel="stylesheet" />
-
 </head>
 
 <body>
@@ -33,16 +32,6 @@
 		<tr>
 			<th>좋아요 수</th>
 			<td><span th:text="${community.likeCount}">0</span></td>
-		</tr>
-		<tr>
-			<th>댓글 수</th>
-			<td><span th:text="${community.commentCount}">0</span></td>
-		</tr>
-		<tr>
-			<th>작성일</th>
-			<td><span th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></span></td>
-		</tr>
-	</table>
 
 	<div>
 		<a th:href="@{/deleteBoard(communityNo=${community.communityNo})}" onclick="return confirm('정말 삭제하시겠습니까?');">
@@ -58,6 +47,10 @@
 	</script>
 
 	<th:block th:include="footer.html"></th:block>
+	</form>
+	<a th:href="@{/register}">글등록</a>&nbsp;&nbsp;&nbsp;
+	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/deleteBoard(communityNo=${community.communityNo})}">글 삭제</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/communityBoardList}">글목록</a>
 </body>
 
 </html>
