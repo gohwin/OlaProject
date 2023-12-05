@@ -1,145 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/board.css" rel="stylesheet" />
+
 <head>
     <meta charset="UTF-8">
     <title>Board Details</title>
-    <style>
-header {
-	background-color: #4CAF50; /* 녹색 배경 */
-	color: white;
-	padding: 1em;
-	text-align: center;
-}
-
-header h1 a {
-	color: white;
-	text-decoration: none;
-	font-size: 24px;
-}
-
-nav {
-	background-color: #333; /* 어두운 회색 배경 */
-	color: white;
-	padding: 1em;
-	text-align: center;
-}
-
-.header_login {
-	position: absolute;
-	top: 12px;
-	right: 0;
-}
-
-.header_login ul {
-	display: flex;
-}
-
-.header_login ul>li {
-	margin-right: 15px;
-}
-
-.header_login ul>li>a {
-	color: white;
-	text-decoration: none;
-	font-size: 16px;
-	transition: color 0.3s ease;
-}
-
-.header_login ul>li>a:hover {
-	color: #ffd700;
-}
-
-table {
-	width: 100%; /* 테이블 전체 너비 */
-	border-collapse: collapse;
-}
-
-th, td {
-	text-align: left;
-	padding: 8px;
-}
-
-th {
-	background-color: #4CAF50; /* 녹색 배경 */
-	color: white;
-}
-
-tbody tr:nth-child(odd) {
-	background-color: #f2f2f2; /* 홀수 행 연한 회색 */
-}
-
-tbody tr:nth-child(even) {
-	background-color: #ffffff; /* 짝수 행 흰색 */
-}
-
-tbody tr:hover {
-	background-color: #ddd; /* 호버 시 어두운 회색 */
-}
-
-tbody tr td a {
-	color: #0645ad; /* 링크 파란색 */
-	text-decoration: none;
-}
-
-tbody tr td a:hover {
-	text-decoration: underline; /* 호버 시 밑줄 추가 */
-}
-
-.pagination {
-	text-align: center;
-	padding: 10px 0;
-}
-
-.pagination ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: inline-block;
-}
-
-.pagination ul li {
-	display: inline;
-	margin-right: 5px;
-}
-
-.pagination a {
-	text-decoration: none;
-	padding: 5px 10px;
-	border: 1px solid #ddd;
-	color: #333;
-}
-
-.pagination a:hover {
-	background-color: #f0f0f0;
-}
-
-.pagination .current-page {
-	font-weight: bold;
-}
-</style>
 </head>
+
 <body>
-    <header th:include="header :: body"></header>
-    
-    <h1>게시글 상세 정보</h1>
+	<header th:include="header :: body"></header>
 
-    <div>
-        <h2 th:text="${community.title}">게시글 제목</h2>
-        <p th:text="${community.content}">게시글 내용</p>
-        <p>작성자: <span th:text="${community.member.name}">작성자 이름</span></p>
-        <p>조회수: <span th:text="${community.viewCount}">0</span></p>
-        <p>좋아요 수: <span th:text="${community.likeCount}">0</span></p>
-        <p>댓글 수: <span th:text="${community.commentCount}">0</span></p>
-        <p>작성일: <span th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">작성일</span></p>
+	<table>
+		<tr>
+			<th>게시글 제목</th>
+			<td><span th:text="${community.title}"></span></td>
+		</tr>
+		<tr>
+			<th>게시글 내용</th>
+			<td>
+				<p th:text="${community.content}"></p>
+			</td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td><span th:text="${community.member.name}"></span></td>
+		</tr>
+		<tr>
+			<th>조회수</th>
+			<td><span th:text="${community.viewCount}">0</span></td>
+		</tr>
+		<tr>
+			<th>좋아요 수</th>
+			<td><span th:text="${community.likeCount}">0</span></td>
+		</tr>
+		<tr>
+			<th>댓글 수</th>
+			<td><span th:text="${community.commentCount}">0</span></td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td><span th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></span></td>
+		</tr>
+	</table>
 
-        <input type="hidden" th:value="${community.communityNo}" name="communityNo"/>
-    </div>
+	<div>
+		<a th:href="@{/deleteBoard(communityNo=${community.communityNo})}" onclick="return confirm('정말 삭제하시겠습니까?');">
+			<button type="button">삭제</button>
+		</a>
+		<button type="button" onclick="goBack()">뒤로 가기</button>
+	</div>
 
+	<th:block th:include="footer.html"></th:block>
+
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
     <div>
         <a th:href="@{/deleteAdminBoard(communityNo=${community.communityNo})}" onclick="return confirm('정말 삭제하시겠습니까?');"><button type="button">삭제</button></a>
         <a th:href="@{/adminCommunityBoardList}"><button type="button">목록</button></a>
     </div>
 
-    <th:block th:include="footer.html"></th:block>
+	<th:block th:include="footer.html"></th:block>
 </body>
+
 </html>

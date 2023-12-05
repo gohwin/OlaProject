@@ -57,3 +57,50 @@ a.register-link:hover {
 .styled-table a:hover {
     text-decoration: underline;
 }
+
+/* 페이지 전체 스타일 */
+body {
+    margin: 0 20px; /* 좌우 모두에 20px 여백 추가 */
+}
+
+/* 기존의 테이블 스타일 제거 */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+span {
+    font-weight: bold;
+}
+
+div {
+    margin-top: 20px;
+     text-align: center;
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
