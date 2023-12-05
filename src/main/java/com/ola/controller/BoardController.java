@@ -1,12 +1,14 @@
 package com.ola.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,33 +37,46 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
-	@RequestMapping("/board/tradeBoardList")
-	public String TradeBoardList(Model model, Authentication authentication) {
+	@RequestMapping("/tradeBoardList")
+	public String TradeBoardList(Model model, Authentication authentication,
+			@PageableDefault(size = 10) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+		List<TradeBoard> adminWrite = boardRepo.findByAdminWrite();
+		model.addAttribute("adminWrite", adminWrite);
 
-		Pageable pageable = PageRequest.of(0, 10, Sort.by("tradeBoardNo").descending());
+		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
+		
 		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
 
 		model.addAttribute("tradeBoardList", boardList);
+		model.addAttribute("memberWrite", memberWrite);
+		model.addAttribute("memberCurrentPage", pageable.getPageNumber() + 1);
+		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
 
 		return "board/tradeBoardList";
 	}
 
-	@RequestMapping("/board/communityBoardList")
-	public String CommunityBoardList(Model model, Authentication authentication) {
+	@RequestMapping("/communityBoardList")
+	public String CommunityBoardList(Model model, Authentication authentication,
+			@PageableDefault(size = 10) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+		List<Community> adminWrite = comRepo.findByAdminWrite();
+		model.addAttribute("adminWrite", adminWrite);
 
-		Pageable pageable = PageRequest.of(0, 26, Sort.by("communityNo").descending());
+		Page<Community> memberWrite = comRepo.findByMemberWrite(pageable);
+
 		Page<Community> boardList = boardService.communityBoardList(pageable);
 
 		model.addAttribute("communities", boardList);
-		System.out.println(boardList);
+		model.addAttribute("memberWrite", memberWrite);
+		model.addAttribute("memberCurrentPage", pageable.getPageNumber() + 1);
+		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
 		return "board/communityBoardList";
 	}
 
@@ -91,22 +106,7 @@ public class BoardController {
 		}
 	}
 
-	@GetMapping("/board/communityInsert")
-	public void communityInsertView() {
-
-	    Community community = comRepo.findById(communityNo).orElse(null);
-	    
-	    if (community != null) {
-	        model.addAttribute("community", community);
-	        return "board/getBoard"; 
-	    } else {
-	        return "errorPage"; 
-	    }
-	}
-
-
-
-	@GetMapping("/register")
+	@GetMapping("/board/register")
 	public String communityInsertView() {
 		return "board/register";
 	}
