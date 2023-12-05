@@ -1,12 +1,15 @@
 package com.ola.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,6 @@ import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
@@ -34,45 +36,53 @@ public class BoardController {
 	@Autowired
 	private TradeBoardRepository boardRepo;
 	@Autowired
-    private CommunityRepository comRepo;
-	
+	private CommunityRepository comRepo;
 
 	@RequestMapping("/tradeBoardList")
-	public String TradeBoardList(Model model, Authentication authentication) {
+	public String TradeBoardList(Model model, Authentication authentication,
+			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+		List<TradeBoard> adminWrite = boardRepo.findByAdminWrite();
+		model.addAttribute("adminWrite", adminWrite);
 
-		Pageable pageable = PageRequest.of(0, 26, Sort.by("tradeBoardNo").descending());
-		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
+		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
+		
 
-		model.addAttribute("tradeBoardList", boardList);
+		model.addAttribute("memberWrite", memberWrite);
+		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
+		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
 
 		return "board/tradeBoardList";
 	}
 
-	@RequestMapping("/communityBoardList")
-	public String CommunityBoardList(Model model, Authentication authentication) {
+	@GetMapping("/communityBoardList")
+	public String CommunityBoardList(Model model, Authentication authentication,
+			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+		List<Community> adminWrite = comRepo.findByAdminWrite();
+		model.addAttribute("adminWrite", adminWrite);
 
-		Pageable pageable = PageRequest.of(0, 26, Sort.by("communityNo").descending());
-		Page<Community> boardList = boardService.communityBoardList(pageable);
+		Page<Community> memberWrite = comRepo.findByMemberWrite(pageable);
 
-		model.addAttribute("communities", boardList);
-		System.out.println(boardList);
+		model.addAttribute("memberWrite", memberWrite);
+		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
+		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		
 		return "board/communityBoardList";
 	}
 
 	@GetMapping("/getTradeBoard")
-	public String getTradeBoard(@RequestParam Long tradeBoardNo, Model model) {
+	public String getTradeBoardView(@RequestParam Long tradeBoardNo, Model model) {
 		TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
-		
+
 		if (tradeBoard != null) {
-			model.addAttribute("tradeBoard",tradeBoard);
+			model.addAttribute("tradeBoard", tradeBoard);
 			return "board/getTradeBoard";
 		} else {
 			return "errorPage";
@@ -82,22 +92,23 @@ public class BoardController {
 
 	@GetMapping("/getBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
+
 		Community community = comRepo.findById(communityNo).orElse(null);
-		
+
 		if (community != null) {
-            model.addAttribute("community", community);
-            return "board/getBoard"; 
-        } else {
-            return "errorPage"; 
-        }
+			model.addAttribute("community", community);
+			return "board/getBoard";
+		} else {
+			return "errorPage";
+		}
 	}
 
-	@GetMapping("/communityInsert")
-	public void communityInsertView() {
-
+	@GetMapping("/board/communityInsert")
+	public String communityInsertView() {
+		return "board/communityInsert";
 	}
 
-	@GetMapping("/tradeInsert")
+	@GetMapping("/board/tradeInsert")
 	public void tradeInsertView() {
 
 	}
@@ -105,7 +116,9 @@ public class BoardController {
 	/*
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
+
 	@PostMapping("/communityInsert")
+
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
 
@@ -118,7 +131,7 @@ public class BoardController {
 		return "redirect:communityBoardList";
 	}
 
-	@PostMapping("/tradeInsert")
+	@PostMapping("/board/tradeInsert")
 	public String tradeInsertAction(@ModelAttribute TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
 
 		board.setRegistrationDate(new Date());
@@ -127,17 +140,17 @@ public class BoardController {
 
 		boardService.insertBoard(board);
 
-		return "redirect:/board/tradeBoardList";
+		return "redirect:/tradeBoardList";
 	}
 
-	@PostMapping("/updateBoard")
+	@PostMapping("/board/updateBoard")
 	public String updateBoard(TradeBoard board) {
 		boardService.updateBoard(board);
 
 		return "redirect:getBoardList";
 	}
 
-	@GetMapping("/deleteBoard")
+	@GetMapping("/board/deleteBoard")
 	public String deleteBoard(TradeBoard board) {
 		boardService.deleteBoard(board);
 

@@ -4,18 +4,59 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="/js/findMember.js"></script>
+	<link href="/css/main.css" rel="stylesheet" />
+
+	<script>
+		function openIdRecoveryForm() {
+			var popup = window.open("", "_blank", "width=400,height=300,scrollbars=yes,resizable=yes");
+
+			popup.document.write('<html><head><title>아이디 찾기</title></head><body>');
+			popup.document.write('<h1>아이디 찾기</h1>');
+			popup.document.write('<form id="idRecoveryForm" method="post">');
+			popup.document.write('<label for="name">이름:</label>');
+			popup.document.write('<input type="text" name="name" id="name" required><br>');
+			popup.document.write('<label for="email">이메일:</label>');
+			popup.document.write('<input type="email" name="email" id="email" required><br>');
+			popup.document.write('<input type="submit" value="확인">');
+			popup.document.write('</form>');
+			popup.document.write('<div id="result"></div>'); // 결과를 표시할 영역
+			popup.document.write('</body></html>');
+
+			popup.document.getElementById('idRecoveryForm').onsubmit = function (event) {
+				event.preventDefault();
+				var name = popup.document.getElementById('name').value;
+				var email = popup.document.getElementById('email').value;
+
+				fetch('/find-id', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: 'name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email)
+				})
+					.then(response => response.text())
+					.then(data => {
+						popup.document.getElementById('result').innerHTML = data; // 결과 표시
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						popup.document.getElementById('result').innerHTML = '오류가 발생했습니다.';
+					});
+			};
+		}
+	</script>
 </head>
 
 <body>
-	<h1>로그인</h1>
+	<header th:include="header :: body"></header>
 	<form method="post">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
-				<td bgcolor="orange" th:text="아이디"></td>
+				<td th:text="아이디"></td>
 				<td><input type="text" name="username" size="10"></td>
 			</tr>
 			<tr>
-				<td bgcolor="orange" th:text="비밀번호"></td>
+				<td th:text="비밀번호"></td>
 				<td><input name="password" type="password" size="10"></td>
 			</tr>
 			<tr>
@@ -31,8 +72,7 @@
 			</tr>
 		</table>
 	</form>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>
