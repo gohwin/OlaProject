@@ -50,11 +50,9 @@ public class BoardController {
 
 		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
 		
-		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
 
-		model.addAttribute("tradeBoardList", boardList);
 		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", pageable.getPageNumber() + 1);
+		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
 
 		return "board/tradeBoardList";
