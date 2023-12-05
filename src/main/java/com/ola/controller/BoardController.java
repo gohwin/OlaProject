@@ -26,7 +26,6 @@ import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
@@ -44,7 +43,7 @@ public class BoardController {
 			return "redirect:/system/login";
 		}
 
-		Pageable pageable = PageRequest.of(0, 26, Sort.by("tradeBoardNo").descending());
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("tradeBoardNo").descending());
 		Page<TradeBoard> boardList = boardService.tradeBoardList(pageable);
 
 		model.addAttribute("tradeBoardList", boardList);
@@ -82,19 +81,20 @@ public class BoardController {
 
 	@GetMapping("/getBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
-		Community community = comRepo.findById(communityNo).orElse(null);
-		
-		if (community != null) {
-            model.addAttribute("community", community);
-            return "board/getBoard"; 
-        } else {
-            return "errorPage"; 
-        }
+	    Community community = comRepo.findById(communityNo).orElse(null);
+	    
+	    if (community != null) {
+	        model.addAttribute("community", community);
+	        return "board/getBoard"; 
+	    } else {
+	        return "errorPage"; 
+	    }
 	}
 
-	@GetMapping("/communityInsert")
-	public void communityInsertView() {
 
+	@GetMapping("/register")
+	public String communityInsertView() {
+		return "board/register";
 	}
 
 	@GetMapping("/tradeInsert")
@@ -105,7 +105,7 @@ public class BoardController {
 	/*
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
-	@PostMapping("/communityInsert")
+	@PostMapping("/register")
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
 

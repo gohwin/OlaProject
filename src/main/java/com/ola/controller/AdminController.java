@@ -97,8 +97,8 @@ public class AdminController {
         }
     }
     
-    @GetMapping("/deleteBoard")
-    public String deleteBoard(@RequestParam Long communityNo) {
+    @GetMapping("/deleteAdminBoard")
+    public String deleteAdminBoard(@RequestParam Long communityNo) {
         communityRepo.deleteById(communityNo); // 게시글 삭제
 
         return "redirect:adminCommunityBoardList"; // 삭제 후 목록 페이지로 리디렉션
