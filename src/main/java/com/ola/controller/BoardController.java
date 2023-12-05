@@ -26,7 +26,6 @@ import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
@@ -34,10 +33,9 @@ public class BoardController {
 	@Autowired
 	private TradeBoardRepository boardRepo;
 	@Autowired
-    private CommunityRepository comRepo;
-	
+	private CommunityRepository comRepo;
 
-	@RequestMapping("/tradeBoardList")
+	@RequestMapping("/board/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -52,7 +50,7 @@ public class BoardController {
 		return "board/tradeBoardList";
 	}
 
-	@RequestMapping("/communityBoardList")
+	@RequestMapping("/board/communityBoardList")
 	public String CommunityBoardList(Model model, Authentication authentication) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -68,11 +66,11 @@ public class BoardController {
 	}
 
 	@GetMapping("/getTradeBoard")
-	public String getTradeBoard(@RequestParam Long tradeBoardNo, Model model) {
+	public String getTradeBoardView(@RequestParam Long tradeBoardNo, Model model) {
 		TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
-		
+
 		if (tradeBoard != null) {
-			model.addAttribute("tradeBoard",tradeBoard);
+			model.addAttribute("tradeBoard", tradeBoard);
 			return "board/getTradeBoard";
 		} else {
 			return "errorPage";
@@ -83,21 +81,21 @@ public class BoardController {
 	@GetMapping("/getBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
 		Community community = comRepo.findById(communityNo).orElse(null);
-		
+
 		if (community != null) {
-            model.addAttribute("community", community);
-            return "board/getBoard"; 
-        } else {
-            return "errorPage"; 
-        }
+			model.addAttribute("community", community);
+			return "board/getBoard";
+		} else {
+			return "errorPage";
+		}
 	}
 
-	@GetMapping("/communityInsert")
+	@GetMapping("/board/communityInsert")
 	public void communityInsertView() {
 
 	}
 
-	@GetMapping("/tradeInsert")
+	@GetMapping("/board/tradeInsert")
 	public void tradeInsertView() {
 
 	}
@@ -105,7 +103,7 @@ public class BoardController {
 	/*
 	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
 	 */
-	@PostMapping("/communityInsert")
+	@PostMapping("/board/communityInsert")
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
 
@@ -118,7 +116,7 @@ public class BoardController {
 		return "redirect:communityBoardList";
 	}
 
-	@PostMapping("/tradeInsert")
+	@PostMapping("/board/tradeInsert")
 	public String tradeInsertAction(@ModelAttribute TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
 
 		board.setRegistrationDate(new Date());
@@ -130,14 +128,14 @@ public class BoardController {
 		return "redirect:/board/tradeBoardList";
 	}
 
-	@PostMapping("/updateBoard")
+	@PostMapping("/board/updateBoard")
 	public String updateBoard(TradeBoard board) {
 		boardService.updateBoard(board);
 
 		return "redirect:getBoardList";
 	}
 
-	@GetMapping("/deleteBoard")
+	@GetMapping("/board/deleteBoard")
 	public String deleteBoard(TradeBoard board) {
 		boardService.deleteBoard(board);
 

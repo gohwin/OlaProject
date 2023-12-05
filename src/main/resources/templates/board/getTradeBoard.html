@@ -2,25 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <link href="/css/main.css" rel="stylesheet" />
-    <link href="/css/board.css" rel="stylesheet" />
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/board.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header th:include="header :: body"></header>
+	<header th:include="header :: body"></header>
 
-    <!-- 거래 게시글 상세 정보 표시 -->
-    <div>
-        <h2 th:text="${tradeBoard.title}"></h2>
-        <p th:text="${tradeBoard.member.name}"></p>
-        <p th:text="${tradeBoard.content}"></p>
-        <p>Trade Type: <span th:text="${tradeBoard.tradeType}"></span></p>
-        <p>Progress Status: <span th:text="${tradeBoard.progressStatus}"></span></p>
-        <p>Posted Date: <span th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span></p>
-    </div>
+	<table>
+		<tr>
+			<th>제목</th>
+			<td th:text="${tradeBoard.title}"></td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td th:text="${tradeBoard.member.name}"></td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td th:text="${tradeBoard.content}"></td>
+		</tr>
+		<tr>
+			<th>제품 상태</th>
+			<td th:text="${tradeBoard.tradeType}"></td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></td>
+		</tr>
+	</table>
+	<div>
+		<a th:href="@{/deleteBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}" onclick="return confirm('정말 삭제하시겠습니까?');">
+			<button type="button">삭제</button>
+		</a>
+		<button type="button" onclick="goBack()">뒤로 가기</button>
+	</div>
 
-    <th:block th:include="footer.html"></th:block>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>
