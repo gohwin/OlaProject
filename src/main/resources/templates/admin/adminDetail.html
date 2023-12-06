@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<header th:include="Header :: body"></header>
+	<header th:include="adminHeader :: body"></header>
 
 	<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" class="product-image">
 	<h3 class="product-name" th:text="${product.productName}"></h3>
@@ -19,5 +19,4 @@
 
 	<th:block th:include="footer.html"></th:block>
 </body>
-
 </html>

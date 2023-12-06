@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<header th:include="Header :: body"></header>
+	<header th:include="adminHeader :: body"></header>
 
 	<section>
 		<h2>신발</h2>
@@ -21,6 +21,15 @@
 		    </div>
 		</div>
 	</section>
+	<script>
+		// JavaScript로 클릭 이벤트를 처리하여 페이지 이동
+		document.querySelectorAll('.product').forEach(function (product) {
+			product.addEventListener('click', function () {
+				const productNo = this.getAttribute('data-product-no');
+				window.location.href = '/admin/adminDetails?productNo=' + productNo; // 'productNo' 파라미터를 전달
+			});
+		});
+	</script>
 
 	<th:block th:include="footer.html"></th:block>
 </body>
