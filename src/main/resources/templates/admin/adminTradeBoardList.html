@@ -24,9 +24,9 @@
 				<!-- adminWrite를 사용하여 공지사항 출력 -->
 				<tr th:each="notice : ${adminWrite}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}"
+						th:href="@{/adminGetTradeBoard(tradeBoardNo=${notice.tradeBoardNo})}"
 						th:text="${notice.title}"></a></td>
-					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+					<td th:text="${#dates.format(notice.registrationDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -65,6 +65,10 @@
 		</ul>
 		<a th:if="${memberCurrentPage < memberTotalPages}"
 			th:href="@{/adminTradeBoardList(page=${memberCurrentPage})}">다음</a>
+	</div>
+	
+	<div class="register-notice">
+		<a href="/adminRegisterTrade" class="register-notice-btn">공지 등록</a>
 	</div>
 
 	<th:block th:include="footer.html"></th:block>
