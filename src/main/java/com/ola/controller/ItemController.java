@@ -60,14 +60,32 @@ public class ItemController {
 
 	@GetMapping("/item/details")
 	public String showItemDetails(@RequestParam Long productNo, Model model) {
-		Product product= prodRepo.findById(productNo).orElse(null);
-//		model.addAttribute("imageUrl", imageUrl);
-		// 카테고리 변환 필요(1->shoes)
-		model.addAttribute("product", product);
-//		model.addAttribute("productPrice", productPrice);
-
-		return "item/details";
+	    Product product = prodRepo.findById(productNo).orElse(null);
+	    if (product != null) {
+	        String categoryName = convertCategoryToName(product.getProdCategory()); // Assuming getCategory() returns the category number
+	        model.addAttribute("product", product);
+	        model.addAttribute("category", categoryName); // Add the converted category name to the model
+	    }
+	    return "item/details";
 	}
+
+	private String convertCategoryToName(int category) {
+	    switch (category) {
+	        case 1:
+	            return "top";
+	        case 2:
+	            return "bottom";
+	        case 3:
+	            return "shoes";
+	        case 4:
+	            return "etc";
+	        case 5:
+	            return "sales";
+	        default:
+	            return "unknown"; // Default case if category does not match
+	    }
+	}
+
 	
 	@GetMapping("/item/add")
 	public String addProductView() {

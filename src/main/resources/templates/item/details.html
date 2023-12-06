@@ -9,10 +9,9 @@
 </head>
 
 <body>
-	<header th:include="header :: body"></header>
+	<header th:include="adminHeader :: body"></header>
 
-	<img th:src="'/images/shoes/' + ${product.image}" alt="Product Image" class="product-image">
-	<!-- 이미지 경로 /images/ + ${category} + '/' + ${product.image} -->
+	<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" class="product-image">
 	<h3 class="product-name" th:text="${product.productName}"></h3>
 	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
 
