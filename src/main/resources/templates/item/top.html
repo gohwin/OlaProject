@@ -13,16 +13,25 @@
 	<section>
 		<h2>상의</h2>
 		<div class="product-container">
-		    <!-- topProducts 리스트를 순회하여 상품 출력 -->
-		    <div th:each="product : ${top}" class="product" th:data-product-no="${product.productNo}">
-		        <img th:src="'/images/top/' + ${product.image}" alt="Product Image" class="product-image">
-		        <h4 th:text="${product.productName}"></h4>
-		        <p th:text="${product.price}"></p>
-		    </div>
+			<!-- topProducts 리스트를 순회하여 상품 출력 -->
+			<div th:each="product : ${top}" class="product" th:data-product-no="${product.productNo}">
+				<img th:src="'/images/top/' + ${product.image}" alt="Product Image" class="product-image">
+				<h4 th:text="${product.productName}"></h4>
+				<p th:text="${product.price}"></p>
+			</div>
 		</div>
 	</section>
 
-	<th:block th:include="footer.html"></th:block>
 </body>
+<script>
+	// JavaScript로 클릭 이벤트를 처리하여 페이지 이동
+	document.querySelectorAll('.product').forEach(function (product) {
+		product.addEventListener('click', function () {
+			const productNo = this.getAttribute('data-product-no');
+			window.location.href = '/item/details?productNo=' + productNo; // 'productNo' 파라미터를 전달
+		});
+	});
+</script>
+<th:block th:include="footer.html"></th:block>
 
 </html>
