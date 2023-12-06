@@ -90,14 +90,14 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/getBoard")
+	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
 
 		Community community = comRepo.findById(communityNo).orElse(null);
 
 		if (community != null) {
 			model.addAttribute("community", community);
-			return "board/getBoard";
+			return "board/getCommuBoard";
 		} else {
 			return "errorPage";
 		}
