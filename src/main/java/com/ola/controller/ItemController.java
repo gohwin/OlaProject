@@ -1,6 +1,9 @@
 package com.ola.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,34 +30,67 @@ public class ItemController {
 
 	@GetMapping("/item/all")
 	public String showAllPage(Model model) {
-		List<Product> prodList = prodRepo.findAll();
-		
-		model.addAttribute("prodList", prodList);
-		return "item/all";
+	    List<Product> prodList = prodRepo.findAll();
+	    List<String> category = new ArrayList<>();
+
+	    // 카테고리 번호에 따른 문자열 매핑
+	    Map<Integer, String> categoryMap = new HashMap<>();
+	    categoryMap.put(1, "top");
+	    categoryMap.put(2, "bottom");
+	    categoryMap.put(3, "shoes");
+	    categoryMap.put(4, "etc");
+	    categoryMap.put(5, "sales");
+
+	    // 모든 상품의 카테고리 값을 문자열로 변환하여 리스트에 저장
+	    for (Product product : prodList) {
+	        int categoryNumber = product.getProdCategory(); // getCategory()는 카테고리 번호를 반환
+	        String categoryString = categoryMap.getOrDefault(categoryNumber, "unknown"); // 매핑된 문자열 얻기
+	        category.add(categoryString);
+	    }
+
+	    model.addAttribute("prodList", prodList);
+	    model.addAttribute("category", category);
+	    return "item/all";
 	}
 
+
 	@GetMapping("/item/top")
-	public String showTopPage() {
-		return "item/top";
+	public String showTopPage(Model model) {
+		List<Product> top = prodRepo.findByProdCategory(1);
+
+	    model.addAttribute("top", top);
+	    return "item/top";
 	}
 
 	@GetMapping("/item/bottom")
-	public String showBottomPage() {
+	public String showBottomPage(Model model) {
+		List<Product> bottom = prodRepo.findByProdCategory(2);
+
+	    model.addAttribute("bottom", bottom);
 		return "item/bottom";
 	}
 
 	@GetMapping("/item/shoes")
-	public String showShoesPage() {
+	public String showShoesPage(Model model) {
+		List<Product> shoes= prodRepo.findByProdCategory(3);
+
+	    model.addAttribute("shoes", shoes);
 		return "item/shoes";
 	}
 
 	@GetMapping("/item/etc")
-	public String showEtcPage() {
+	public String showEtcPage(Model model) {
+		List<Product> etc= prodRepo.findByProdCategory(4);
+
+	    model.addAttribute("etc", etc);
 		return "item/etc";
 	}
 
 	@GetMapping("/item/sales")
-	public String showSalesPage() {
+	public String showSalesPage(Model model) {
+		List<Product> sales= prodRepo.findByProdCategory(5);
+
+	    model.addAttribute("sales", sales);
 		return "item/sales";
 	}
 

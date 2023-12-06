@@ -1,7 +1,10 @@
 package com.ola.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
 import com.ola.entity.Member;
+import com.ola.entity.Product;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.CommunityRepository;
+import com.ola.repository.ProductRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
@@ -37,6 +42,9 @@ public class AdminController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private ProductRepository prodRepo;
 
 	@GetMapping("/adminMain")
 	public String adminMain() {
@@ -136,5 +144,98 @@ public class AdminController {
 		boardService.insertBoard(board);
 		
 		return "redirect:adminCommunityBoardList";
+	}
+	
+	@GetMapping("/admin/adminAll")
+	public String showAllPage(Model model) {
+	    List<Product> prodList = prodRepo.findAll();
+	    List<String> category = new ArrayList<>();
+
+	    // 카테고리 번호에 따른 문자열 매핑
+	    Map<Integer, String> categoryMap = new HashMap<>();
+	    categoryMap.put(1, "top");
+	    categoryMap.put(2, "bottom");
+	    categoryMap.put(3, "shoes");
+	    categoryMap.put(4, "etc");
+	    categoryMap.put(5, "sales");
+
+	    // 모든 상품의 카테고리 값을 문자열로 변환하여 리스트에 저장
+	    for (Product product : prodList) {
+	        int categoryNumber = product.getProdCategory(); // getCategory()는 카테고리 번호를 반환
+	        String categoryString = categoryMap.getOrDefault(categoryNumber, "unknown"); // 매핑된 문자열 얻기
+	        category.add(categoryString);
+	    }
+
+	    model.addAttribute("prodList", prodList);
+	    model.addAttribute("category", category);
+	    return "admin/adminAll";
+	}
+	
+	@GetMapping("/admin/adminTop")
+	public String showAdminTopPage(Model model) {
+		List<Product> top = prodRepo.findByProdCategory(1);
+
+	    model.addAttribute("top", top);
+	    return "admin/adminTop";
+	}
+
+	@GetMapping("/admin/adminBottom")
+	public String showAdminBottomPage(Model model) {
+		List<Product> bottom = prodRepo.findByProdCategory(2);
+
+	    model.addAttribute("bottom", bottom);
+		return "admin/adminBottom";
+	}
+
+	@GetMapping("/admin/adminShoes")
+	public String showAdminShoesPage(Model model) {
+		List<Product> shoes= prodRepo.findByProdCategory(3);
+
+	    model.addAttribute("shoes", shoes);
+		return "admin/adminShoes";
+	}
+
+	@GetMapping("/admin/adminEtc")
+	public String showAdminEtcPage(Model model) {
+		List<Product> etc= prodRepo.findByProdCategory(4);
+
+	    model.addAttribute("etc", etc);
+		return "admin/adminEtc";
+	}
+
+	@GetMapping("/admin/adminSales")
+	public String showAdminSalesPage(Model model) {
+		List<Product> sales= prodRepo.findByProdCategory(5);
+
+	    model.addAttribute("sales", sales);
+		return "admin/adminSales";
+	}
+
+	@GetMapping("/admin/adminDetails")
+	public String showAdminItemDetails(@RequestParam Long productNo, Model model) {
+	    Product product = prodRepo.findById(productNo).orElse(null);
+	    if (product != null) {
+	        String categoryName = AdminconvertCategoryToName(product.getProdCategory()); // Assuming getCategory() returns the category number
+	        model.addAttribute("product", product);
+	        model.addAttribute("category", categoryName); // Add the converted category name to the model
+	    }
+	    return "admin/adminDetail";
+	}
+
+	private String AdminconvertCategoryToName(int category) {
+	    switch (category) {
+	        case 1:
+	            return "top";
+	        case 2:
+	            return "bottom";
+	        case 3:
+	            return "shoes";
+	        case 4:
+	            return "etc";
+	        case 5:
+	            return "sales";
+	        default:
+	            return "unknown"; // Default case if category does not match
+	    }
 	}
 }
