@@ -11,7 +11,8 @@
 <body>
 	<header th:include="header :: body"></header>
 
-	<img th:src="${product.image}" alt="Product Image" class="product-image">
+	<img th:src="'/images/shoes/' + ${product.image}" alt="Product Image" class="product-image">
+	<!-- 이미지 경로 /images/ + ${category} + '/' + ${product.image} -->
 	<h3 class="product-name" th:text="${product.productName}"></h3>
 	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
 
