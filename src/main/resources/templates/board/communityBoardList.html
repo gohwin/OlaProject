@@ -23,7 +23,7 @@
 			<tbody>
 				<!-- adminWrite를 사용하여 공지사항 출력 -->
 				<tr th:each="notice : ${adminWrite}">
-					<td><a th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}" th:text="${notice.title}"></a>
+					<td><a th:href="@{/getCommuBoard(communityNo=${notice.communityNo})}" th:text="${notice.title}"></a>
 					</td>
 					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
@@ -47,7 +47,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="community : ${memberWrite.content}">
-					<td><a th:href="@{/getBoard(communityNo=${community.communityNo})}"
+					<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
 							th:text="${community.title}"></a></td>
 					<td th:text="${community.member.name}"></td>
 					<td th:text="${community.viewCount}"></td>

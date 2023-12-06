@@ -36,16 +36,27 @@
 	<div class="content-section">
 		<h2>게시글 목록</h2>
 		<table>
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>조회수</th>
+					<th>좋아요</th>
+					<th>댓글수</th>
+					<th>작성일</th>
+				</tr>
+			</thead>
 			<tbody>
 				<!-- memberWrite를 이용하여 게시글 목록 출력 -->
 				<tr th:each="community : ${memberWrite.content}">
 					<td><a
 						th:href="@{/adminGetCommuBoard(communityNo=${community.communityNo})}"
-						th:text="${community.title}">Title</a></td>
-					<td th:text="${community.viewCount}">0</td>
-					<td th:text="${community.likeCount}">0</td>
-					<td th:text="${community.commentCount}">0</td>
-					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+						th:text="${community.title}"></a></td>
+					<td th:text="${community.member.name}"></td>
+					<td th:text="${community.viewCount}"></td>
+					<td th:text="${community.likeCount}"></td>
+					<td th:text="${community.commentCount}"></td>
+					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>

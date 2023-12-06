@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -11,9 +11,9 @@
 <body>
 	<header th:include="header :: body"></header>
 
-	<img th:src="${param.imageUrl}" alt="Product Image" class="product-image">
-	<h3 class="product-name" th:text="${param.productName}"></h3>
-	<p class="product-price" th:text="'가격: ₩' + ${param.productPrice}"></p>
+	<img th:src="${product.image}" alt="Product Image" class="product-image">
+	<h3 class="product-name" th:text="${product.productName}"></h3>
+	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
 
 
 	<th:block th:include="footer.html"></th:block>

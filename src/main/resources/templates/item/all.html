@@ -1,19 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet" />
+    <style>
+        /* CSS 스타일링 추가 */
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            max-width: 80%; /* 최대 너비를 조절하세요. */
+            margin: 0 auto; /* 가운데 정렬 */
+        }
+        
+        .product {
+            flex-basis: calc(20% - 20px); /* 가로로 4개씩 배치 */
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능하게 함 */
+        }
+    </style>
 </head>
 
 <body>
-	<header th:include="header :: body"></header>
+    <header th:include="header :: body"></header>
 
-	<section>
-		<h2>ALL</h2>
-	</section>
+    <section>
+        <h2>ALL</h2>
+        <div class="product-container">
+            <!-- prodList에 있는 각 상품을 순회하면서 출력 -->
+            <div th:each="product : ${prodList}" class="product" th:data-product-no="${product.productNo}">
+                <!-- 클릭 시 JavaScript를 사용하여 페이지 이동 -->
+                <h4 th:text="${product.productName}"></h4>
+                <p th:text="${product.price}"></p>
+            </div>
+        </div>
+    </section>
 
-	<th:block th:include="footer.html"></th:block>
+    <script>
+        // JavaScript로 클릭 이벤트를 처리하여 페이지 이동
+        document.querySelectorAll('.product').forEach(function (product) {
+            product.addEventListener('click', function () {
+                const productNo = this.getAttribute('data-product-no');
+                window.location.href = '/item/details?productNo=' + productNo; // 'productNo' 파라미터를 전달
+            });
+        });
+    </script>
+
+    <!--  <th:block th:include="footer.html"></th:block>-->
 </body>
 
 </html>
