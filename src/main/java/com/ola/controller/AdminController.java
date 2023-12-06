@@ -73,36 +73,68 @@ public class AdminController {
 	}
 
 
-	@GetMapping("/adminGetBoard")
-	public String getBoard(@RequestParam Long communityNo, Model model) {
+	@GetMapping("/adminGetCommuBoard")
+	public String getCommuBoard(@RequestParam Long communityNo, Model model) {
 		Community community = communityRepo.findById(communityNo).orElse(null); // communityNo에 해당하는 Community 객체를 조회
 
 		if (community != null) {
 			model.addAttribute("community", community);
-			return "admin/adminGetBoard"; // 게시글 상세보기 페이지의 뷰 이름
+			return "admin/adminCommuBoard"; // 게시글 상세보기 페이지의 뷰 이름
+		} else {
+			return "errorPage"; // 에러 페이지의 뷰 이름.
+		}
+	}
+	
+	@GetMapping("/adminGetTradeBoard")
+	public String getTradeBoard(@RequestParam Long tradeBoardNo, Model model) {
+		TradeBoard tradeBoard = tradeRepo.findById(tradeBoardNo).orElse(null); // communityNo에 해당하는 Community 객체를 조회
+		
+		if (tradeBoard != null) {
+			model.addAttribute("tradeBoard", tradeBoard);
+			return "admin/adminTradeBoard"; // 게시글 상세보기 페이지의 뷰 이름
 		} else {
 			return "errorPage"; // 에러 페이지의 뷰 이름.
 		}
 	}
 
-	@GetMapping("/deleteAdminBoard")
-	public String deleteAdminBoard(@RequestParam Long communityNo) {
+	@GetMapping("/deleteAdminCommuBoard")
+	public String deleteAdminCommuBoard(@RequestParam Long communityNo) {
 		communityRepo.deleteById(communityNo); // 게시글 삭제
 
 		return "redirect:adminCommunityBoardList"; // 삭제 후 목록 페이지로 리디렉션
 	}
-
-	@GetMapping("/adminRegisterNotice")
-	public String registerNoticeView() {
-		return "admin/adminRegisterNotice";
+	@GetMapping("/deleteAdminTradeBoard")
+	public String deleteAdminTradeBoard(@RequestParam Long tradeBoardNo) {
+		tradeRepo.deleteById(tradeBoardNo); // 게시글 삭제
+		
+		return "redirect:adminTradeBoardList"; // 삭제 후 목록 페이지로 리디렉션
 	}
 
-	@PostMapping("/adminRegisterNotice")
-	public String registerNoticeAction(Community board, @AuthenticationPrincipal SecurityUser principal) {
+	@GetMapping("/adminRegisterCommu")
+	public String registerCommuView() {
+		return "admin/adminRegisterCommu";
+	}
+
+	@PostMapping("/adminRegisterCommu")
+	public String registerCommuAction(Community board, @AuthenticationPrincipal SecurityUser principal) {
 		board.setMember(principal.getMember());
 		board.setRegDate(new Date());
 		boardService.insertBoard(board);
-
+		
+		return "redirect:adminCommunityBoardList";
+	}
+	
+	@GetMapping("/adminRegisterTrade")
+	public String registerTradeView() {
+		return "admin/adminRegisterTrade";
+	}
+	
+	@PostMapping("/adminRegisterTrade")
+	public String registerTradeAction(TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
+		board.setMember(principal.getMember());
+		board.setRegistrationDate(new Date());
+		boardService.insertBoard(board);
+		
 		return "redirect:adminCommunityBoardList";
 	}
 }

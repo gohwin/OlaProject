@@ -24,7 +24,7 @@
 				<!-- adminWrite를 사용하여 공지사항 출력 -->
 				<tr th:each="notice : ${adminWrite}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}"
+						th:href="@{/adminGetCommuBoard(communityNo=${notice.communityNo})}"
 						th:text="${notice.title}"></a></td>
 					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
@@ -40,7 +40,7 @@
 				<!-- memberWrite를 이용하여 게시글 목록 출력 -->
 				<tr th:each="community : ${memberWrite.content}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${community.communityNo})}"
+						th:href="@{/adminGetCommuBoard(communityNo=${community.communityNo})}"
 						th:text="${community.title}">Title</a></td>
 					<td th:text="${community.viewCount}">0</td>
 					<td th:text="${community.likeCount}">0</td>
@@ -67,7 +67,7 @@
 	</div>
 
 	<div class="register-notice">
-		<a href="/adminRegisterNotice" class="register-notice-btn">공지 등록</a>
+		<a href="/adminRegisterCommu" class="register-notice-btn">공지 등록</a>
 	</div>
 
 	<th:block th:include="footer.html"></th:block>
