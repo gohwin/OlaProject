@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.ola.entity.Basket;
 import com.ola.entity.Community;
 import com.ola.entity.Member;
 import com.ola.entity.Product;
@@ -30,6 +31,9 @@ public class RepositoryTest {
 	
 	@Autowired
 	private ProductRepository prodRepo;
+	
+	@Autowired
+	private BasketRepository basketRepo;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -121,6 +125,38 @@ public class RepositoryTest {
 					.inventory(1000)
 					.build();
 			prodRepo.save(product);
+		});
+		
+		Product product2 = Product.builder()
+				.productName("테스트")
+				.prodCategory(3)
+				.price(15000L)
+				.prodSize("XL")
+				.salesQuantity(0L)
+				.inventory(1000)
+				.build();
+		prodRepo.save(product2);
+	}
+	
+	@Disabled
+	@Test
+	public void testBasket() {
+		Product product = prodRepo.findById(301L).get();
+		Member member = memberRepo.findById("member").get();
+		IntStream.rangeClosed(1, 10).forEach(i -> {
+			Basket basket = Basket.builder()
+					.product(product)
+					.quantity(1)
+					.member(member)
+					.build();
+			
+			basketRepo.save(basket);
+			Basket basket2 = Basket.builder()
+					.product(product)
+					.quantity(3)
+					.member(member)
+					.build();
+			basketRepo.save(basket2);
 		});
 	}
 }

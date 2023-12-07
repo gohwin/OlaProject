@@ -5,13 +5,13 @@
 <meta charset="UTF-8">
 <link href="/css/main.css" rel="stylesheet" />
 <link href="/css/board.css" rel="stylesheet" />
+
 </head>
 
 <body>
 	<header th:include="adminHeader :: body"></header>
 
 	<!-- 공지글 섹션 -->
-	<div class="notice-section">
 		<h2>공지 글</h2>
 		<table>
 			<thead>
@@ -30,10 +30,8 @@
 				</tr>
 			</tbody>
 		</table>
-	</div>
 
 	<!-- 나머지 게시글 목록 섹션 -->
-	<div class="content-section">
 		<h2>게시글 목록</h2>
 		<table>
 			<thead>
@@ -60,7 +58,6 @@
 				</tr>
 			</tbody>
 		</table>
-	</div>
 
 	<!-- member 게시글 페이징 섹션 -->
 	<div class="pagination" th:if="${not memberWrite.empty}">

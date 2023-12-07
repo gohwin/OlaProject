@@ -45,7 +45,7 @@
 			<tr th:each="tradeBoard : ${memberWrite}">
 				<td>
 					<a th:href="@{/getTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
-						th:text="${tradeBoard.title}">제목</a>
+						th:text="${tradeBoard.title}"></a>
 				</td>
 				<td th:text="${tradeBoard.member.name}"></td>
 				<td>

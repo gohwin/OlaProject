@@ -25,8 +25,12 @@ public class Basket {
     private Long basketId;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_no")
     private Product product;
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private int quantity;
 

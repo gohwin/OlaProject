@@ -1,5 +1,7 @@
 package com.ola.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ola.entity.Basket;
 import com.ola.entity.Member;
+import com.ola.repository.BasketRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.OrderListService;
 import com.ola.service.UserService;
@@ -22,6 +26,8 @@ public class MyPageController {
 	private UserService userService;
 	@Autowired
 	private OrderListService orderService;
+	@Autowired
+	private BasketRepository basketRepo;
 
 	@GetMapping("/mypages")
 	public String myPage(Model model, @AuthenticationPrincipal SecurityUser principal) {
@@ -58,5 +64,14 @@ public class MyPageController {
 		Member user = principal.getMember();
 		model.addAttribute("orderHistory", orderService.getOrderHistory(user));
 		return "mypage/orderHistory"; 
+	}
+	
+	@GetMapping("/basket")
+	public String basketView(Model model, @AuthenticationPrincipal SecurityUser principal) {
+		Member member = principal.getMember();
+		List<Basket> basketList = basketRepo.findByUser(member);
+		
+		model.addAttribute("basketList", basketList);
+		return "mypage/basket";
 	}
 }

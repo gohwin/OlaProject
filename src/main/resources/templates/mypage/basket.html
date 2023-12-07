@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Basket List</title>
+</head>
+<body>
+    <h1>Basket List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate through the basketList -->
+            <tr th:each="basketItem : ${basketList}">
+                <!-- Display basket item information -->
+                <td th:text="${basketItem.product.productName}"></td>
+                <td th:text="${basketItem.quantity}"></td>
+                <td th:text="${basketItem.product.price}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

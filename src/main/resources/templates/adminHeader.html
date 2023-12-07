@@ -1,41 +1,111 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/elegant-icons.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/magnific-popup.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/nice-select.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
 
+</head>
 <body>
-	<header>
-		<div>
-			<h1><a th:href="@{/adminMain}">쇼핑몰 로고</a></h1>
-			<nav class="header_login" sec:authorize="!isAuthenticated()">
-				<ul>
-					<!-- Display only if not authenticated -->
-					<li><a th:href="@{/system/login}">로그인</a></li>
-					<li><a th:href="@{/join/contract}">회원가입</a></li>
-				</ul>
-			</nav>
-			<!-- 사용자 인증 성공했는지 확인 후 사용자정보 출력 -->
-			<span sec:authorize="isAuthenticated()"> <!-- isAuthenticated() : 사용자 인증 성공확인 -->
-				<b>
-					<font color="blue"> <!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
-						<!-- principal : 인증된 사용자 정보가 저장됨 -->
-						<span sec:authentication="principal.member.name"></span>
-					</font>
-				</b>님 환영합니다. <a th:href="@{/system/logout}">로그아웃</a>
-			</span>
-		</div>
-	</header>
-	<nav class="top-nav">
-		<ul>
-			<li><a th:href="@{/adminCommunityBoardList}">게시판</a></li>
-			<li><a th:href="@{/adminTradeBoardList}">중고 거래 게시판</a></li>
-		</ul>
-	</nav>
 
-	<nav class="bottom-nav">
-		<a th:href="@{/admin/adminAll}">전체</a> | <a th:href="@{/admin/adminTop}">상의</a> | <a th:href="@{/admin/adminBottom}">하의</a> |
-		<a th:href="@{/admin/adminShoes}">신발</a> | <a th:href="@{/admin/adminEtc}">악세사리</a> | <a th:href="@{/admin/adminSales}">세일</a> | 
-		<a th:href="@{/item/add}">등록</a>
-	</nav>
 
+  
+
+    <!-- Header Section Begin -->
+    <div class="header__top">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-6 col-md-7">
+                  <div class="header__top__left">
+                      <p>CLEX Climbing Flex</p>
+                  </div>
+              </div>
+              <div class="col-lg-6 col-md-5">
+                  <div class="header__top__right">
+                      <!-- 로그인 전 -->
+                      <div class="header__top__links" sec:authorize="!isAuthenticated()">
+                          <a th:href="@{/system/login}">LogIn</a>
+                          <a th:href="@{/join/contract}">Join</a>
+                      </div>
+                      <!-- 로그인 후 사용자 정보 및 링크 표시 -->
+                      <div sec:authorize="isAuthenticated()">
+                          <b><!-- sce:authentication : 로그인한 사용자인 경우 사용 가능 -->
+                            <!-- principal : 인증된 사용자 정보가 저장됨 -->
+                              <span sec:authentication="principal.member.name"></span>님 환영합니다. 
+                          </b>
+                          <a th:href="@{/system/logout}">로그아웃</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                      <a th:href="@{/adminMain}"><img src="/images/logo/CLEX_logo.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a th:href="@{/main}">Home</a></li>
+                            <li><a th:href="@{/admin/adminAll}">Shop</a>
+                              <ul class="dropdown">
+                                <li><a th:href="@{/admin/adminTop}">상의</a></li>
+                                <li><a th:href="@{/admin/adminBottom}">하의</a></li>
+                                <li><a th:href="@{/admin/adminShoes}">신발</a></li>
+                                <li><a th:href="@{/admin/adminEtc}">악세사리</a></li>
+                                <li><a th:href="@{/admin/adminSales}">세일 상품</a></li>
+                              </ul>
+                            </li>
+                            <li><a th:href="@{/adminTradeBoardList}">TradeBoard</a></li>
+                            <li><a th:href="@{/adminCommunityBoardList}">게시판</a></li>
+                            <li><a href="./contact.html">Contacts</a></li>
+                                <li><a th:href="@{/item/add}">상품 등록</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="/bootstrap/img/icon/search.png" alt=""></a>
+                        <a href="#"><img src="/bootstrap/img/icon/heart.png" alt=""></a>
+                        <a href="#"><img src="/bootstrap/img/icon/cart.png" alt=""> <span></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+            <!-- Search Begin -->
+    <div class="search-model">
+      <div class="h-100 d-flex align-items-center justify-content-center">
+          <div class="search-close-switch">+</div>
+          <form class="search-model-form">
+              <input type="text" id="search-input" placeholder="Search here.....">
+          </form>
+      </div>
+  </div>
+  <!-- Search End -->
+
+  <!-- Js Plugins -->
+  <script src="/bootstrap/js/jquery-3.3.1.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/bootstrap/js/jquery.nice-select.min.js"></script>
+  <script src="/bootstrap/js/jquery.nicescroll.min.js"></script>
+  <script src="/bootstrap/js/jquery.magnific-popup.min.js"></script>
+  <script src="/bootstrap/js/jquery.countdown.min.js"></script>
+  <script src="/bootstrap/js/jquery.slicknav.js"></script>
+  <script src="/bootstrap/js/mixitup.min.js"></script>
+  <script src="/bootstrap/js/owl.carousel.min.js"></script>
+  <script src="/bootstrap/js/main.js"></script>
 </body>
-
 </html>
