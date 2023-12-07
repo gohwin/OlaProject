@@ -6,30 +6,35 @@
 </head>
 <body>
     <h1>Basket List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Iterate through the basketList -->
-            <th:block th:each="basket : ${basketList}">
-                <!-- Iterate through the products in the basket -->
-                <th:block th:each="product : ${basket.products}">
-                    <tr>
-                        <td th:text="${product.productName}"></td>
-                        <td th:text="${basket.productQuantityMap.get(product.productNo)}"></td>
-                        <td th:text="${product.price}"></td>
-                        <td colspan="3">
-                            <a th:href="@{/order(basketId=${basket.basketId}, productNo=${product.productNo})}" th:text="Order"></a>
-                        </td>
-                    </tr>
+    <form th:action="@{/order}" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate through the basketList -->
+                <th:block th:each="basket, basketStat : ${basketList}">
+                    <!-- Iterate through the products in the basket -->
+                    <th:block th:each="product, prodStat : ${basket.products}">
+                        <tr>
+                            <td th:text="${product.productName}"></td>
+                            <td>
+                                <!-- 수량 입력 필드 -->
+                                <input type="number" th:name="'quantity_' + ${basketStat.index} + '_' + ${prodStat.index}" 
+                                       th:value="${basket.productQuantityMap.get(product.productNo)}" min="1"/>
+                            </td>
+                            <td th:text="${product.price}"></td>
+                        </tr>
+                    </th:block>
                 </th:block>
-            </th:block>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        <!-- 주문하기 버튼 -->
+        <button type="submit">주문하기</button>
+    </form>
 </body>
 </html>

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ola.entity.Basket;
 import com.ola.entity.Member;
+import com.ola.entity.OrderList;
 import com.ola.repository.BasketRepository;
+import com.ola.repository.OrderListRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.OrderListService;
 import com.ola.service.UserService;
@@ -26,7 +28,7 @@ public class MyPageController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private OrderListService orderService;
+	private OrderListRepository orderRepo;
 	@Autowired
 	private BasketRepository basketRepo;
 
@@ -63,7 +65,7 @@ public class MyPageController {
 	@GetMapping("/orderHistory")
 	public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
 		Member user = principal.getMember();
-		model.addAttribute("orderHistory", orderService.getOrderHistory(user));
+		model.addAttribute("myOrders", orderRepo.findByMember(user));
 		return "mypage/orderHistory"; 
 	}
 	

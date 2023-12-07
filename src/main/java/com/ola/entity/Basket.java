@@ -18,19 +18,20 @@ import java.util.Set;
 @Entity
 public class Basket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long basketId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "basket_product",
         joinColumns = @JoinColumn(name = "basket_id"),
         inverseJoinColumns = @JoinColumn(name = "product_no")
     )
+    @Builder.Default
     private Set<Product> products = new HashSet<>();
 
     @ElementCollection
@@ -40,6 +41,7 @@ public class Basket {
     )
     @MapKeyColumn(name = "product_no")
     @Column(name = "quantity")
+    @Builder.Default
     private Map<Long, Integer> productQuantityMap = new HashMap<>();
     
     public void addProduct(Long productId, int quantity) {
