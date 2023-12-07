@@ -8,30 +8,30 @@
 </head>
 
 <body>
-	<header th:include="Header :: body"></header>
+	<header th:include="adminHeader :: body"></header>
 
 	<section>
-		<h2>하의</h2>
+		<h2>기타</h2>
 		<div class="product-container">
-			<!-- topProducts 리스트를 순회하여 상품 출력 -->
-			<div th:each="product : ${bottom}" class="product" th:data-product-no="${product.productNo}">
-				<img th:src="'/images/bottom/' + ${product.image}" alt="Product Image" class="product-image">
-				<h4 th:text="${product.productName}"></h4>
-				<p th:text="${product.price}"></p>
-			</div>
+		    <!-- topProducts 리스트를 순회하여 상품 출력 -->
+		    <div th:each="product : ${etc}" class="product" th:data-product-no="${product.productNo}">
+		        <img th:src="'/images/etc/' + ${product.image}" alt="Product Image" class="product-image">
+		        <h4 th:text="${product.productName}"></h4>
+		        <p th:text="${product.price}"></p>
+		    </div>
 		</div>
 	</section>
-</body>
 	<script>
 		// JavaScript로 클릭 이벤트를 처리하여 페이지 이동
 		document.querySelectorAll('.product').forEach(function (product) {
 			product.addEventListener('click', function () {
 				const productNo = this.getAttribute('data-product-no');
-				window.location.href = '/item/details?productNo=' + productNo; // 'productNo' 파라미터를 전달
+				window.location.href = '/admin/adminDetails?productNo=' + productNo; // 'productNo' 파라미터를 전달
 			});
 		});
 	</script>
 
 	<th:block th:include="footer.html"></th:block>
+</body>
 
 </html>

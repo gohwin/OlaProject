@@ -24,9 +24,9 @@
 				<!-- adminWrite를 사용하여 공지사항 출력 -->
 				<tr th:each="notice : ${adminWrite}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}"
+						th:href="@{/adminGetTradeBoard(tradeBoardNo=${notice.tradeBoardNo})}"
 						th:text="${notice.title}"></a></td>
-					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+					<td th:text="${#dates.format(notice.registrationDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -46,7 +46,12 @@
 				<td><a th:href="@{/adminGetTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
 						th:text="${tradeBoard.title}">Title</a></td>
 				<td th:text="${tradeBoard.member.memberId}">Member</td>
-				<td th:text="${tradeBoard.tradeType}">Type</td>
+				<td>
+					<span th:if="${tradeBoard.tradeType == 1}">판매중</span>
+					<span th:if="${tradeBoard.tradeType == 2}">구매중</span>
+					<span th:if="${tradeBoard.tradeType == 3}">판매완료</span>
+					<span th:if="${tradeBoard.tradeType == 4}">구매완료</span>
+				</td>
 				<td th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}">Date</td>
 			</tr>
 		</tbody>
@@ -65,6 +70,10 @@
 		</ul>
 		<a th:if="${memberCurrentPage < memberTotalPages}"
 			th:href="@{/adminTradeBoardList(page=${memberCurrentPage})}">다음</a>
+	</div>
+	
+	<div class="register-notice">
+		<a href="/adminRegisterTrade" class="register-notice-btn">공지 등록</a>
 	</div>
 
 	<th:block th:include="footer.html"></th:block>

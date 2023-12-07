@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +35,7 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
+
 	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication,
 			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
@@ -49,7 +47,6 @@ public class BoardController {
 		model.addAttribute("adminWrite", adminWrite);
 
 		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
-		
 
 		model.addAttribute("memberWrite", memberWrite);
 		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
@@ -73,7 +70,7 @@ public class BoardController {
 		model.addAttribute("memberWrite", memberWrite);
 		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
-		
+
 		return "board/communityBoardList";
 	}
 
@@ -90,14 +87,14 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/getBoard")
+	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
-
-		Community community = comRepo.findById(communityNo).orElse(null);
+		// 조회수 증가를 위해 서비스 계층의 메소드를 호출
+		Community community = boardService.getCommunityByNo(communityNo);
 
 		if (community != null) {
 			model.addAttribute("community", community);
-			return "board/getBoard";
+			return "board/getCommuBoard";
 		} else {
 			return "errorPage";
 		}
@@ -118,7 +115,6 @@ public class BoardController {
 	 */
 
 	@PostMapping("/communityInsert")
-
 	public String communityInsertAction(@ModelAttribute Community board,
 			@AuthenticationPrincipal SecurityUser principal) {
 

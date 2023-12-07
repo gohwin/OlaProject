@@ -10,25 +10,13 @@
 </head>
 
 <body>
-	<header th:include="Header :: body"></header>
+	<header th:include="adminHeader :: body"></header>
 
 	<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" class="product-image">
 	<h3 class="product-name" th:text="${product.productName}"></h3>
 	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
 
 
-
+	<th:block th:include="footer.html"></th:block>
 </body>
-<script>
-	// JavaScript로 클릭 이벤트를 처리하여 페이지 이동
-	document.querySelectorAll('.product').forEach(function (product) {
-		product.addEventListener('click', function () {
-			const productNo = this.getAttribute('data-product-no');
-			window.location.href = '/item/details?productNo=' + productNo; // 'productNo' 파라미터를 전달
-		});
-	});
-</script>
-
-<th:block th:include="footer.html"></th:block>
-
 </html>

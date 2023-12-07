@@ -24,7 +24,7 @@
 				<!-- adminWrite를 사용하여 공지사항 출력 -->
 				<tr th:each="notice : ${adminWrite}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${notice.communityNo})}"
+						th:href="@{/adminGetCommuBoard(communityNo=${notice.communityNo})}"
 						th:text="${notice.title}"></a></td>
 					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
@@ -36,16 +36,27 @@
 	<div class="content-section">
 		<h2>게시글 목록</h2>
 		<table>
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>조회수</th>
+					<th>좋아요</th>
+					<th>댓글수</th>
+					<th>작성일</th>
+				</tr>
+			</thead>
 			<tbody>
 				<!-- memberWrite를 이용하여 게시글 목록 출력 -->
 				<tr th:each="community : ${memberWrite.content}">
 					<td><a
-						th:href="@{/adminGetBoard(communityNo=${community.communityNo})}"
-						th:text="${community.title}">Title</a></td>
-					<td th:text="${community.viewCount}">0</td>
-					<td th:text="${community.likeCount}">0</td>
-					<td th:text="${community.commentCount}">0</td>
-					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}">Date</td>
+						th:href="@{/adminGetCommuBoard(communityNo=${community.communityNo})}"
+						th:text="${community.title}"></a></td>
+					<td th:text="${community.member.name}"></td>
+					<td th:text="${community.viewCount}"></td>
+					<td th:text="${community.likeCount}"></td>
+					<td th:text="${community.commentCount}"></td>
+					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -67,7 +78,7 @@
 	</div>
 
 	<div class="register-notice">
-		<a href="/adminRegisterNotice" class="register-notice-btn">공지 등록</a>
+		<a href="/adminRegisterCommu" class="register-notice-btn">공지 등록</a>
 	</div>
 
 	<th:block th:include="footer.html"></th:block>
