@@ -2,54 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link href="/css/main.css" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/elegant-icons.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/magnific-popup.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/nice-select.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
+	
 
-	<section>
-		<h2>추천 상품</h2>
-		<div class="product-container">
-			<div class="product">
-				<a th:href="@{/item/details}">
-					<img src="/images/shoes/tlsqkf.jpg" alt="Product Image" class="product-image">
-					<h3 class="product-name">상품 이름</h3>
-					<p class="product-price">가격: ₩2,000</p>
-				</a>
-			</div>
-			<div class="product">
-				<a th:href="@{/item/details}">
-					<img src="/images/top/룬닥스 풀루 클라이밍 티셔츠 주니어(64000).jpg" alt="Product Image" class="product-image">
-					<h3 class="product-name">상품 이름</h3>
-					<p class="product-price">가격: ₩100,000</p>
-				</a>
-			</div>
-		</div>
-	</section>
+	 <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="hero__slider owl-carousel">
+            <div class="hero__items set-bg" data-setbg="/bootstrap/img/hero/hero-1.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Summer Collection</h6>
+                                <h2>Fall - Winter Collections 2030</h2>
+                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
+                                commitment to exceptional quality.</p>
+                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__items set-bg" data-setbg="/bootstrap/img/hero/hero-2.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Summer Collection</h6>
+                                <h2>Fall - Winter Collections 2030</h2>
+                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
+                                commitment to exceptional quality.</p>
+                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+	<footer th:include="footer :: body"></footer>
 
-	<section>
-		<h2>인기 상품</h2>
-		<div class="product-container">
-			<div class="product">
-				<a th:href="@{/item/details}">
-					<img src="/images/top/오들로 엔지니어드 칠텍 여성 아웃도어반팔티  클라이밍 스포츠 반팔(94000).jpg" alt="Product Image"
-						class="product-image">
-					<h3 class="product-name">상품 이름</h3>
-					<p class="product-price">가격: ₩80,000</p>
-				</a>
-			</div>
-			<div class="product">
-				<a th:href="@{/item/details}">
-					<img src="/images/top/아이더 POP 클라이밍 ZIP TEE(25000).jpg" alt="Product Image" class="product-image">
-					<h3 class="product-name">상품 이름</h3>
-					<p class="product-price">가격: ₩100,000</p>
-				</a>
-			</div>
-		</div>
-	</section>
-	<th:block th:include="footer.html"></th:block>
-
+    <script src="/bootstrap/js/jquery-3.3.1.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/jquery.nice-select.min.js"></script>
+    <script src="/bootstrap/js/jquery.nicescroll.min.js"></script>
+    <script src="/bootstrap/js/jquery.magnific-popup.min.js"></script>
+    <script src="/bootstrap/js/jquery.countdown.min.js"></script>
+    <script src="/bootstrap/js/jquery.slicknav.js"></script>
+    <script src="/bootstrap/js/mixitup.min.js"></script>
+    <script src="/bootstrap/js/owl.carousel.min.js"></script>
+    <script src="/bootstrap/js/main.js"></script>
 </body>
 
 </html>

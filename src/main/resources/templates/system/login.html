@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="/js/findMember.js"></script>
-	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/login.css" rel="stylesheet" />
 
 	<script>
 		function openIdRecoveryForm() {
@@ -49,6 +49,7 @@
 
 <body>
 	<header th:include="header :: body"></header>
+		<div class="logintable">
 	<form method="post">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
@@ -72,6 +73,7 @@
 			</tr>
 		</table>
 	</form>
+		</div>
 	<th:block th:include="footer.html"></th:block>
 </body>
 
