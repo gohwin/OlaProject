@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+</head>
+<body>
+    <header th:insert="header :: body"></header>
+    <h1>Order Details</h1>
+    
+    <!-- 주문 세부 정보를 표시 -->
+    <div th:if="${orderDetails != null}">
+        <table>
+            <tr>
+                <th>Order No:</th>
+                <td th:text="${orderDetails.orderNo}"></td>
+            </tr>
+            <tr>
+                <th>Order Date:</th>
+                <td th:text="${orderDetails.orderDate}"></td>
+            </tr>
+            <!-- 주문 상품 정보 표시 -->
+            <tr>
+                <th>Order Items:</th>
+                <td>
+                    <table>
+                        <tr>
+                            <th>Product No</th>
+                            <th>Quantity</th>
+                        </tr>
+                        <!-- 주문 상품 목록 표시 -->
+                        <tr th:each="entry : ${orderDetails.productQuantities}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- 주문 세부 정보가 없을 경우 표시 -->
+    <div th:if="${orderDetails == null}">
+        <p>No order details found.</p>
+    </div>
+</body>
+</html>

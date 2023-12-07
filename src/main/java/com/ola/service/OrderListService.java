@@ -12,9 +12,9 @@ import com.ola.repository.OrderListRepository;
 @Service
 public class OrderListService {
 
+	@Autowired
     private final OrderListRepository orderListRepository;
 
-    @Autowired
     public OrderListService(OrderListRepository orderListRepository) {
         this.orderListRepository = orderListRepository;
     }
