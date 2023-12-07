@@ -1,23 +1,23 @@
-@charset "UTF-8";
+/*@charset "UTF-8";
 
-/* CSS 스타일링 추가 */
+ CSS 스타일링 추가 
 .product-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	max-width: 80%;
-	/* 최대 너비를 조절하세요. */
+	 최대 너비를 조절하세요. 
 	margin: 0 auto;
-	/* 가운데 정렬 */
+	 가운데 정렬 
 }
 
 .product {
 	flex-basis: calc(20% - 20px);
-	/* 가로로 4개씩 배치 */
+	 가로로 4개씩 배치 
 	margin: 10px;
 	border: 1px solid #ccc;
 	padding: 10px;
 	text-align: center;
 	cursor: pointer;
-	/* 마우스 커서를 포인터로 변경하여 클릭 가능하게 함 */
-}
+	 마우스 커서를 포인터로 변경하여 클릭 가능하게 함 
+}*/

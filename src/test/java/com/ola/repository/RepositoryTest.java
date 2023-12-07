@@ -108,13 +108,13 @@ public class RepositoryTest {
 		});
 	}
 	
-	@Disabled
+	
 	@Test
 	public void testProduct() {
-		IntStream.rangeClosed(1, 300).forEach(i -> {
+		IntStream.rangeClosed(1, 5).forEach(i -> {
 			Product product = Product.builder()
 					.productName("임시상품" + i)
-					.prodCategory(1)
+					.prodCategory(4)
 					.price(30000L)
 					.prodSize("XL")
 					.salesQuantity(0L)
