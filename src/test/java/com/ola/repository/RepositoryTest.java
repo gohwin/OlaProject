@@ -141,22 +141,21 @@ public class RepositoryTest {
 	@Disabled
 	@Test
 	public void testBasket() {
-		Product product = prodRepo.findById(301L).get();
-		Member member = memberRepo.findById("member").get();
-		IntStream.rangeClosed(1, 10).forEach(i -> {
-			Basket basket = Basket.builder()
-					.product(product)
-					.quantity(1)
-					.member(member)
-					.build();
-			
-			basketRepo.save(basket);
-			Basket basket2 = Basket.builder()
-					.product(product)
-					.quantity(3)
-					.member(member)
-					.build();
-			basketRepo.save(basket2);
-		});
+	    Product product = prodRepo.findById(301L).get();
+	    Member member = memberRepo.findById("member").get();
+	    
+	    IntStream.rangeClosed(1, 10).forEach(i -> {
+	        Basket basket = Basket.builder()
+	            .member(member)
+	            .build();
+
+	        basket.getProducts().add(product); // 상품과 수량을 추가합니다
+	        basket.addProduct(product.getProductNo(), 1); // 상품과 수량을 추가합니다
+	        
+	        basketRepo.save(basket);
+	    });
 	}
+
+
+
 }

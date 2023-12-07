@@ -2,6 +2,7 @@ package com.ola.controller;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -68,10 +69,15 @@ public class MyPageController {
 	
 	@GetMapping("/basket")
 	public String basketView(Model model, @AuthenticationPrincipal SecurityUser principal) {
-		Member member = principal.getMember();
-		List<Basket> basketList = basketRepo.findByUser(member);
-		
-		model.addAttribute("basketList", basketList);
-		return "mypage/basket";
+	    Member member = principal.getMember();
+	    List<Basket> basketList = basketRepo.findByUser(member);
+
+	    // EAGER 로딩을 사용하므로, Hibernate.initialize 호출은 더 이상 필요 없음
+	    model.addAttribute("basketList", basketList);
+	    return "mypage/basket";
 	}
+
+
+
+
 }
