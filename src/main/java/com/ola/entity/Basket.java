@@ -1,17 +1,15 @@
 package com.ola.entity;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,19 +17,34 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 public class Basket {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long basketId;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "product_no")
-    private Product product;
-    
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private int quantity;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "basket_product",
+        joinColumns = @JoinColumn(name = "basket_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_no")
+    )
+    private Set<Product> products = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(
+        name = "basket_product_quantity",
+        joinColumns = @JoinColumn(name = "basket_id")
+    )
+    @MapKeyColumn(name = "product_no")
+    @Column(name = "quantity")
+    private Map<Long, Integer> productQuantityMap = new HashMap<>();
+    
+    public void addProduct(Long productId, int quantity) {
+        this.productQuantityMap.put(productId, quantity);
+    }
 
 }
+

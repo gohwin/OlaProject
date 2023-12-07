@@ -16,12 +16,19 @@
         </thead>
         <tbody>
             <!-- Iterate through the basketList -->
-            <tr th:each="basketItem : ${basketList}">
-                <!-- Display basket item information -->
-                <td th:text="${basketItem.product.productName}"></td>
-                <td th:text="${basketItem.quantity}"></td>
-                <td th:text="${basketItem.product.price}"></td>
-            </tr>
+            <th:block th:each="basket : ${basketList}">
+                <!-- Iterate through the products in the basket -->
+                <th:block th:each="product : ${basket.products}">
+                    <tr>
+                        <td th:text="${product.productName}"></td>
+                        <td th:text="${basket.productQuantityMap.get(product.productNo)}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td colspan="3">
+                            <a th:href="@{/order(basketId=${basket.basketId}, productNo=${product.productNo})}" th:text="Order"></a>
+                        </td>
+                    </tr>
+                </th:block>
+            </th:block>
         </tbody>
     </table>
 </body>
