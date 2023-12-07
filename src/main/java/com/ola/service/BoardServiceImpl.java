@@ -1,6 +1,7 @@
 package com.ola.service;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -78,9 +79,22 @@ public class BoardServiceImpl implements BoardService {
 		return boardRepo.findById(tradeBoardNo).orElse(null);
 	}
 
+	@Transactional
 	@Override
 	public Community getCommunityByNo(Long communityNo) {
-		return comRepo.findById(communityNo).orElse(null);
+		Optional<Community> optionalCommunity = comRepo.findById(communityNo);
+
+		if (optionalCommunity.isPresent()) {
+			Community existingCommunity = optionalCommunity.get();
+			int newViewCount = existingCommunity.getViewCount() + 1;
+			existingCommunity.setViewCount(newViewCount);
+			comRepo.save(existingCommunity);
+
+			return existingCommunity;
+		} else {
+			// 해당하는 communityNo에 해당하는 Community가 없을 경우 처리 (예: 예외를 던지거나 다른 방식으로 처리)
+			return null;
+		}
 	}
 
 	@Override
