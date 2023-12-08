@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ola.member.service.MemberService;
 import com.ola.service.EmailService;
+import com.ola.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
 

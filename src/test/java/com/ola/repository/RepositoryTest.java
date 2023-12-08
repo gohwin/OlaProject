@@ -39,6 +39,21 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
+	@Disabled
+	@Test
+	public void member2Insert() {
+		Member member = Member.builder().name("안중근")
+				.email("jgan@eamil.com")
+				.phoneNumber("010-2222-2222")
+				.address("서울시 광진구")
+				.detailedAddress("건대2번 출구")
+				.role(Role.ROLE_MEMBER)
+				.memberId("member2")
+				.password(encoder.encode("2222"))
+				.zipNum("15314")
+				.build();
+		memberRepo.save(member);
+	}
 	
 	@Disabled
 	@Test
