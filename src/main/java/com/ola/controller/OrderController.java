@@ -188,7 +188,7 @@ public class OrderController {
 	    productsMap.put(productNo, product);
 
 	    // 모델에 주문 내역과 제품 정보 맵 추가
-	    model.addAttribute("orderDetails", orderList);
+	    model.addAttribute("order", orderList);
 	    model.addAttribute("productsMap", productsMap);
 
 	    // 주문 확인 페이지로 이동

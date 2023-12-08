@@ -19,7 +19,7 @@
             <th:block th:each="entry : ${productsMap}">
                 <tr th:if="${entry.value != null}">
                     <td th:text="${entry.value.productName}"></td>
-                    <td th:text="${orderDetails.productQuantities.get(entry.key)}"></td>
+                    <td th:text="${order.productQuantities.get(entry.key)}"></td>
                     <td th:text="${entry.value.price}"></td>
                 </tr>
             </th:block>
