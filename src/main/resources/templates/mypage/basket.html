@@ -16,25 +16,23 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Iterate through the basketList -->
-                <th:block th:each="basket, basketStat : ${basketList}">
-                    <!-- Iterate through the products in the basket -->
-                    <th:block th:each="product, prodStat : ${basket.products}">
-                        <tr>
-                            <td th:text="${product.productName}"></td>
-                            <td>
-                                <!-- 수량 입력 필드 -->
-                                <input type="number" th:name="'quantity_' + ${basketStat.index} + '_' + ${prodStat.index}" 
-                                       th:value="${basket.productQuantityMap.get(product.productNo)}" min="1"/>
-                            </td>
-                            <td th:text="${product.price}"></td>
-                        </tr>
-                    </th:block>
+                <!-- Iterate through the products in the basket -->
+                <th:block th:each="product : ${basket.products}">
+                    <tr>
+                        <td th:text="${product.productName}"></td>
+                        <td>
+                            <!-- 수량 입력 필드 -->
+                            <input type="number" th:name="'quantity_' + ${product.productNo}" 
+                                   th:value="${basket.productQuantityMap[product.productNo]}" min="1"/>
+                        </td>
+                        <td th:text="${product.price}"></td>
+                    </tr>
                 </th:block>
             </tbody>
         </table>
-        <!-- 주문하기 버튼 -->
-        <button type="submit">주문하기</button>
+        <!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
+        <input type="hidden" name="basketId" th:value="${basket.basketId}" />
+        <button type="submit" th:if="${!basket.products.isEmpty()}">주문하기</button>
     </form>
 </body>
 </html>

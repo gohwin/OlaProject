@@ -71,13 +71,22 @@ public class MyPageController {
 	
 	@GetMapping("/basket")
 	public String basketView(Model model, @AuthenticationPrincipal SecurityUser principal) {
+	    // 현재 로그인한 사용자의 Member 객체를 가져옵니다.
 	    Member member = principal.getMember();
-	    List<Basket> basketList = basketRepo.findByUser(member);
 
-	    // EAGER 로딩을 사용하므로, Hibernate.initialize 호출은 더 이상 필요 없음
-	    model.addAttribute("basketList", basketList);
+	    // 사용자와 연관된 단일 Basket 객체를 조회합니다.
+	    // findByMember 메소드는 Member 객체를 받아 해당 Member와 연관된 Basket 객체를 반환합니다.
+	    // 실제 구현에 따라 메소드 이름과 로직이 다를 수 있습니다.
+	    Basket basket = basketRepo.findByUser(member);
+
+	    // 조회된 Basket 객체를 모델에 추가합니다.
+	    model.addAttribute("basket", basket);
+
+	    // 장바구니 페이지의 Thymeleaf 템플릿 파일명을 반환합니다.
 	    return "mypage/basket";
 	}
+
+
 
 
 

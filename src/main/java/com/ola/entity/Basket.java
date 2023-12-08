@@ -21,7 +21,7 @@ public class Basket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long basketId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -43,10 +43,8 @@ public class Basket {
     @Column(name = "quantity")
     @Builder.Default
     private Map<Long, Integer> productQuantityMap = new HashMap<>();
-    
+
     public void addProduct(Long productId, int quantity) {
         this.productQuantityMap.put(productId, quantity);
     }
-
 }
-
