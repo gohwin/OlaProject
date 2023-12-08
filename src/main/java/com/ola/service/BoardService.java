@@ -21,7 +21,7 @@ public interface BoardService {
 
 	void deleteBoard(TradeBoard board);
 
-	Community getCommunityByNo(Long communityNo);
+	Community getCommunityWithRepliesByNo(Long communityNo);
 
 	TradeBoard getTradeBoardById(Long tradeBoardNo);
 

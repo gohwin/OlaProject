@@ -81,18 +81,21 @@ public class BoardServiceImpl implements BoardService {
 
 	@Transactional
 	@Override
-	public Community getCommunityByNo(Long communityNo) {
+	public Community getCommunityWithRepliesByNo(Long communityNo) {
 		Optional<Community> optionalCommunity = comRepo.findById(communityNo);
 
 		if (optionalCommunity.isPresent()) {
 			Community existingCommunity = optionalCommunity.get();
 			int newViewCount = existingCommunity.getViewCount() + 1;
 			existingCommunity.setViewCount(newViewCount);
+
+			// 댓글 정보를 함께 로드 (지연 로딩)
+			existingCommunity.getReplies().size();
+
 			comRepo.save(existingCommunity);
 
 			return existingCommunity;
 		} else {
-			// 해당하는 communityNo에 해당하는 Community가 없을 경우 처리 (예: 예외를 던지거나 다른 방식으로 처리)
 			return null;
 		}
 	}
