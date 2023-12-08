@@ -158,6 +158,7 @@ public class RepositoryTest {
 	@Test
 	public void testBasket() {
 	    Product product = prodRepo.findById(301L).get();
+	    Product product2 = prodRepo.findById(30L).get();
 	    Member member = memberRepo.findById("member").get();
 	    
 	    IntStream.rangeClosed(1, 10).forEach(i -> {
@@ -166,7 +167,9 @@ public class RepositoryTest {
 	            .build();
 
 	        basket.getProducts().add(product); // 상품과 수량을 추가합니다
+	        basket.getProducts().add(product2); // 상품과 수량을 추가합니다
 	        basket.addProduct(product.getProductNo(), 1); // 상품과 수량을 추가합니다
+	        basket.addProduct(product2.getProductNo(), 3); // 상품과 수량을 추가합니다
 	        
 	        basketRepo.save(basket);
 	    });
