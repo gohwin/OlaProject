@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/editBoard.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header th:include="header :: body"></header>
+
+    <h2>게시글 수정</h2>
+
+    <form th:action="@{/editCommunity/save}" method="post">
+        <input type="hidden" name="communityNo" th:value="${community.communityNo}" />
+        
+        <div>
+            <label for="title">게시글 제목:</label>
+            <input type="text" id="title" name="newTitle" th:value="${community.title}" />
+        </div>
+
+        <div>
+            <label for="content">게시글 내용:</label>
+            <textarea id="content" name="newContent" th:text="${community.content}"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">수정 완료</button>
+            <button type="button" onclick="goBack()">취소</button>
+        </div>
+    </form>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
