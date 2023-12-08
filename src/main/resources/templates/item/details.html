@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="/css/main.css" rel="stylesheet" />
 	<link href="/css/product.css" rel="stylesheet" />
-
 </head>
 
 <body>
@@ -15,8 +14,11 @@
 	<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" class="product-image">
 	<h3 class="product-name" th:text="${product.productName}"></h3>
 	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
-
-
+	
+	<!-- 장바구니에 담기 버튼 추가 -->
+	<form th:action="'/insertBasket?productNo=' + ${product.productNo}" method="post">
+		<button type="submit">장바구니에 담기</button>
+	</form>
 
 </body>
 

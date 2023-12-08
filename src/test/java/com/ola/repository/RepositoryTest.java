@@ -153,8 +153,8 @@ public class RepositoryTest {
 
 	        basket.getProducts().add(product); // 상품과 수량을 추가합니다
 	        basket.getProducts().add(product2); // 상품과 수량을 추가합니다
-	        basket.addProduct(product.getProductNo(), 1); // 상품과 수량을 추가합니다
-	        basket.addProduct(product2.getProductNo(), 3); // 상품과 수량을 추가합니다
+	        basket.addProduct(product, 1); // 상품과 수량을 추가합니다
+	        basket.addProduct(product2, 3); // 상품과 수량을 추가합니다
 	        
 	        basketRepo.save(basket);
 	    });

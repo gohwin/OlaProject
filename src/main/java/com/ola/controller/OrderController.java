@@ -107,5 +107,47 @@ public class OrderController {
 		// orderDetails.html로 이동
 		return "order/orderDetail"; // 주문 세부 정보를 표시할 Thymeleaf 템플릿 파일명
 	}
+	
+	@PostMapping("/insertBasket")
+	public String insertBasketAction(
+	        @RequestParam("productNo") Long productNo,
+	        @AuthenticationPrincipal SecurityUser principal,
+	        Model model) {
+	    int quantity = 1;
+	    // 현재 로그인한 사용자의 Member 객체를 가져옵니다.
+	    Member member = principal.getMember();
+
+	    // 사용자와 연관된 Basket 객체를 조회합니다.
+	    Basket basket = basketRepo.findByUser(member);
+
+	    // 장바구니에 상품을 추가합니다.
+	    if (basket != null) {
+	        // 상품을 Product 테이블에서 조회합니다.
+	        Product product = prodRepo.findById(productNo).orElse(null);
+
+	        if (product != null) {
+	            // 상품이 존재하면 장바구니에 추가합니다.
+	            basket.addProduct(product, quantity);
+	            basketRepo.save(basket);
+	        }
+	    } else {
+	        // 사용자와 연관된 Basket 객체가 없는 경우, 새로운 Basket 객체를 생성합니다.
+	        basket = Basket.builder().member(member).build();
+	        basketRepo.save(basket);
+
+	        // 상품을 Product 테이블에서 조회합니다.
+	        Product product = prodRepo.findById(productNo).orElse(null);
+
+	        if (product != null) {
+	            // 상품이 존재하면 장바구니에 추가합니다.
+	            basket.addProduct(product, quantity);
+	            basketRepo.save(basket);
+	        }
+	    }
+	    model.addAttribute("basket", basket);
+	    // 장바구니 페이지로 리다이렉트합니다.
+	    return "redirect:/mypage/basket";
+	}
+
 
 }
