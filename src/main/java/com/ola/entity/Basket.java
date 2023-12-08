@@ -44,7 +44,10 @@ public class Basket {
     @Builder.Default
     private Map<Long, Integer> productQuantityMap = new HashMap<>();
 
-    public void addProduct(Long productId, int quantity) {
-        this.productQuantityMap.put(productId, quantity);
+    public void addProduct(Product product, int quantity) {
+        // products 세트에 제품 추가
+        this.products.add(product);
+        // productQuantityMap에 수량 추가
+        this.productQuantityMap.put(product.getProductNo(), quantity);
     }
 }
