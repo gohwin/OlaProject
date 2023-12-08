@@ -151,4 +151,21 @@ public class BoardController {
 
 		return "redirect:getBoardList";
 	}
+
+	@PostMapping("/likeCommunity")
+	public String likeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.likeCommunity(communityNo, memberId);
+
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
+
+	@PostMapping("/unlikeCommunity")
+	public String unlikeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.unlikeCommunity(communityNo, memberId);
+
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
+
 }

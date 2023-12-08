@@ -10,6 +10,19 @@
 <body>
 	<header th:include="header :: body"></header>
 
+	<!-- 좋아요 버튼 -->
+	<form th:action="@{/likeCommunity}" method="post">
+		<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
+		<button type="submit">좋아요</button>
+	</form>
+
+	<!-- 좋아요 취소 버튼 -->
+	<form th:action="@{/unlikeCommunity}" method="post">
+		<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
+		<button type="submit">좋아요 취소</button>
+	</form>
+
+
 	<table>
 		<tr>
 			<th>게시글 제목</th>
@@ -37,8 +50,11 @@
 
 	<h2>댓글</h2>
 	<div th:each="reply : ${community.replies}">
-		<p th:text="${reply.content}"></p>
-		<p>작성자: <span th:text="${reply.member.name}"></span></p>
+		<p>
+			<span th:text="${reply.member.name}"></span>
+			: <span th:text="${reply.content}"></span>
+			<span th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+		</p>
 	</div>
 
 	<h3>댓글 작성</h3>

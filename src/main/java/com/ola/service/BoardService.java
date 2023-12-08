@@ -29,4 +29,7 @@ public interface BoardService {
 
 	Page<Community> communityBoardList(Pageable pageable);
 
+	void likeCommunity(Long communityNo, String memberId);
+
+	void unlikeCommunity(Long communityNo, String memberId);
 }

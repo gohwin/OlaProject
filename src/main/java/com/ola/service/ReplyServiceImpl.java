@@ -54,7 +54,16 @@ public class ReplyServiceImpl implements ReplyService {
 			reply.setRegDate(regDate);
 
 			replyRepository.save(reply);
+			updateCommentCount(communityNo);
 		}
 	}
 
+	private void updateCommentCount(Long communityNo) {
+	    Community community = communityRepository.findById(communityNo).orElse(null);
+	    if (community != null) {
+	        int newCommentCount = community.getReplies().size();
+	        community.setCommentCount(newCommentCount);
+	        communityRepository.save(community);
+	    }
+	}
 }
