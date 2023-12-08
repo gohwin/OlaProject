@@ -35,7 +35,6 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
-
 	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication,
 			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
@@ -90,7 +89,7 @@ public class BoardController {
 	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
 		// 조회수 증가를 위해 서비스 계층의 메소드를 호출
-		Community community = boardService.getCommunityByNo(communityNo);
+		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
 		if (community != null) {
 			model.addAttribute("community", community);
@@ -152,4 +151,21 @@ public class BoardController {
 
 		return "redirect:getBoardList";
 	}
+
+	@PostMapping("/likeCommunity")
+	public String likeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.likeCommunity(communityNo, memberId);
+
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
+
+	@PostMapping("/unlikeCommunity")
+	public String unlikeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.unlikeCommunity(communityNo, memberId);
+
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
+
 }

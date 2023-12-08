@@ -21,7 +21,7 @@ public interface BoardService {
 
 	void deleteBoard(TradeBoard board);
 
-	Community getCommunityByNo(Long communityNo);
+	Community getCommunityWithRepliesByNo(Long communityNo);
 
 	TradeBoard getTradeBoardById(Long tradeBoardNo);
 
@@ -29,4 +29,7 @@ public interface BoardService {
 
 	Page<Community> communityBoardList(Pageable pageable);
 
+	void likeCommunity(Long communityNo, String memberId);
+
+	void unlikeCommunity(Long communityNo, String memberId);
 }

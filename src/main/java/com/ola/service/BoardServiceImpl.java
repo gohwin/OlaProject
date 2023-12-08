@@ -1,7 +1,10 @@
 package com.ola.service;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,8 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ola.entity.Community;
+import com.ola.entity.Member;
+import com.ola.entity.Reply;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.CommunityRepository;
+import com.ola.repository.MemberRepository;
 import com.ola.repository.TradeBoardRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,7 +28,10 @@ public class BoardServiceImpl implements BoardService {
 	private TradeBoardRepository boardRepo;
 	@Autowired
 	private CommunityRepository comRepo;
-
+	
+	@Autowired
+	private MemberRepository memberRepo;
+	
 	@Override
 	@Transactional
 	public void insertBoard(TradeBoard board) {
@@ -81,18 +90,25 @@ public class BoardServiceImpl implements BoardService {
 
 	@Transactional
 	@Override
-	public Community getCommunityByNo(Long communityNo) {
+	public Community getCommunityWithRepliesByNo(Long communityNo) {
 		Optional<Community> optionalCommunity = comRepo.findById(communityNo);
 
 		if (optionalCommunity.isPresent()) {
 			Community existingCommunity = optionalCommunity.get();
+
 			int newViewCount = existingCommunity.getViewCount() + 1;
 			existingCommunity.setViewCount(newViewCount);
+
+			// 댓글 정보를 함께 로드 (지연 로딩)
+			List<Reply> sortedReplies = existingCommunity.getReplies().stream()
+					.sorted(Comparator.comparing(Reply::getRegDate).reversed()) // 댓글을 regDate 기준으로 내림차순 정렬
+					.collect(Collectors.toList());
+			existingCommunity.setReplies(sortedReplies);
+
 			comRepo.save(existingCommunity);
 
 			return existingCommunity;
 		} else {
-			// 해당하는 communityNo에 해당하는 Community가 없을 경우 처리 (예: 예외를 던지거나 다른 방식으로 처리)
 			return null;
 		}
 	}
@@ -107,6 +123,36 @@ public class BoardServiceImpl implements BoardService {
 	public Page<Community> communityBoardList(Pageable pageable) {
 
 		return comRepo.findAll(pageable);
+	}
+
+	public void likeCommunity(Long communityNo, String memberId) {
+		Community community = comRepo.findById(communityNo).orElse(null);
+		Member member = memberRepo.findById(memberId).orElse(null);
+
+		if (community != null && member != null) {
+			// Check if the member has already liked the community
+			if (!community.getLikedByMembers().contains(member)) {
+				int currentLikeCount = community.getLikeCount();
+				community.setLikeCount(currentLikeCount + 1);
+				community.getLikedByMembers().add(member);
+				comRepo.save(community);
+			}
+		}
+	}
+
+	public void unlikeCommunity(Long communityNo, String memberId) {
+		Community community = comRepo.findById(communityNo).orElse(null);
+		Member member = memberRepo.findById(memberId).orElse(null);
+
+		if (community != null && member != null) {
+			// Check if the member has liked the community
+			if (community.getLikedByMembers().contains(member)) {
+				int currentLikeCount = community.getLikeCount();
+				community.setLikeCount(currentLikeCount - 1);
+				community.getLikedByMembers().remove(member);
+				comRepo.save(community);
+			}
+		}
 	}
 
 //	@Override

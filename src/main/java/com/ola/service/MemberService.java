@@ -1,4 +1,4 @@
-package com.ola.member.service;
+package com.ola.service;
 
 public interface MemberService {
 	
