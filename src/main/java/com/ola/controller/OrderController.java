@@ -1,9 +1,7 @@
 package com.ola.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,7 +37,7 @@ public class OrderController {
 	@Autowired
 	private OrderListRepository orderRepo;
 
-	@GetMapping("/order")
+	@GetMapping("/basketOrder")
 	public String orderView(@RequestParam("basketId") Long basketId, @RequestParam("productNo") Long productNo,
 			Model model) {
 		// basketId를 사용하여 장바구니 정보를 조회합니다.
@@ -53,10 +51,10 @@ public class OrderController {
 		model.addAttribute("product", product);
 
 		// 주문 페이지로 이동합니다.
-		return "order/order"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
+		return "order/basketOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
 	}
 
-	@PostMapping("/order")
+	@PostMapping("/basketOrder")
 	@Transactional
 	public String submitOrder(@RequestParam Map<String, String> allParams,
 			@RequestParam(name = "basketId") Long basketId, Model model) {
@@ -107,47 +105,94 @@ public class OrderController {
 		// orderDetails.html로 이동
 		return "order/orderDetail"; // 주문 세부 정보를 표시할 Thymeleaf 템플릿 파일명
 	}
-	
+
 	@PostMapping("/insertBasket")
-	public String insertBasketAction(
-	        @RequestParam("productNo") Long productNo,
-	        @AuthenticationPrincipal SecurityUser principal,
-	        Model model) {
-	    int quantity = 1;
-	    // 현재 로그인한 사용자의 Member 객체를 가져옵니다.
-	    Member member = principal.getMember();
+	public String insertBasketAction(@RequestParam("productNo") Long productNo,
+			@AuthenticationPrincipal SecurityUser principal, Model model) {
+		int quantity = 1;
+		// 현재 로그인한 사용자의 Member 객체를 가져옵니다.
+		Member member = principal.getMember();
 
-	    // 사용자와 연관된 Basket 객체를 조회합니다.
-	    Basket basket = basketRepo.findByUser(member);
+		// 사용자와 연관된 Basket 객체를 조회합니다.
+		Basket basket = basketRepo.findByUser(member);
 
-	    // 장바구니에 상품을 추가합니다.
-	    if (basket != null) {
-	        // 상품을 Product 테이블에서 조회합니다.
-	        Product product = prodRepo.findById(productNo).orElse(null);
+		// 장바구니에 상품을 추가합니다.
+		if (basket != null) {
+			// 상품을 Product 테이블에서 조회합니다.
+			Product product = prodRepo.findById(productNo).orElse(null);
 
-	        if (product != null) {
-	            // 상품이 존재하면 장바구니에 추가합니다.
-	            basket.addProduct(product, quantity);
-	            basketRepo.save(basket);
-	        }
-	    } else {
-	        // 사용자와 연관된 Basket 객체가 없는 경우, 새로운 Basket 객체를 생성합니다.
-	        basket = Basket.builder().member(member).build();
-	        basketRepo.save(basket);
+			if (product != null) {
+				// 상품이 존재하면 장바구니에 추가합니다.
+				basket.addProduct(product, quantity);
+				basketRepo.save(basket);
+			}
+		} else {
+			// 사용자와 연관된 Basket 객체가 없는 경우, 새로운 Basket 객체를 생성합니다.
+			basket = Basket.builder().member(member).build();
+			basketRepo.save(basket);
 
-	        // 상품을 Product 테이블에서 조회합니다.
-	        Product product = prodRepo.findById(productNo).orElse(null);
+			// 상품을 Product 테이블에서 조회합니다.
+			Product product = prodRepo.findById(productNo).orElse(null);
 
-	        if (product != null) {
-	            // 상품이 존재하면 장바구니에 추가합니다.
-	            basket.addProduct(product, quantity);
-	            basketRepo.save(basket);
-	        }
-	    }
-	    model.addAttribute("basket", basket);
-	    // 장바구니 페이지로 리다이렉트합니다.
-	    return "redirect:/mypage/basket";
+			if (product != null) {
+				// 상품이 존재하면 장바구니에 추가합니다.
+				basket.addProduct(product, quantity);
+				basketRepo.save(basket);
+			}
+		}
+		model.addAttribute("basket", basket);
+		// 장바구니 페이지로 리다이렉트합니다.
+		return "redirect:/mypage/basket";
 	}
 
+	@GetMapping("/directOrderView")
+	public String directOrder(@RequestParam("productNo") Long productNo, Model model) {
+	    Product product = prodRepo.findById(productNo)
+	                     .orElseThrow(() -> new IllegalArgumentException("Invalid product No:" + productNo));
+
+	    model.addAttribute("product", product);
+
+	    return "order/directOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
+	}
+
+
+	@PostMapping("/directOrder")
+	@Transactional
+	public String submitOrder(@RequestParam("productNo") Long productNo, @RequestParam("quantity") int quantity,
+	        @AuthenticationPrincipal SecurityUser principal,
+	        Model model) {
+
+	    Member member = principal.getMember();
+
+	    // 주문 목록 생성
+	    OrderList orderList = new OrderList();
+	    orderList.setMember(member);
+	    orderList.setOrderDate(new Date());
+
+	    // 제품 번호와 수량을 맵에 저장합니다.
+	    Map<Long, Integer> productQuantities = new HashMap<>();
+	    productQuantities.put(productNo, quantity);
+	    orderList.setProductQuantities(productQuantities);
+
+	    // 주문 저장
+	    orderRepo.save(orderList);
+
+	    // 제품 재고 감소
+	    Product product = prodRepo.findById(productNo)
+	        .orElseThrow(() -> new RuntimeException("Product not found"));
+	    product.reduceInventory(quantity);
+	    prodRepo.save(product);
+
+	    // 주문된 제품 정보를 포함하는 맵을 생성
+	    Map<Long, Product> productsMap = new HashMap<>();
+	    productsMap.put(productNo, product);
+
+	    // 모델에 주문 내역과 제품 정보 맵 추가
+	    model.addAttribute("orderDetails", orderList);
+	    model.addAttribute("productsMap", productsMap);
+
+	    // 주문 확인 페이지로 이동
+	    return "order/orderConfirm";
+	}
 
 }
