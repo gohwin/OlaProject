@@ -28,10 +28,10 @@ public class BoardServiceImpl implements BoardService {
 	private TradeBoardRepository boardRepo;
 	@Autowired
 	private CommunityRepository comRepo;
-	
+
 	@Autowired
 	private MemberRepository memberRepo;
-	
+
 	@Override
 	@Transactional
 	public void insertBoard(TradeBoard board) {
@@ -58,29 +58,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateBoard(Community commu) {
-		Community newBoard = comRepo.findById(commu.getCommunityNo()).get();
-
-		newBoard.setTitle(commu.getTitle());
-		newBoard.setContent(commu.getContent());
-		newBoard.setViewCount(commu.getViewCount());
-		newBoard.setCommentCount(commu.getCommentCount());
-		newBoard.setLikeCount(commu.getLikeCount());
-		newBoard.setRegDate(new Date());
-
-		comRepo.save(newBoard);
-	}
-
-	@Override
 	public void deleteBoard(TradeBoard board) {
 
 		boardRepo.deleteById(board.getTradeBoardNo());
-	}
-
-	@Override
-	public void deleteBoard(Community commu) {
-
-		comRepo.deleteById(commu.getCommunityNo());
 	}
 
 	@Override
@@ -155,6 +135,22 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	// 게시글 삭제 서비스 메소드
+	public void deleteCommunity(Long communityNo) {
+		comRepo.deleteById(communityNo);
+	}
+
+	@Override
+	public Community getCommunityById(Long communityNo) {
+		return comRepo.findById(communityNo).orElse(null);
+
+	}
+	
+	@Transactional
+	@Override
+	public void saveCommunity(Community community) {
+		comRepo.save(community);
+	}
 //	@Override
 //	public Page<TradeBoard> getBoardList(Pageable pageable, Search search) {
 //		BooleanBuilder builder = new BooleanBuilder();
