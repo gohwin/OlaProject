@@ -14,11 +14,18 @@
 	<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" class="product-image">
 	<h3 class="product-name" th:text="${product.productName}"></h3>
 	<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
-	
-	<!-- 장바구니에 담기 버튼 추가 -->
-	<form th:action="'/insertBasket?productNo=' + ${product.productNo}" method="post">
+
+	<!-- 장바구니에 담기 버튼 -->
+	<form th:action="@{/insertBasket(productNo=${product.productNo})}" method="post">
 		<button type="submit">장바구니에 담기</button>
 	</form>
+
+	<!-- 주문하기 버튼 -->
+	<form th:action="@{/directOrderView}" method="get">
+		<input type="hidden" name="productNo" th:value="${product.productNo}" />
+		<button type="submit">주문하기</button>
+	</form>
+
 
 </body>
 

@@ -14,7 +14,7 @@
     </div>
 
     <div th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
-        <form th:action="@{/order}" method="post">
+        <form th:action="@{/basketOrder}" method="post">
             <table>
                 <thead>
                     <tr>
