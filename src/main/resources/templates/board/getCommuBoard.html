@@ -53,7 +53,7 @@
 	<h3>댓글 작성</h3>
 	<form th:action="@{/addReply}" method="post">
 		<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-		<textarea name="content"></textarea>
+		<textarea name="replycontent"></textarea>
 		<button type="submit">댓글 작성</button>
 	</form>
 
