@@ -10,12 +10,14 @@ import com.ola.entity.Community;
 import com.ola.entity.Reply;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
-    @Query("SELECT c FROM Community c WHERE c.member.memberId = 'member'")
-    Page<Community> findByMemberWrite(Pageable pageable);
+	@Query("SELECT c FROM Community c WHERE c.member.memberId = 'member'")
+	Page<Community> findByMemberWrite(Pageable pageable);
 
-    @Query("SELECT c FROM Community c WHERE c.member.memberId = 'admin'")
-    List<Community> findByAdminWrite();
-    
-    List<Reply> findByCommunityNo(Long communityNo);
+	@Query("SELECT c FROM Community c WHERE c.member.memberId = 'admin'")
+	List<Community> findByAdminWrite();
+
+	List<Reply> findByCommunityNo(Long communityNo);
+
+	Page<Community> findByTitleContaining(String search, Pageable pageable);
+
 }
-
