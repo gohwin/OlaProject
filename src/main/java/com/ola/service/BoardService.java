@@ -16,7 +16,7 @@ public interface BoardService {
 
 	Community getCommunityById(Long communityNo);
 
-	void insertBoard(TradeBoard board);
+	void insertTradeBoard(TradeBoard board);
 
 	void updateBoard(TradeBoard board);
 
@@ -34,7 +34,7 @@ public interface BoardService {
 
 	void unlikeCommunity(Long communityNo, String memberId);
 
-	Page<Community> getCommunityBySearch(String search, Pageable pageable);
+	Page<Community> getBoardByTitleOrAuthor(String search, Pageable pageable);
 
-	Page<TradeBoard> getTradeBoardBySearch(String search, Pageable pageable);
+	Page<TradeBoard> getTradeBoardByTitleOrAuthor(String search, Pageable pageable);
 }

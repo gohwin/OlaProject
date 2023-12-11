@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
@@ -50,12 +49,12 @@ public class BoardController {
 		model.addAttribute("adminWrite", adminWrite);
 
 		Page<TradeBoard> tradeBoards;
+
 		if (search != null && !search.isEmpty()) {
-			// 검색을 수행한 경우
-			tradeBoards = boardService.getTradeBoardBySearch(search, pageable);
+			// 제목 또는 작성자로 검색
+			tradeBoards = boardService.getTradeBoardByTitleOrAuthor(search, pageable);
 		} else {
-			// 검색을 수행하지 않은 경우
-			tradeBoards = boardRepo.findByMemberWrite(pageable);
+			tradeBoards = boardRepo.findAll(pageable);
 		}
 
 		model.addAttribute("tradeBoards", tradeBoards);
@@ -68,7 +67,7 @@ public class BoardController {
 
 	@GetMapping("/communityBoardList")
 	public String communityBoardList(Model model, Authentication authentication,
-			@RequestParam(required = false) String search,
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -80,7 +79,7 @@ public class BoardController {
 
 		Page<Community> communities;
 		if (search != null && !search.isEmpty()) {
-			communities = boardService.getCommunityBySearch(search, pageable);
+			communities = boardService.getBoardByTitleOrAuthor(search, pageable);
 		} else {
 			communities = comRepo.findAll(pageable); // 검색값이 널일 때는 전체 리스트 조회
 		}
@@ -203,7 +202,7 @@ public class BoardController {
 
 		board.setMember(principal.getMember());
 
-		boardService.insertBoard(board);
+		boardService.insertTradeBoard(board);
 
 		return "redirect:/tradeBoardList";
 	}

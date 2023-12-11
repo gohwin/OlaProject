@@ -34,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public void insertBoard(TradeBoard board) {
+	public void insertTradeBoard(TradeBoard board) {
 
 		boardRepo.save(board);
 	}
@@ -151,12 +151,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Page<Community> getCommunityBySearch(String search, Pageable pageable) {
-		return comRepo.findByTitleContaining(search, pageable);
+	public Page<Community> getBoardByTitleOrAuthor(String search, Pageable pageable) {
+		return comRepo.findByTitleOrMemberNameContaining(search, search, pageable);
 	}
 
 	@Override
-	public Page<TradeBoard> getTradeBoardBySearch(String search, Pageable pageable) {
-		return boardRepo.findByTitleContaining(search, pageable);
+	public Page<TradeBoard> getTradeBoardByTitleOrAuthor(String search, Pageable pageable) {
+		return boardRepo.findByTitleContainingOrMemberNameContaining(search, search, pageable);
 	}
 }
