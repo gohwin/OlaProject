@@ -1,35 +1,49 @@
-<!-- orderHistory.html -->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/mypage.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>My Orders</title>
 </head>
-
 <body>
-	<header th:include="header :: body"></header>
-
-	<h1>주문 내역</h1>
-
-	<table>
-		<tr>
-			<th>주문번호</th>
-			<th>상품명</th>
-			<th>주문 수량</th>
-			<th>주문 일시</th>
-		</tr>
-		<tr th:each="order : ${orderHistory}">
-			<td th:text="${order.orderNo}"></td>
-			<td th:text="${order.product.productName}"></td>
-			<td th:text="${order.orderQuantity}"></td>
-			<td th:text="${order.orderDate}"></td>
-		</tr>
-	</table>
-	<a th:href="@{/mypage/mypages}" class="btn">마이페이지로 돌아가기</a>
-	<th:block th:include="footer.html"></th:block>
+    <header th:insert="header :: body"></header>
+    <h1>My Orders</h1>
+    <div th:if="${myOrders != null and not myOrders.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order No</th>
+                    <th>Date</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="order : ${myOrders}">
+                    <tr>
+                        <td th:text="${order.orderNo}"></td>
+                        <td th:text="${order.orderDate}"></td>
+                        <td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${myOrders == null or myOrders.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order No</th>
+                    <th>Date</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>No orders found.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
-
 </html>

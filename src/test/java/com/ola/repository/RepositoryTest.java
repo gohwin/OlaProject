@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ola.entity.Basket;
 import com.ola.entity.Community;
 import com.ola.entity.Member;
 import com.ola.entity.Product;
@@ -32,8 +34,26 @@ public class RepositoryTest {
 	private ProductRepository prodRepo;
 	
 	@Autowired
+	private BasketRepository basketRepo;
+	
+	@Autowired
 	private PasswordEncoder encoder;
 	
+	@Disabled
+	@Test
+	public void member2Insert() {
+		Member member = Member.builder().name("안중근")
+				.email("jgan@eamil.com")
+				.phoneNumber("010-2222-2222")
+				.address("서울시 광진구")
+				.detailedAddress("건대2번 출구")
+				.role(Role.ROLE_MEMBER)
+				.memberId("member2")
+				.password(encoder.encode("2222"))
+				.zipNum("15314")
+				.build();
+		memberRepo.save(member);
+	}
 	
 	@Disabled
 	@Test
@@ -122,5 +142,39 @@ public class RepositoryTest {
 					.build();
 			prodRepo.save(product);
 		});
+		
+		Product product2 = Product.builder()
+				.productName("테스트")
+				.prodCategory(3)
+				.price(15000L)
+				.prodSize("XL")
+				.salesQuantity(0L)
+				.inventory(1000)
+				.build();
+		prodRepo.save(product2);
 	}
+	
+	@Disabled
+	@Test
+	public void testBasket() {
+	    Product product = prodRepo.findById(301L).get();
+	    Product product2 = prodRepo.findById(30L).get();
+	    Member member = memberRepo.findById("member").get();
+	    
+	    IntStream.rangeClosed(1, 10).forEach(i -> {
+	        Basket basket = Basket.builder()
+	            .member(member)
+	            .build();
+
+	        basket.getProducts().add(product); // 상품과 수량을 추가합니다
+	        basket.getProducts().add(product2); // 상품과 수량을 추가합니다
+	        basket.addProduct(product, 1); // 상품과 수량을 추가합니다
+	        basket.addProduct(product2, 3); // 상품과 수량을 추가합니다
+	        
+	        basketRepo.save(basket);
+	    });
+	}
+
+
+
 }

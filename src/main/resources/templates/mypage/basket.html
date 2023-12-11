@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/mypage.css" rel="stylesheet" />
+    <title>Basket List</title>
+</head>
+<body>
+<header th:include="header :: body"></header>
+    <h1>Basket List</h1>
+    <div th:if="${basket == null || basket.products == null || basket.products.isEmpty()}">
+        <p>장바구니에 제품이 없습니다.</p>
+    </div>
+
+    <div th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
+        <form th:action="@{/basketOrder}" method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate through the products in the basket -->
+                    <th:block th:each="product : ${basket.products}">
+                        <tr>
+                            <td th:text="${product.productName}"></td>
+                            <td>
+                                <!-- 수량 입력 필드 -->
+                                <input type="number" th:name="'quantity_' + ${product.productNo}" 
+                                       th:value="${basket.productQuantityMap[product.productNo]}" min="1"/>
+                            </td>
+                            <td th:text="${product.price}"></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
+            <input type="hidden" name="basketId" th:value="${basket.basketId}" />
+            <button type="submit">주문하기</button>
+        </form>
+    </div>
+    <!-- '쇼핑하기' 버튼 추가, item/all 로 이동 -->
+    <div class="shopping-button">
+        <a th:href="@{/item/all}"><button>쇼핑하기</button></a>
+    </div>
+</body>
+</html>

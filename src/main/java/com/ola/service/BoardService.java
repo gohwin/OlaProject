@@ -4,16 +4,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ola.entity.Community;
-import com.ola.entity.Search;
 import com.ola.entity.TradeBoard;
 
 public interface BoardService {
 
 	void insertBoard(Community commu);
 
-	void updateBoard(Community commu);
+	void saveCommunity(Community community);
 
-	void deleteBoard(Community commu);
+	void deleteCommunity(Long communityNo);
+
+	Community getCommunityById(Long communityNo);
 
 	void insertBoard(TradeBoard board);
 
@@ -21,7 +22,7 @@ public interface BoardService {
 
 	void deleteBoard(TradeBoard board);
 
-	Community getCommunityByNo(Long communityNo);
+	Community getCommunityWithRepliesByNo(Long communityNo);
 
 	TradeBoard getTradeBoardById(Long tradeBoardNo);
 
@@ -29,4 +30,7 @@ public interface BoardService {
 
 	Page<Community> communityBoardList(Pageable pageable);
 
+	void likeCommunity(Long communityNo, String memberId);
+
+	void unlikeCommunity(Long communityNo, String memberId);
 }

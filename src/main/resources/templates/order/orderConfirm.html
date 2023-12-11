@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <h1>Order Confirmation</h1>
+    <h2>Order Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="entry : ${productsMap}">
+                <tr th:if="${entry.value != null}">
+                    <td th:text="${entry.value.productName}"></td>
+                    <td th:text="${order.productQuantities.get(entry.key)}"></td>
+                    <td th:text="${entry.value.price}"></td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+    <p><a th:href="@{/}">Return to Home</a></p>
+</body>
+</html>

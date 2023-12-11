@@ -10,10 +10,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +36,6 @@ public class BoardController {
 	private TradeBoardRepository boardRepo;
 	@Autowired
 	private CommunityRepository comRepo;
-
 
 	@RequestMapping("/tradeBoardList")
 	public String TradeBoardList(Model model, Authentication authentication,
@@ -90,7 +91,7 @@ public class BoardController {
 	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model) {
 		// 조회수 증가를 위해 서비스 계층의 메소드를 호출
-		Community community = boardService.getCommunityByNo(communityNo);
+		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
 		if (community != null) {
 			model.addAttribute("community", community);
@@ -110,9 +111,37 @@ public class BoardController {
 
 	}
 
-	/*
-	 * @AuthenticationPrincipal: 인증된 정보를 가지고 있는 SecurityUser 객체가 저장됨
-	 */
+	@GetMapping("/editBoard/{communityNo}")
+	public String editCommunityForm(@PathVariable Long communityNo, Model model) {
+		Community community = boardService.getCommunityById(communityNo);
+
+		if (community != null) {
+			model.addAttribute("community", community);
+			return "/board/editCommunityForm";
+		} else {
+			return "errorPage";
+		}
+	}
+
+	@PostMapping("/editCommunity/save")
+	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		Community community = boardService.getCommunityById(communityNo);
+
+		// 로그인한 사용자가 게시글 작성자인지 확인
+		if (userDetails != null && community != null
+				&& userDetails.getUsername().equals(community.getMember().getMemberId())) {
+			// 여기에서 수정 작업 수행
+			community.setTitle(newContent);
+			community.setContent(newContent);
+			boardService.saveCommunity(community);
+			return "redirect:/getCommuBoard?communityNo=" + communityNo;
+		} else {
+			// 사용자가 게시글을 수정할 권한이 없는 경우 처리
+			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
+			return "redirect:/error";
+		}
+	}
 
 	@PostMapping("/communityInsert")
 	public String communityInsertAction(@ModelAttribute Community board,
@@ -139,17 +168,37 @@ public class BoardController {
 		return "redirect:/tradeBoardList";
 	}
 
-	@PostMapping("/board/updateBoard")
-	public String updateBoard(TradeBoard board) {
-		boardService.updateBoard(board);
+	// 게시글 삭제
+	@PostMapping("/deleteBoard")
+	public String deleteBoard(@RequestParam Long communityNo, @AuthenticationPrincipal UserDetails userDetails) {
+		Community community = boardService.getCommunityById(communityNo);
 
-		return "redirect:getBoardList";
+		// 로그인한 사용자가 게시글 작성자인지 확인
+		if (userDetails != null && community != null
+				&& userDetails.getUsername().equals(community.getMember().getMemberId())) {
+			boardService.deleteCommunity(communityNo);
+			return "redirect:/communityBoardList";
+		} else {
+			// 사용자가 게시글을 삭제할 권한이 없는 경우 처리
+			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
+			return "redirect:/error";
+		}
 	}
 
-	@GetMapping("/board/deleteBoard")
-	public String deleteBoard(TradeBoard board) {
-		boardService.deleteBoard(board);
+	@PostMapping("/likeCommunity")
+	public String likeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.likeCommunity(communityNo, memberId);
 
-		return "redirect:getBoardList";
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
 	}
+
+	@PostMapping("/unlikeCommunity")
+	public String unlikeCommunity(@RequestParam Long communityNo, Authentication authentication) {
+		String memberId = authentication.getName();
+		boardService.unlikeCommunity(communityNo, memberId);
+
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
+
 }
