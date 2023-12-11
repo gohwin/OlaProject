@@ -11,6 +11,7 @@
 
 <body>
 	<header th:include="header :: body"></header>
+
 	<div class="container mt-3">
 		<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물 등록</a>
 
@@ -80,6 +81,7 @@
 		</div>
 
 		<th:block th:include="footer.html"></th:block>
+
 
 		<!-- 부트스트랩 JS -->
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

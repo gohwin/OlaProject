@@ -3,6 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Order Page</title>
+     <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <script>
+        var IMP = window.IMP; 
+        IMP.init("imp12332144"); 
+      
+        var today = new Date();   
+        var hours = today.getHours(); // 시
+        var minutes = today.getMinutes();  // 분
+        var seconds = today.getSeconds();  // 초
+        var milliseconds = today.getMilliseconds();
+        var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+        
+
+        function requestPay(event) {
+        	event.preventDefault();
+
+            IMP.request_pay({
+                pg : '9810030929',
+                pay_method : 'card',
+                merchant_uid: makeMerchantUid, //상점에서 생성한 고유 주문번호
+                name : '주문명:결제테스트',   //필수 파라미터 입니다.
+                amount : 100,
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456',
+                m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
+            }, function (rsp) { // callback
+                if (rsp.success) {
+                	var form = document.getElementById("orderForm");
+                    form.submit();
+                } else {
+                    console.log(rsp);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <h1>Order Page</h1>
@@ -18,7 +59,7 @@
 
     <!-- Order form -->
     <h2>Order Form</h2>
-    <form th:action="@{/directOrder}" method="post">
+    <form id="orderForm" th:action="@{/directOrder}" method="post" onsubmit="requestPay(event)">
         <!-- Hidden field for productNo -->
         <input type="hidden" name="productNo" th:value="${product.productNo}" />
 

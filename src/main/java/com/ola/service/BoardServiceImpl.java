@@ -34,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public void insertBoard(TradeBoard board) {
+	public void insertTradeBoard(TradeBoard board) {
 
 		boardRepo.save(board);
 	}
@@ -50,7 +50,6 @@ public class BoardServiceImpl implements BoardService {
 
 		newBoard.setTitle(board.getTitle());
 		newBoard.setContent(board.getContent());
-		newBoard.setMember(board.getMember());
 		newBoard.setTradeType(board.getTradeType());
 		newBoard.setRegistrationDate(new Date());
 
@@ -58,9 +57,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void deleteBoard(TradeBoard board) {
-
-		boardRepo.deleteById(board.getTradeBoardNo());
+	public void deleteBoard(Long tradeBoardNo) {
+		boardRepo.deleteById(tradeBoardNo);
 	}
 
 	@Override
@@ -145,24 +143,20 @@ public class BoardServiceImpl implements BoardService {
 		return comRepo.findById(communityNo).orElse(null);
 
 	}
-	
+
 	@Transactional
 	@Override
 	public void saveCommunity(Community community) {
 		comRepo.save(community);
 	}
-//	@Override
-//	public Page<TradeBoard> getBoardList(Pageable pageable, Search search) {
-//		BooleanBuilder builder = new BooleanBuilder();
-//
-//		QBoard qboard = QBoard.board;
-//
-//		if (search.getSearchCondition().equals("TITLE")) {
-//			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
-//		} else if (search.getSearchCondition().equals("CONTENT")) {
-//			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
-//		}
-//
-//		return boardRepo.findAll(builder, pageable);
-//	}
+
+	@Override
+	public Page<Community> getBoardByTitleOrAuthor(String search, Pageable pageable) {
+		return comRepo.findByTitleOrMemberNameContaining(search, search, pageable);
+	}
+
+	@Override
+	public Page<TradeBoard> getTradeBoardByTitleOrAuthor(String search, Pageable pageable) {
+		return boardRepo.findByTitleContainingOrMemberNameContaining(search, search, pageable);
+	}
 }

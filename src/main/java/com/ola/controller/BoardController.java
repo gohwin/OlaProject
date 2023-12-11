@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
@@ -37,40 +36,58 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
-	@RequestMapping("/tradeBoardList")
-	public String TradeBoardList(Model model, Authentication authentication,
+	@GetMapping("/tradeBoardList")
+	public String tradeBoardList(Model model, Authentication authentication,
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+
 		List<TradeBoard> adminWrite = boardRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
-		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
+		Page<TradeBoard> tradeBoards;
 
-		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
-		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		if (search != null && !search.isEmpty()) {
+			// 제목 또는 작성자로 검색
+			tradeBoards = boardService.getTradeBoardByTitleOrAuthor(search, pageable);
+		} else {
+			tradeBoards = boardRepo.findAll(pageable);
+		}
+
+		model.addAttribute("tradeBoards", tradeBoards);
+		model.addAttribute("memberCurrentPage", tradeBoards.getNumber() + 1);
+		model.addAttribute("memberTotalPages", tradeBoards.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 
 		return "board/tradeBoardList";
 	}
 
 	@GetMapping("/communityBoardList")
-	public String CommunityBoardList(Model model, Authentication authentication,
+	public String communityBoardList(Model model, Authentication authentication,
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+
 		List<Community> adminWrite = comRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
-		Page<Community> memberWrite = comRepo.findByMemberWrite(pageable);
+		Page<Community> communities;
+		if (search != null && !search.isEmpty()) {
+			communities = boardService.getBoardByTitleOrAuthor(search, pageable);
+		} else {
+			communities = comRepo.findAll(pageable); // 검색값이 널일 때는 전체 리스트 조회
+		}
 
-		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
-		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		model.addAttribute("communities", communities);
+		model.addAttribute("memberCurrentPage", communities.getNumber() + 1);
+		model.addAttribute("memberTotalPages", communities.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 
 		return "board/communityBoardList";
 	}
@@ -123,6 +140,22 @@ public class BoardController {
 		}
 	}
 
+	@GetMapping("/updateBoard/{tradeBoardNo}")
+	public String updateTradeForm(@PathVariable Long tradeBoardNo, Model model, Authentication authentication) {
+		// 현재 로그인한 사용자의 정보를 가져오기
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
+
+		if (tradeBoard != null && userDetails != null
+				&& userDetails.getUsername().equals(tradeBoard.getMember().getMemberId())) {
+			model.addAttribute("tradeBoard", tradeBoard);
+			return "/board/updateTradeForm";
+		} else {
+			return "errorPage";
+		}
+	}
+
 	@PostMapping("/editCommunity/save")
 	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -141,6 +174,12 @@ public class BoardController {
 			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
 			return "redirect:/error";
 		}
+	}
+
+	@PostMapping("/updateBoard")
+	public String updateTrade(@ModelAttribute TradeBoard tradeBoard) {
+		boardService.updateBoard(tradeBoard);
+		return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoard.getTradeBoardNo();
 	}
 
 	@PostMapping("/communityInsert")
@@ -163,7 +202,7 @@ public class BoardController {
 
 		board.setMember(principal.getMember());
 
-		boardService.insertBoard(board);
+		boardService.insertTradeBoard(board);
 
 		return "redirect:/tradeBoardList";
 	}
@@ -179,9 +218,22 @@ public class BoardController {
 			boardService.deleteCommunity(communityNo);
 			return "redirect:/communityBoardList";
 		} else {
-			// 사용자가 게시글을 삭제할 권한이 없는 경우 처리
-			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
 			return "redirect:/error";
+		}
+	}
+
+	@PostMapping("/deleteTradeBoard")
+	public String deleteTradeBoard(@RequestParam("tradeBoardNo") Long tradeBoardNo,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
+
+		// 로그인한 사용자가 삭제하려는 게시글의 작성자인지 확인
+		if (userDetails != null && tradeBoard != null
+				&& userDetails.getUsername().equals(tradeBoard.getMember().getMemberId())) {
+			boardService.deleteBoard(tradeBoardNo);
+			return "redirect:/tradeBoardList";
+		} else {
+			return "redirect:/login"; // 로그인되지 않은 사용자라면 로그인 페이지로 리다이렉트 또는 다른 처리
 		}
 	}
 

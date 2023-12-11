@@ -1,51 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/mypage.css" rel="stylesheet" />
-    <title>Basket List</title>
+<meta charset="UTF-8">
+<link href="/css/main.css" rel="stylesheet" />
+<link href="/css/mypage.css" rel="stylesheet" />
+<title>Basket List</title>
+<!-- jQuery -->
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script>
+	var IMP = window.IMP;
+	IMP.init("imp12332144");
+
+	// 함수를 수정하여 각 상품의 가격과 수량을 기반으로 총 금액을 계산
+	function calculateTotalAmount() {
+		var totalAmount = 0;
+		// 상품 정보를 반복하여 가격을 계산
+		$('[name^="quantity_"]').each(function() {
+			var productId = $(this).attr('name').split('_')[1];
+			var quantity = parseInt($(this).val());
+			var price = parseInt($('#price_' + productId).text());
+			totalAmount += quantity * price;
+		});
+		return totalAmount;
+	}
+
+	function requestPay(event) {
+		event.preventDefault();
+		var totalAmount = calculateTotalAmount(); // 총액 계산
+
+		IMP.request_pay({
+			pg : '9810030929',
+			pay_method : 'card',
+			merchant_uid : new Date().getTime(), // 상점에서 생성한 고유 주문번호
+			name : '주문명:결제테스트',
+			amount : 100, // 계산된 총 금액 사용
+			buyer_email : 'iamport@siot.do',
+			buyer_name : '구매자이름',
+			buyer_tel : '010-1234-5678',
+			buyer_addr : '서울특별시 강남구 삼성동',
+			buyer_postcode : '123-456',
+			m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
+		}, function(rsp) { // callback
+			if (rsp.success) {
+				var form = document.getElementById("orderForm");
+				form.submit();
+			} else {
+				console.log(rsp);
+			}
+		});
+	}
+</script>
 </head>
 <body>
-<header th:include="header :: body"></header>
-    <h1>Basket List</h1>
-    <div th:if="${basket == null || basket.products == null || basket.products.isEmpty()}">
-        <p>장바구니에 제품이 없습니다.</p>
-    </div>
+	<header th:include="header :: body"></header>
+	<h1>Basket List</h1>
+	<div
+		th:if="${basket == null || basket.products == null || basket.products.isEmpty()}">
+		<p>장바구니에 제품이 없습니다.</p>
+	</div>
 
-    <div th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
-        <form th:action="@{/basketOrder}" method="post">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterate through the products in the basket -->
-                    <th:block th:each="product : ${basket.products}">
-                        <tr>
-                            <td th:text="${product.productName}"></td>
-                            <td>
-                                <!-- 수량 입력 필드 -->
-                                <input type="number" th:name="'quantity_' + ${product.productNo}" 
-                                       th:value="${basket.productQuantityMap[product.productNo]}" min="1"/>
-                            </td>
-                            <td th:text="${product.price}"></td>
-                        </tr>
-                    </th:block>
-                </tbody>
-            </table>
-            <!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
-            <input type="hidden" name="basketId" th:value="${basket.basketId}" />
-            <button type="submit">주문하기</button>
-        </form>
-    </div>
-    <!-- '쇼핑하기' 버튼 추가, item/all 로 이동 -->
-    <div class="shopping-button">
-        <a th:href="@{/item/all}"><button>쇼핑하기</button></a>
-    </div>
+	<div
+		th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
+		<form id="orderForm" th:action="@{/basketOrder}" method="post"
+			onsubmit="requestPay(event)">
+			<table>
+				<thead>
+					<tr>
+						<th>Product Name</th>
+						<th>Quantity</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Iterate through the products in the basket -->
+					<th:block th:each="product : ${basket.products}">
+						<tr>
+							<td th:text="${product.productName}"></td>
+							<td>
+								<!-- 수량 입력 필드 --> <input type="number"
+								th:name="'quantity_' + ${product.productNo}"
+								th:value="${basket.productQuantityMap[product.productNo]}"
+								min="1" />
+							</td>
+							<td th:text="${product.price}"></td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+			<!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
+			<input type="hidden" name="basketId" th:value="${basket.basketId}" />
+			<button type="submit">주문하기</button>
+		</form>
+	</div>
+	<!-- '쇼핑하기' 버튼 추가, item/all 로 이동 -->
+	<div class="shopping-button">
+		<a th:href="@{/item/all}"><button>쇼핑하기</button></a>
+	</div>
 </body>
 </html>

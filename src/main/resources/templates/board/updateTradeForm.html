@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/main.css" rel="stylesheet" />
+	<link href="/css/board.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:include="header :: body"></header>
+
+	<h2>게시글 수정</h2>
+
+	<form th:action="@{/updateBoard}" method="post">
+		<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+
+
+		<label for="title">제목:</label>
+		<input type="text" id="title" name="title" th:value="${tradeBoard.title}" required /><br />
+
+		<label for="content">내용:</label>
+		<textarea id="content" name="content" th:text="${tradeBoard.content}" required></textarea><br />
+
+		<label for="tradeType">제품 상태:</label>
+		<select id="tradeType" name="tradeType">
+			<option value="1" th:selected="${tradeBoard.tradeType == 1}">판매중</option>
+			<option value="2" th:selected="${tradeBoard.tradeType == 2}">구매중</option>
+			<option value="3" th:selected="${tradeBoard.tradeType == 3}">판매완료</option>
+			<option value="4" th:selected="${tradeBoard.tradeType == 4}">구매완료</option>
+		</select><br />
+
+		<button type="submit">게시글 수정</button>
+	</form>
+
+	<button type="button" onclick="goBack()">뒤로 가기</button>
+
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+	<th:block th:include="footer.html"></th:block>
+</body>
+
+</html>
