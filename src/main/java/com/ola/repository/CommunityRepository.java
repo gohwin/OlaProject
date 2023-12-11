@@ -18,6 +18,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
 	List<Reply> findByCommunityNo(Long communityNo);
 
-	Page<Community> findByTitleContaining(String search, Pageable pageable);
+	Page<Community> findByTitleOrMemberNameContaining(String title, String memberName, Pageable pageable);
 
 }

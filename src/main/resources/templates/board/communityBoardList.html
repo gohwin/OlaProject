@@ -64,16 +64,17 @@
 
 
 	<!-- member 게시글 페이징 섹션 -->
-	<div class="pagination" th:if="${memberWrite != null and not memberWrite.empty}">
-		<a th:if="${memberWrite.number > 0}" th:href="@{/communityBoardList(page=${memberWrite.number - 1})}">이전</a>
+	<div class="pagination" th:if="${communities != null and not communities.empty}">
+		<a th:if="${communities.number > 0}"
+			th:href="@{/communityBoardList(page=${communities.number - 1}, search=${search})}">이전</a>
 		<ul>
 			<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
-				<a th:href="@{/communityBoardList(page=${pageNum - 1})}" th:text="${pageNum}"
+				<a th:href="@{/communityBoardList(page=${pageNum - 1}, search=${search})}" th:text="${pageNum}"
 					th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
 			</li>
 		</ul>
 		<a th:if="${memberCurrentPage < memberTotalPages}"
-			th:href="@{/communityBoardList(page=${memberCurrentPage})}">다음</a>
+			th:href="@{/communityBoardList(page=${communities.number + 1}, search=${search})}">다음</a>
 	</div>
 
 	<th:block th:include="footer.html"></th:block>
