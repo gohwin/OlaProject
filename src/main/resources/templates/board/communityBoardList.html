@@ -9,6 +9,10 @@
 
 <body>
 	<header th:include="header :: body"></header>
+	<form method="get" action="/communityBoardList" th:action="@{/communityBoardList}" class="search-form">
+		<input type="text" name="search" th:value="${search}" placeholder="검색어 입력" />
+		<button type="submit">검색</button>
+	</form>
 	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
 	<!-- 공지글 섹션 -->
 	<div class="notice-section">
@@ -32,32 +36,35 @@
 	</div>
 
 	<!-- 나머지 게시글 목록 섹션 -->
-		<table class="styled-table">
-			<thead>
-				<tr>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>조회수</th>
-					<th>좋아요</th>
-					<th>댓글수</th>
-					<th>작성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="community : ${memberWrite.content}">
-					<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
-							th:text="${community.title}"></a></td>
-					<td th:text="${community.member.name}"></td>
-					<td th:text="${community.viewCount}"></td>
-					<td th:text="${community.likeCount}"></td>
-					<td th:text="${community.commentCount}"></td>
-					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
-				</tr>
-			</tbody>
-		</table>
+	<table class="styled-table">
+		<thead>
+			<tr>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회수</th>
+				<th>좋아요</th>
+				<th>댓글수</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="community : ${communities.content}">
+				<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
+						th:text="${community.title}"></a>
+				</td>
+				<td th:text="${community.member != null ? community.member.name : ''}"></td>
+				<td th:text="${community.viewCount}"></td>
+				<td th:text="${community.likeCount}"></td>
+				<td th:text="${community.commentCount}"></td>
+				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+
 
 	<!-- member 게시글 페이징 섹션 -->
-	<div class="pagination" th:if="${not memberWrite.empty}">
+	<div class="pagination" th:if="${memberWrite != null and not memberWrite.empty}">
 		<a th:if="${memberWrite.number > 0}" th:href="@{/communityBoardList(page=${memberWrite.number - 1})}">이전</a>
 		<ul>
 			<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">

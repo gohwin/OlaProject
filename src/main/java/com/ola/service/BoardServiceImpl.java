@@ -149,18 +149,14 @@ public class BoardServiceImpl implements BoardService {
 	public void saveCommunity(Community community) {
 		comRepo.save(community);
 	}
-//	@Override
-//	public Page<TradeBoard> getBoardList(Pageable pageable, Search search) {
-//		BooleanBuilder builder = new BooleanBuilder();
-//
-//		QBoard qboard = QBoard.board;
-//
-//		if (search.getSearchCondition().equals("TITLE")) {
-//			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
-//		} else if (search.getSearchCondition().equals("CONTENT")) {
-//			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
-//		}
-//
-//		return boardRepo.findAll(builder, pageable);
-//	}
+
+	@Override
+	public Page<Community> getCommunityBySearch(String search, Pageable pageable) {
+		return comRepo.findByTitleContaining(search, pageable);
+	}
+
+	@Override
+	public Page<TradeBoard> getTradeBoardBySearch(String search, Pageable pageable) {
+		return boardRepo.findByTitleContaining(search, pageable);
+	}
 }

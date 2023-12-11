@@ -37,40 +37,58 @@ public class BoardController {
 	@Autowired
 	private CommunityRepository comRepo;
 
-	@RequestMapping("/tradeBoardList")
-	public String TradeBoardList(Model model, Authentication authentication,
+	@GetMapping("/tradeBoardList")
+	public String tradeBoardList(Model model, Authentication authentication,
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+
 		List<TradeBoard> adminWrite = boardRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
-		Page<TradeBoard> memberWrite = boardRepo.findByMemberWrite(pageable);
+		Page<TradeBoard> tradeBoards;
+		if (search != null && !search.isEmpty()) {
+			// 검색을 수행한 경우
+			tradeBoards = boardService.getTradeBoardBySearch(search, pageable);
+		} else {
+			// 검색을 수행하지 않은 경우
+			tradeBoards = boardRepo.findByMemberWrite(pageable);
+		}
 
-		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
-		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		model.addAttribute("tradeBoards", tradeBoards);
+		model.addAttribute("memberCurrentPage", tradeBoards.getNumber() + 1);
+		model.addAttribute("memberTotalPages", tradeBoards.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 
 		return "board/tradeBoardList";
 	}
 
 	@GetMapping("/communityBoardList")
-	public String CommunityBoardList(Model model, Authentication authentication,
+	public String communityBoardList(Model model, Authentication authentication,
+			@RequestParam(required = false) String search,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
+
 		List<Community> adminWrite = comRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
-		Page<Community> memberWrite = comRepo.findByMemberWrite(pageable);
+		Page<Community> communities;
+		if (search != null && !search.isEmpty()) {
+			communities = boardService.getCommunityBySearch(search, pageable);
+		} else {
+			communities = comRepo.findAll(pageable); // 검색값이 널일 때는 전체 리스트 조회
+		}
 
-		model.addAttribute("memberWrite", memberWrite);
-		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
-		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		model.addAttribute("communities", communities);
+		model.addAttribute("memberCurrentPage", communities.getNumber() + 1);
+		model.addAttribute("memberTotalPages", communities.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 
 		return "board/communityBoardList";
 	}
