@@ -157,11 +157,11 @@ public class RepositoryTest {
 	@Disabled
 	@Test
 	public void testBasket() {
-	    Product product = prodRepo.findById(301L).get();
-	    Product product2 = prodRepo.findById(30L).get();
+	    Product product = prodRepo.findById(6L).get();
+	    Product product2 = prodRepo.findById(3L).get();
 	    Member member = memberRepo.findById("member").get();
 	    
-	    IntStream.rangeClosed(1, 10).forEach(i -> {
+	  
 	        Basket basket = Basket.builder()
 	            .member(member)
 	            .build();
@@ -172,7 +172,7 @@ public class RepositoryTest {
 	        basket.addProduct(product2, 3); // 상품과 수량을 추가합니다
 	        
 	        basketRepo.save(basket);
-	    });
+	    
 	}
 
 
