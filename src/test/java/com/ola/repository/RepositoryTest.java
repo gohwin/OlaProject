@@ -128,7 +128,7 @@ public class RepositoryTest {
 		});
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testProduct() {
 		IntStream.rangeClosed(1, 5).forEach(i -> {

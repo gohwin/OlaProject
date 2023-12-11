@@ -50,7 +50,6 @@ public class BoardServiceImpl implements BoardService {
 
 		newBoard.setTitle(board.getTitle());
 		newBoard.setContent(board.getContent());
-		newBoard.setMember(board.getMember());
 		newBoard.setTradeType(board.getTradeType());
 		newBoard.setRegistrationDate(new Date());
 
@@ -58,9 +57,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void deleteBoard(TradeBoard board) {
-
-		boardRepo.deleteById(board.getTradeBoardNo());
+	public void deleteBoard(Long tradeBoardNo) {
+		boardRepo.deleteById(tradeBoardNo);
 	}
 
 	@Override
@@ -145,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
 		return comRepo.findById(communityNo).orElse(null);
 
 	}
-	
+
 	@Transactional
 	@Override
 	public void saveCommunity(Community community) {

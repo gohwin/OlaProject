@@ -39,9 +39,15 @@
 		</tr>
 	</table>
 	<div>
-		<a th:href="@{/deleteBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}" onclick="return confirm('정말 삭제하시겠습니까?');">
-			<button type="button">삭제</button>
-		</a>
+		<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
+			<button type="submit">게시글 수정</button>
+		</form>
+
+		<form th:action="@{/deleteTradeBoard}" method="post">
+			<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+			<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
+		</form>
+
 		<button type="button" onclick="goBack()">뒤로 가기</button>
 	</div>
 
