@@ -123,6 +123,22 @@ public class BoardController {
 		}
 	}
 
+	@GetMapping("/updateBoard/{tradeBoardNo}")
+	public String updateTradeForm(@PathVariable Long tradeBoardNo, Model model, Authentication authentication) {
+		// 현재 로그인한 사용자의 정보를 가져오기
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
+
+		if (tradeBoard != null && userDetails != null
+				&& userDetails.getUsername().equals(tradeBoard.getMember().getMemberId())) {
+			model.addAttribute("tradeBoard", tradeBoard);
+			return "/board/updateTradeForm";
+		} else {
+			return "errorPage";
+		}
+	}
+
 	@PostMapping("/editCommunity/save")
 	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -141,6 +157,12 @@ public class BoardController {
 			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
 			return "redirect:/error";
 		}
+	}
+
+	@PostMapping("/updateBoard")
+	public String updateTrade(@ModelAttribute TradeBoard tradeBoard) {
+		boardService.updateBoard(tradeBoard);
+		return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoard.getTradeBoardNo();
 	}
 
 	@PostMapping("/communityInsert")
@@ -179,9 +201,22 @@ public class BoardController {
 			boardService.deleteCommunity(communityNo);
 			return "redirect:/communityBoardList";
 		} else {
-			// 사용자가 게시글을 삭제할 권한이 없는 경우 처리
-			// 예를 들어 에러 페이지로 리다이렉션하거나 에러 메시지를 표시할 수 있습니다.
 			return "redirect:/error";
+		}
+	}
+
+	@PostMapping("/deleteTradeBoard")
+	public String deleteTradeBoard(@RequestParam("tradeBoardNo") Long tradeBoardNo,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		TradeBoard tradeBoard = boardService.getTradeBoardById(tradeBoardNo);
+
+		// 로그인한 사용자가 삭제하려는 게시글의 작성자인지 확인
+		if (userDetails != null && tradeBoard != null
+				&& userDetails.getUsername().equals(tradeBoard.getMember().getMemberId())) {
+			boardService.deleteBoard(tradeBoardNo);
+			return "redirect:/tradeBoardList";
+		} else {
+			return "redirect:/login"; // 로그인되지 않은 사용자라면 로그인 페이지로 리다이렉트 또는 다른 처리
 		}
 	}
 

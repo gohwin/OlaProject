@@ -20,7 +20,7 @@ public interface BoardService {
 
 	void updateBoard(TradeBoard board);
 
-	void deleteBoard(TradeBoard board);
+	void deleteBoard(Long tradeBoardNo);
 
 	Community getCommunityWithRepliesByNo(Long communityNo);
 
