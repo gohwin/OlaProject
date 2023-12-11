@@ -157,8 +157,10 @@ public class RepositoryTest {
 	@Disabled
 	@Test
 	public void testBasket() {
-	    Product product = prodRepo.findById(6L).get();
-	    Product product2 = prodRepo.findById(3L).get();
+
+	    Product product = prodRepo.findById(1L).get();
+	    Product product2 = prodRepo.findById(2L).get();
+
 	    Member member = memberRepo.findById("member").get();
 	    
 	  
