@@ -135,12 +135,19 @@ public class BoardController {
 	}
 
 	@GetMapping("/editBoard/{communityNo}")
-	public String editCommunityForm(@PathVariable Long communityNo, Model model) {
+	public String editCommunityForm(@PathVariable Long communityNo, Model model,
+			@AuthenticationPrincipal UserDetails userDetails) {
 		Community community = boardService.getCommunityById(communityNo);
 
 		if (community != null) {
-			model.addAttribute("community", community);
-			return "/board/editCommunityForm";
+			// 현재 로그인한 사용자가 커뮤니티 작성자인지 확인
+			if (userDetails != null && userDetails.getUsername().equals(community.getMember().getMemberId())) {
+				model.addAttribute("community", community);
+				return "/board/editCommunityForm";
+			} else {
+				// 권한이 없는 경우 에러 페이지로 리다이렉션하거나 권한 없음을 처리할 수 있습니다.
+				return "errorPage";
+			}
 		} else {
 			return "errorPage";
 		}
