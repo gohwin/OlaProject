@@ -48,30 +48,56 @@ public class AdminController {
 	}
 
 	@GetMapping("/adminCommunityBoardList")
-	public String adminCommuView(Model model, @PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
+	public String adminCommuView(Model model,
+			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "searchType", defaultValue = "title") String searchType,
+			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		// admin이 작성한 게시글 가져오기
 		List<Community> adminWrite = communityRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
-
-		Page<Community> memberWrite = communityRepo.findByMemberWrite(pageable);
+		
+		Page<Community> memberWrite = null;
+		if (search != null && !search.isEmpty()) {
+			if ("author".equals(searchType)) {
+				memberWrite = boardService.getBoardByAuthor(search, pageable);
+			} else {
+				memberWrite = boardService.getBoardByTitle(search, pageable);
+			}
+		} else {
+			memberWrite = communityRepo.findByMemberWrite(pageable);
+		}
 		
 		model.addAttribute("memberWrite", memberWrite);
 		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 
 		return "admin/adminCommunityBoardList"; // View 반환
 	}
 	@GetMapping("/adminTradeBoardList")
-	public String adminTradeView(Model model, @PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
+	public String adminTradeView(Model model,
+			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "searchType", defaultValue = "title") String searchType,
+			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		// admin이 작성한 게시글 가져오기
 		List<TradeBoard> adminWrite = tradeRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 		
-		Page<TradeBoard> memberWrite = tradeRepo.findByMemberWrite(pageable);
+		Page<TradeBoard> memberWrite = null;
+		if (search != null && !search.isEmpty()) {
+			if ("author".equals(searchType)) {
+				memberWrite = boardService.getTradeBoardByAuthor(search, pageable);
+			} else {
+				memberWrite = boardService.getTradeBoardByTitle(search, pageable);
+			}
+		} else {
+			memberWrite = tradeRepo.findByMemberWrite(pageable);
+		}
 		
 		model.addAttribute("memberWrite", memberWrite);
 		model.addAttribute("memberCurrentPage", memberWrite.getNumber() + 1);
 		model.addAttribute("memberTotalPages", memberWrite.getTotalPages());
+		model.addAttribute("search", search); // 검색어를 모델에 추가
 		
 		return "admin/adminTradeBoardList"; // View 반환
 	}
