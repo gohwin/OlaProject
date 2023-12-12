@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 검색 폼 스타일링 */
+.search-form {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-form input[type="text"] {
+    padding: 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.search-form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #45a049;
+}
+
+/* 공지글 및 일반 게시글 테이블 스타일링 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/* 게시물 등록 링크 스타일링 */
+.register-link {
+    display: block;
+    width: max-content;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.register-link:hover {
+    background-color: #007B9A;
+}
+
+/* 페이징 섹션 스타일링 */
+.pagination-trade {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination-trade ul {
+    display: inline-block; /* ul을 인라인 블록으로 설정하여 가운데 정렬 */
+    padding: 0;
+    list-style: none; /* 기본 목록 스타일 제거 */
+}
+
+.pagination-trade ul li {
+    display: inline; /* 리스트 아이템을 가로로 나열 */
+}
+
+.pagination-trade a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: black;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.pagination-trade a:hover {
+    background-color: #f4f4f4;
+}
+
+.pagination-trade .current-page {
+    font-weight: bold;
+    background-color: #ddd;
+}

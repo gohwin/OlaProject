@@ -32,9 +32,10 @@
 
 html,
 body {
-	height: 100%;
+	
 	font-family: "Nunito Sans", sans-serif;
 	-webkit-font-smoothing: antialiased;
+	 margin-bottom: 60px; /* 푸터 높이와 동일한 여백 */
 }
 
 h1,
@@ -1942,13 +1943,15 @@ ol {
 -----------------------*/
 
 .footer {
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #333; /* 푸터 배경색 */
-    color: white; /* 푸터 텍스트 색상 */
+    height: 60px; /* 원하는 푸터 높이 */
+    background-color: #333; /* 원하는 배경색 */
+    color: white; /* 원하는 글자색 */
     text-align: center;
-    z-index: 9;
+    line-height: 60px; /* 푸터 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
 }
 
 .footer__about {

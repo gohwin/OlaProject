@@ -1,0 +1,78 @@
+@charset "UTF-8";
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center; /* 중앙 정렬 */
+}
+
+/* 제목 스타일 */
+h1 {
+    color: #333;
+    margin: 20px 0;
+}
+
+/* 폼 스타일링 */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* 텍스트 입력 필드 및 텍스트에리어 스타일링 */
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* 제출 버튼 스타일 */
+input[type="submit"] {
+    background-color: #5cb85c; /* 버튼 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내부 패딩 */
+    border: none;
+    border-radius: 3px; /* 버튼 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    margin-top: 10px; /* 버튼 상단 여백 */
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* 뒤로 가기 버튼 스타일 */
+button[type="button"] {
+    /* '뒤로 가기' 버튼 스타일 */
+    background-color: #f0ad4e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button[type="button"]:hover {
+    background-color: #ec971f;
+}
+

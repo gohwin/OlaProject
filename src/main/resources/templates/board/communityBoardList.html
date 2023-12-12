@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<!-- 부트스트랩 CSS -->
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/board.css" rel="stylesheet" />
+	<link href="/css/commuBoard.css" rel="stylesheet" />
 
 </head>
 
@@ -49,7 +49,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="community : ${memberWrite.content}">
+				<tr th:each="community : ${communities.content}">
 					<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
 							th:text="${community.title}"></a></td>
 					<td th:text="${community.member.name}"></td>
@@ -62,11 +62,11 @@
 		</table>
 
 		<!-- member 게시글 페이징 섹션 -->
-		<div class="bottom-container">
+		
 			
-		<div class="pagination-container">
-			<div class="pagination">
-				<a th:if="${memberWrite.number > 0}" th:href="@{/communityBoardList(page=${memberWrite.number - 1})}"
+	
+			<div class="pagination-commu">
+				<a th:if="${communities.number > 0}" th:href="@{/communityBoardList(page=${communities.number - 1})}"
 					class="prev-page">이전</a>
 				<ul>
 					<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
@@ -77,8 +77,8 @@
 				<a th:if="${memberCurrentPage < memberTotalPages}"
 					th:href="@{/communityBoardList(page=${memberCurrentPage})}" class="next-page">다음</a>
 			</div>
-		</div>
-		</div>
+	
+	
 
 		<th:block th:include="footer.html"></th:block>
 

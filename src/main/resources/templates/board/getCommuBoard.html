@@ -4,14 +4,13 @@
 <head>
 	<meta charset="UTF-8">
 	<!-- Custom CSS for Board View -->
+
 	<link href="/css/boardView.css" rel="stylesheet" />
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
 
-	<div class="container mt-3">
 		<!-- 좋아요 버튼 Section -->
 		<div class="like-section">
 			<form th:action="@{/likeCommunity}" method="post">
@@ -30,13 +29,16 @@
 		<table class="table table-hover styled-table">
 			<tbody>
 				<tr>
-					<th>게시글 제목</th>
-					<td><span th:text="${community.title}"></span></td>
+					<th class="CommuTitle-th">게시글 제목</th>
+					<td class="CommuTitle-td"><span th:text="${community.title}"></span></td>
 				</tr>
 				<tr>
-					<th>게시글 내용</th>
-					<td>
-						<p th:text="${community.content}"></p>
+					<th class="CommuContant-th">게시글 내용</th>
+					<td class="CommuContant-td">
+						<textarea class="form-control content-textarea" rows="10" maxlength="100"
+							th:text="${community.content}" readonly>
+
+						</textarea>
 					</td>
 				</tr>
 				<tr>
@@ -46,30 +48,37 @@
 					<td class="date-td"><span
 							th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
 				</tr>
-				<tr>
-					
-				</tr>
 			</tbody>
 		</table>
-
 		<!-- 댓글 Section -->
 		<div class="comments-section">
-			<h2>댓글</h2>
-			<div th:each="reply : ${community.replies}">
-				<p>
-					<span th:text="${reply.member.name}"></span>
-					: <span th:text="${reply.content}"></span>
-					<span th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-				</p>
-			</div>
-
-			<h3>댓글 작성</h3>
+			<h2 class="comment-title">댓글</h2>
+			<table class="comments-table">
+				<thead>
+					<tr>
+						<th style="text-align: center;">이름</th>
+						<th>댓글</th>
+						<th>작성날짜</th>
+					</tr>
+				</thead>
+				<tbody th:each="reply : ${community.replies}">
+					<tr class="reply">
+						<td class="reply-author" th:text="${reply.member.name}"></td>
+						<td class="reply-content" th:text="${reply.content}"></td>
+						<td class="reply-date" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="comment-form">
+			<h3 class="comment-title">댓글 작성</h3>
 			<form th:action="@{/addReply}" method="post">
 				<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
 				<textarea name="replycontent" class="form-control"></textarea>
 				<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
 			</form>
 		</div>
+
 
 		<!-- 게시글 관리 Section -->
 		<div class="management-section">
@@ -88,13 +97,13 @@
 				window.history.back();
 			}
 		</script>
-	</div>
+		</div>
 
-	<th:block th:include="footer.html"></th:block>
-	<!-- Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<th:block th:include="footer.html"></th:block>
+		<!-- Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
