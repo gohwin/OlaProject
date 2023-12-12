@@ -1,0 +1,120 @@
+.container {
+    padding-top: 20px;
+}
+
+/* 좋아요 버튼 섹션 스타일링 */
+.like-section {
+    margin-bottom: 20px;
+}
+
+.like-section form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* 게시글 테이블 스타일링 */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table th,
+.styled-table td {
+        padding: 12px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 0;
+}
+/* 제목, 내용, 작성자 칸에 대한 특별한 너비 조정 */
+.styled-table th {
+    width: 20%; /* 예: 제목과 작성자 칸의 너비 */
+}
+
+.styled-table td {
+    width: 80%; /* 예: 내용 칸의 너비 */
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+/* 작성자 칸 너비 조정*/
+.styled-table .author-th,
+.styled-table .author-td {
+    max-width: 100px; /* 최대 너비 설정 */
+    /* 기타 스타일링 규칙 */
+}
+
+
+/* 등록 날짜 칸 스타일링 조정 */
+.styled-table .date-th,
+.styled-table .date-td {
+    max-width: 150px; /* 최대 너비 설정 */
+
+}
+
+/* 댓글 섹션 스타일링 */
+.comments-section {
+    margin-top: 40px;
+}
+
+.comments-section h2 {
+    margin-bottom: 15px;
+}
+
+.comments-section p {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* 댓글 작성 폼 스타일링 */
+.comments-section form textarea {
+    margin-top: 10px;
+}
+
+/* 게시글 관리 버튼 스타일링 */
+.management-section {
+        margin-top: 20px;
+    text-align: center; /* 버튼들을 가운데 정렬 */
+}
+
+.management-section form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .styled-table th,
+    .styled-table td {
+        white-space: normal;
+    }
+    .management-section form {
+        display: block;
+        margin: 10px auto;
+    }
+    .styled-table .author-th,
+    .styled-table .author-td,
+    .styled-table .date-th,
+    .styled-table .date-td {
+        max-width: 100%; /* 모바일 화면에서는 너비 제한 해제 */
+    }
+}

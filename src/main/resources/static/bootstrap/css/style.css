@@ -1942,13 +1942,13 @@ ol {
 -----------------------*/
 
 .footer {
-	position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     background-color: #333; /* 푸터 배경색 */
     color: white; /* 푸터 텍스트 색상 */
     text-align: center;
+    z-index: 9;
 }
 
 .footer__about {
