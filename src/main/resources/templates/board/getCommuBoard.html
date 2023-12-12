@@ -48,10 +48,12 @@
 					<td class="date-td"><span
 							th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
 				</tr>
+
 			</tbody>
 		</table>
 		<!-- 댓글 Section -->
 		<div class="comments-section">
+
 			<h2 class="comment-title">댓글</h2>
 			<table class="comments-table">
 				<thead>
@@ -72,6 +74,7 @@
 		</div>
 		<div class="comment-form">
 			<h3 class="comment-title">댓글 작성</h3>
+
 			<form th:action="@{/addReply}" method="post">
 				<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
 				<textarea name="replycontent" class="form-control"></textarea>

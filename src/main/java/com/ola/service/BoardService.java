@@ -34,7 +34,11 @@ public interface BoardService {
 
 	void unlikeCommunity(Long communityNo, String memberId);
 
-	Page<Community> getBoardByTitleOrAuthor(String search, Pageable pageable);
+	Page<Community> getBoardByTitle(String search, Pageable pageable);
 
-	Page<TradeBoard> getTradeBoardByTitleOrAuthor(String search, Pageable pageable);
+	Page<Community> getBoardByAuthor(String search, Pageable pageable);
+
+	Page<TradeBoard> getTradeBoardByAuthor(String search, Pageable pageable);
+
+	Page<TradeBoard> getTradeBoardByTitle(String search, Pageable pageable);
 }

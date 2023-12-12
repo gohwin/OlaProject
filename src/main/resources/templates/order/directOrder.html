@@ -18,22 +18,37 @@
         var milliseconds = today.getMilliseconds();
         var makeMerchantUid = hours +  minutes + seconds + milliseconds;
         
+        function updateTotalAmount() {
+            var quantity = parseInt(document.getElementById('quantity').value);
+            var price = parseInt(document.getElementById('dataPrice').textContent);
+            var totalAmount = quantity * price;
+            document.getElementById('totalAmount').textContent = totalAmount;
+        }
+        
 
         function requestPay(event) {
         	event.preventDefault();
 
+        	 // 숨겨진 HTML 요소에서 member 정보를 가져옵니다.
+            var memberEmail = document.getElementById('email').textContent;
+		    var memberName = document.getElementById('name').textContent;
+		    var memberTel = document.getElementById('phone').textContent;
+		    var memberAddr = document.getElementById('address').textContent + ' ' + document.getElementById('detailed').textContent;;
+		    var memberPostcode = document.getElementById('zipNum').textContent;
+		    var productName = document.getElementById('prodName').textContent;
+            var productPrice = parseInt(document.getElementById('totalAmount').textContent, 10);
+            
             IMP.request_pay({
                 pg : '9810030929',
                 pay_method : 'card',
                 merchant_uid: makeMerchantUid, //상점에서 생성한 고유 주문번호
-                name : '주문명:결제테스트',   //필수 파라미터 입니다.
-                amount : 100,
-                buyer_email : 'iamport@siot.do',
-                buyer_name : '구매자이름',
-                buyer_tel : '010-1234-5678',
-                buyer_addr : '서울특별시 강남구 삼성동',
-                buyer_postcode : '123-456',
-                m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
+                name: '주문명:' + productName, // 상품 이름을 주문명에 추가
+                amount : productPrice,
+                buyer_email: memberEmail,
+                buyer_name: memberName,
+                buyer_tel: memberTel,
+                buyer_addr: memberAddr,
+                buyer_postcode: memberPostcode,
             }, function (rsp) { // callback
                 if (rsp.success) {
                 	var form = document.getElementById("orderForm");
@@ -46,6 +61,15 @@
     </script>
 </head>
 <body>
+
+	<!-- member 정보를 숨겨진 HTML 요소에 저장합니다. -->
+    <span id="email" style="display: none;" th:text="${member.email}"></span>
+    <span id="name" style="display: none;" th:text="${member.name}"></span>
+    <span id="phone" style="display: none;" th:text="${member.phoneNumber}"></span>
+    <span id="address" style="display: none;" th:text="${member.address}"></span>
+    <span id="detailed" style="display: none;" th:text="${member.detailedAddress}"></span>
+    <span id="zipNum" style="display: none;" th:text="${member.zipNum}"></span>
+    <span id="prodName" style="display: none;" th:text="${product.productName}"></span>
     <h1>Order Page</h1>
 
     <!-- Display product information -->
@@ -54,7 +78,7 @@
         Product Name: <span th:text="${product.productName}"></span>
     </p>
     <p>
-        Price: <span th:text="${product.price}"></span>
+        Price: <span id="dataPrice" th:text="${product.price}"></span>
     </p>
 
     <!-- Order form -->
@@ -65,7 +89,10 @@
 
         <!-- Quantity input field -->
         <label for="quantity">Quantity:</label> 
-        <input type="number" id="quantity" name="quantity" required />
+<input type="number" id="quantity" name="quantity" min="1" required value="1" onchange="updateTotalAmount()" />
+        
+        <!-- Total Amount -->
+        <p>Total Amount: <span id="totalAmount" th:text="${product.price}"></span></p>
 
         <!-- Submit button -->
         <button type="submit">Order</button>

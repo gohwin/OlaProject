@@ -94,13 +94,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Page<TradeBoard> tradeBoardList(Pageable pageable) {
 
-		return boardRepo.findAll(pageable);
+		return boardRepo.findByMemberWrite(pageable);
 	}
 
 	@Override
 	public Page<Community> communityBoardList(Pageable pageable) {
 
-		return comRepo.findAll(pageable);
+		return comRepo.findByMemberWrite(pageable);
 	}
 
 	public void likeCommunity(Long communityNo, String memberId) {
@@ -151,12 +151,22 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Page<Community> getBoardByTitleOrAuthor(String search, Pageable pageable) {
-		return comRepo.findByTitleOrMemberNameContaining(search, search, pageable);
+	public Page<Community> getBoardByTitle(String search, Pageable pageable) {
+		return comRepo.findByTitleContaining(search, pageable);
 	}
 
 	@Override
-	public Page<TradeBoard> getTradeBoardByTitleOrAuthor(String search, Pageable pageable) {
-		return boardRepo.findByTitleContainingOrMemberNameContaining(search, search, pageable);
+	public Page<Community> getBoardByAuthor(String search, Pageable pageable) {
+		return comRepo.findByMemberNameContaining(search, pageable);
+	}
+
+	@Override
+	public Page<TradeBoard> getTradeBoardByAuthor(String search, Pageable pageable) {
+		return boardRepo.findByMemberNameContaining(search, pageable);
+	}
+
+	@Override
+	public Page<TradeBoard> getTradeBoardByTitle(String search, Pageable pageable) {
+		return boardRepo.findByTitleContaining(search, pageable);
 	}
 }
