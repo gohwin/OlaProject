@@ -56,7 +56,7 @@ public class BoardController {
 				tradeBoards = boardService.getTradeBoardByTitle(search, pageable);
 			}
 		} else {
-			tradeBoards = boardRepo.findAll(pageable);
+			tradeBoards = boardRepo.findByMemberWrite(pageable);
 		}
 
 		model.addAttribute("tradeBoards", tradeBoards);
@@ -88,7 +88,7 @@ public class BoardController {
 				communities = boardService.getBoardByTitle(search, pageable);
 			}
 		} else {
-			communities = comRepo.findAll(pageable);
+			communities = comRepo.findByMemberWrite(pageable);
 		}
 
 		model.addAttribute("communities", communities);

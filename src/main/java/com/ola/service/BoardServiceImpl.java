@@ -94,13 +94,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Page<TradeBoard> tradeBoardList(Pageable pageable) {
 
-		return boardRepo.findAll(pageable);
+		return boardRepo.findByMemberWrite(pageable);
 	}
 
 	@Override
 	public Page<Community> communityBoardList(Pageable pageable) {
 
-		return comRepo.findAll(pageable);
+		return comRepo.findByMemberWrite(pageable);
 	}
 
 	public void likeCommunity(Long communityNo, String memberId) {
