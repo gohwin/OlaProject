@@ -11,6 +11,19 @@
 
 <body>
 	<header th:include="header :: body"></header>
+	<form method="get" action="/communityBoardList" th:action="@{/communityBoardList}" class="search-form">
+		<select name="searchType">
+			<option value="title">제목</option>
+			<option value="author">작성자</option>
+		</select>
+		<input type="text" name="search" th:value="${search}" placeholder="검색어 입력" />
+		<button type="submit">검색</button>
+	</form>
+	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
+	<!-- 공지글 섹션 -->
+	<div class="notice-section">
+		<h2>공지 글</h2>
+		<table>
 
 	<div class="container mt-3">
 		<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물 등록</a>

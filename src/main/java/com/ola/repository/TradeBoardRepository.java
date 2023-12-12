@@ -16,6 +16,8 @@ public interface TradeBoardRepository extends JpaRepository<TradeBoard, Long> {
 	@Query("SELECT c FROM TradeBoard c WHERE c.member.memberId = 'admin'")
 	List<TradeBoard> findByAdminWrite();
 
-	Page<TradeBoard> findByTitleContainingOrMemberNameContaining(String title, String memberName, Pageable pageable);
+	Page<TradeBoard> findByMemberNameContaining(String MemberName, Pageable pageable);
+
+	Page<TradeBoard> findByTitleContaining(String title, Pageable pageable);
 
 }
