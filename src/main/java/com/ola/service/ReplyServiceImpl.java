@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import com.ola.entity.Community;
 import com.ola.entity.Member;
@@ -16,6 +17,7 @@ import com.ola.security.SecurityUser;
 
 import jakarta.transaction.Transactional;
 
+@Service
 public class ReplyServiceImpl implements ReplyService {
 
 	@Autowired
@@ -24,6 +26,11 @@ public class ReplyServiceImpl implements ReplyService {
 	private CommunityRepository communityRepository;
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Override
+	public Reply getReplyByReplyNo(Long replyNo) {
+		return replyRepository.findById(replyNo).orElse(null);
+	}
 
 	@Transactional
 	@Override
@@ -56,4 +63,20 @@ public class ReplyServiceImpl implements ReplyService {
 			replyRepository.save(reply1);
 		}
 	}
+
+	@Transactional
+	@Override
+	public void deleteReply(Long replyNo) {
+		Reply reply = replyRepository.findById(replyNo).orElse(null);
+		if (reply != null) {
+			replyRepository.deleteById(replyNo);
+		}
+	}
+
+	@Override
+	public Community getCommunityByReplyNo(Long replyNo) {
+		Reply reply = replyRepository.findById(replyNo).orElse(null);
+		return (reply != null) ? reply.getCommunity() : null;
+	}
+
 }

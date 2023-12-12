@@ -47,7 +47,7 @@
 							th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
 				</tr>
 				<tr>
-					
+
 				</tr>
 			</tbody>
 		</table>
@@ -61,6 +61,12 @@
 					: <span th:text="${reply.content}"></span>
 					<span th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
 				</p>
+
+				<!-- 삭제 버튼 추가 -->
+				<form th:action="@{/deleteReply}" method="post">
+					<input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
+					<button type="submit" class="btn btn-danger">댓글 삭제</button>
+				</form>
 			</div>
 
 			<h3>댓글 작성</h3>
@@ -70,6 +76,7 @@
 				<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
 			</form>
 		</div>
+
 
 		<!-- 게시글 관리 Section -->
 		<div class="management-section">
