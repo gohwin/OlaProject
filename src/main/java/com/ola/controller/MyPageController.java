@@ -80,6 +80,7 @@ public class MyPageController {
 	    Basket basket = basketRepo.findByUser(member);
 
 	    // 조회된 Basket 객체를 모델에 추가합니다.
+	    model.addAttribute("member", member);
 	    model.addAttribute("basket", basket);
 
 	    // 장바구니 페이지의 Thymeleaf 템플릿 파일명을 반환합니다.
