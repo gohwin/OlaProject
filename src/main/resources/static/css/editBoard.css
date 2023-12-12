@@ -1,0 +1,72 @@
+@charset "UTF-8";
+/* 전체 페이지 컨텐츠를 중앙에 배치합니다. */
+body {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 제목 스타일링 */
+h2 {
+    margin: 20px 0;
+    color: #333;
+}
+
+/* 폼 스타일링 */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 레이블과 인풋 필드의 스타일링 */
+div {
+    margin-bottom: 10px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    margin-right: 10px;
+}
+
+input[type="text"],
+textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* 버튼 스타일링 */
+button {
+    padding: 10px 20px;
+    margin-right: 5px; /* 버튼 사이의 간격 */
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #5cb85c;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+button[type="button"] {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #ec971f;
+}

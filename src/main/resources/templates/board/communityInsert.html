@@ -2,8 +2,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/board.css" rel="stylesheet" />
+	<link href="/css/boardInsert.css" rel="stylesheet" />
 </head>
 
 <body th:align="center">
@@ -20,21 +19,33 @@
 			</tr>
 			<tr>
 				<td th:text="내용"></td>
-				<td><textarea name="content" cols="50" rows="10"></textarea></td>
+				<td><textarea name="content" cols="50" rows="10" maxlength="100" oninput="updateCharCount(this)"></textarea>
+					    <div class="charCount" style="display: block;"><small id="charCount">0 / 100</small></div>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
 					<input type="submit" value="게시글 등록">
+					<button type="button" onclick="goBack()">뒤로 가기</button>
 				</td>
 			</tr>
 		</table>
 	</form>
-	<button type="button" onclick="goBack()">뒤로 가기</button>
+
 	<script>
+		/* 뒤로가기 버튼 함수*/
 		function goBack() {
 			window.history.back();
 		}
+
+		/* textarea의 입력 이벤트에 반응하여 글자 수를 업데이트하는 함수 */
+		function updateCharCount(textarea) {
+			var charCountElement = document.getElementById('charCount');
+			charCountElement.textContent = textarea.value.length + ' / ' + textarea.maxLength;
+		}
 	</script>
+
+
 	<th:block th:include="footer.html"></th:block>
 </body>
 

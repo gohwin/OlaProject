@@ -1,0 +1,70 @@
+@charset "UTF-8";
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 테이블 스타일링 */
+table {
+    width: 100%;
+    max-width: 600px; /* 폼의 최대 너비 */
+    border-collapse: collapse;
+    margin: auto; /* 중앙 정렬 */
+}
+
+td {
+    padding: 10px; /* 셀 패딩 */
+    border: 1px solid #ddd; /* 셀 경계 스타일 */
+}
+
+input[type="text"],
+textarea {
+    width: 95%; /* 전체 셀 너비에 맞게 조정 */
+    padding: 5px; /* 입력 필드 내부 패딩 */
+    border: 1px solid #ccc; /* 입력 필드 경계 스타일 */
+    border-radius: 3px; /* 입력 필드 모서리 둥글게 */
+}
+
+input[type="submit"] {
+    background-color: #5cb85c; /* 버튼 색상 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 버튼 내부 패딩 */
+    border: none;
+    border-radius: 3px; /* 버튼 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    margin-top: 10px; /* 버튼 상단 여백 */
+}
+
+input[type="submit"]:hover {
+    background-color: #4cae4c; /* 호버 시 버튼 색상 변경 */
+}
+
+button[type="button"] {
+    /* '뒤로 가기' 버튼 스타일 */
+    background-color: #f0ad4e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button[type="button"]:hover {
+    background-color: #ec971f;
+}
+
+.button-group {
+    margin-top: 10px; /* 버튼 그룹 상단 여백 */
+    text-align: center; /* 버튼을 중앙에 배치 */
+}
+
+.button-group input[type="submit"],
+.button-group button[type="button"] {
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+    margin-left: 10px;  /* 왼쪽 여백 추가 */
+}

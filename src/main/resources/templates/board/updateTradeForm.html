@@ -3,41 +3,47 @@
 
 <head>
 	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/board.css" rel="stylesheet" />
+	<link href="/css/editTrade.css" rel="stylesheet" />
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
 
 	<h2>게시글 수정</h2>
+	<div class="form_wrap">
+		<form th:action="@{/updateBoard}" method="post">
+			<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
 
-	<form th:action="@{/updateBoard}" method="post">
-		<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
 
+			<label for="title">제목:</label>
+			<input type="text" id="title" name="title" th:value="${tradeBoard.title}" required /><br />
 
-		<label for="title">제목:</label>
-		<input type="text" id="title" name="title" th:value="${tradeBoard.title}" required /><br />
+			<label for="content">내용:</label>
+			<textarea id="content" name="newContent" cols="50" rows="10" maxlength="100" oninput="updateCharCount(this)"
+				th:text="${tradeBoard.content}" required></textarea>
+			<div class="charCount" style="display: block;"><small id="charCount">0 / 100</small></div>
 
-		<label for="content">내용:</label>
-		<textarea id="content" name="content" th:text="${tradeBoard.content}" required></textarea><br />
-
-		<label for="tradeType">제품 상태:</label>
-		<select id="tradeType" name="tradeType">
-			<option value="1" th:selected="${tradeBoard.tradeType == 1}">판매중</option>
-			<option value="2" th:selected="${tradeBoard.tradeType == 2}">구매중</option>
-			<option value="3" th:selected="${tradeBoard.tradeType == 3}">판매완료</option>
-			<option value="4" th:selected="${tradeBoard.tradeType == 4}">구매완료</option>
-		</select><br />
-
-		<button type="submit">게시글 수정</button>
-	</form>
-
-	<button type="button" onclick="goBack()">뒤로 가기</button>
+			<label for="tradeType">제품 상태:</label>
+			<select id="tradeType" name="tradeType">
+				<option value="1" th:selected="${tradeBoard.tradeType == 1}">판매중</option>
+				<option value="2" th:selected="${tradeBoard.tradeType == 2}">구매중</option>
+				<option value="3" th:selected="${tradeBoard.tradeType == 3}">판매완료</option>
+				<option value="4" th:selected="${tradeBoard.tradeType == 4}">구매완료</option>
+			</select>
+			<div class="button-trade">
+				<button type="submit">게시글 수정</button>
+				<button type="button" onclick="goBack()">뒤로 가기</button>
+			</div>
+		</form>
+	</div>
 
 	<script>
 		function goBack() {
 			window.history.back();
+		}
+				function updateCharCount(textarea) {
+			var charCountElement = document.getElementById('charCount');
+			charCountElement.textContent = textarea.value.length + ' / ' + textarea.maxLength;
 		}
 	</script>
 	<th:block th:include="footer.html"></th:block>

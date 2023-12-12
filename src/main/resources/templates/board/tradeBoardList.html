@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/board.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <link href="/css/tradeBoardList.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -59,18 +60,21 @@
 		</tbody>
 	</table>
 
-	<div class="pagination" th:if="${tradeBoards != null and not tradeBoards.empty}">
-		<a th:if="${tradeBoards.number > 0}"
-			th:href="@{/tradeBoardList(page=${tradeBoards.number - 1}, search=${search})}">이전</a>
-		<ul>
-			<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
-				<a th:href="@{/tradeBoardList(page=${pageNum - 1}, search=${search})}" th:text="${pageNum}"
-					th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
-			</li>
-		</ul>
-		<a th:if="${memberCurrentPage < memberTotalPages}"
-			th:href="@{/tradeBoardList(page=${tradeBoards.number + 1}, search=${search})}">다음</a>
-	</div>
+<div class="pagination-trade" th:if="${tradeBoards != null and not tradeBoards.empty}">
+	<a th:if="${tradeBoards.number > 0}"
+		th:href="@{/tradeBoardList(page=${tradeBoards.number - 1}, search=${search})}">이전</a>
+
+	<ul>
+		<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
+			<a th:href="@{/tradeBoardList(page=${pageNum - 1}, search=${search})}" th:text="${pageNum}"
+				th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
+		</li>
+	</ul>
+
+	<a th:if="${memberCurrentPage < memberTotalPages}"
+		th:href="@{/tradeBoardList(page=${tradeBoards.number + 1}, search=${search})}">다음</a>
+</div>
+
 
 	<th:block th:include="footer.html"></th:block>
 </body>

@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <link href="/css/main.css" rel="stylesheet" />
     <link href="/css/editBoard.css" rel="stylesheet" />
 </head>
 
@@ -22,7 +21,8 @@
 
         <div>
             <label for="content">게시글 내용:</label>
-            <textarea id="content" name="newContent" th:text="${community.content}"></textarea>
+            <textarea id="content" name="newContent" cols="50" rows="10" maxlength="100" oninput="updateCharCount(this)" th:text="${community.content}"></textarea>
+        	<div class="charCount" style="display: block;"><small id="charCount">0 / 100</small></div>
         </div>
 
         <div>
