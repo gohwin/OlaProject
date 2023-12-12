@@ -39,9 +39,9 @@ public class BoardController {
 	@GetMapping("/tradeBoardList")
 	public String tradeBoardList(Model model, Authentication authentication,
 			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "searchType", defaultValue = "title") String searchType,
 			@PageableDefault(size = 10, sort = "registrationDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
-			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
 
@@ -49,10 +49,12 @@ public class BoardController {
 		model.addAttribute("adminWrite", adminWrite);
 
 		Page<TradeBoard> tradeBoards;
-
 		if (search != null && !search.isEmpty()) {
-			// 제목 또는 작성자로 검색
-			tradeBoards = boardService.getTradeBoardByTitleOrAuthor(search, pageable);
+			if ("author".equals(searchType)) {
+				tradeBoards = boardService.getTradeBoardByAuthor(search, pageable);
+			} else {
+				tradeBoards = boardService.getTradeBoardByTitle(search, pageable);
+			}
 		} else {
 			tradeBoards = boardRepo.findAll(pageable);
 		}
@@ -68,6 +70,7 @@ public class BoardController {
 	@GetMapping("/communityBoardList")
 	public String communityBoardList(Model model, Authentication authentication,
 			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "searchType", defaultValue = "title") String searchType,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
@@ -79,9 +82,13 @@ public class BoardController {
 
 		Page<Community> communities;
 		if (search != null && !search.isEmpty()) {
-			communities = boardService.getBoardByTitleOrAuthor(search, pageable);
+			if ("author".equals(searchType)) {
+				communities = boardService.getBoardByAuthor(search, pageable);
+			} else {
+				communities = boardService.getBoardByTitle(search, pageable);
+			}
 		} else {
-			communities = comRepo.findAll(pageable); // 검색값이 널일 때는 전체 리스트 조회
+			communities = comRepo.findAll(pageable);
 		}
 
 		model.addAttribute("communities", communities);
@@ -158,14 +165,14 @@ public class BoardController {
 
 	@PostMapping("/editCommunity/save")
 	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
-			@AuthenticationPrincipal UserDetails userDetails) {
+			@RequestParam String newTitle, @AuthenticationPrincipal UserDetails userDetails) {
 		Community community = boardService.getCommunityById(communityNo);
 
 		// 로그인한 사용자가 게시글 작성자인지 확인
 		if (userDetails != null && community != null
 				&& userDetails.getUsername().equals(community.getMember().getMemberId())) {
 			// 여기에서 수정 작업 수행
-			community.setTitle(newContent);
+			community.setTitle(newTitle);
 			community.setContent(newContent);
 			boardService.saveCommunity(community);
 			return "redirect:/getCommuBoard?communityNo=" + communityNo;
