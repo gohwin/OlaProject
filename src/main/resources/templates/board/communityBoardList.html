@@ -11,7 +11,7 @@
 
 <body>
 	<header th:include="header :: body"></header>
-	<form method="get" action="/communityBoardList" th:action="@{/communityBoardList}" class="search-form">
+	<form method="get" th:action="@{/communityBoardList}" class="search-form">
 		<select name="searchType">
 			<option value="title">제목</option>
 			<option value="author">작성자</option>
@@ -22,84 +22,77 @@
 	<a th:href="@{/board/communityInsert}" class="register-link">게시물 등록</a>
 	<!-- 공지글 섹션 -->
 	<div class="notice-section">
-		<h2>공지 글</h2>
 		<table>
 
-	<div class="container mt-3">
-		<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물 등록</a>
+			<div class="container mt-3">
+				<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물 등록</a>
 
-		<!-- 공지글 섹션 -->
-		<div class="notice-section mb-4">
-			<h2>공지 글</h2>
-			<table class="table table-hover styled-table">
-				<thead>
-					<tr>
-						<th>제목</th>
-						<th>작성일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- adminWrite를 사용하여 공지사항 출력 -->
-					<tr th:each="notice : ${adminWrite}">
-						<td><a th:href="@{/getCommuBoard(communityNo=${notice.communityNo})}"
-								th:text="${notice.title}"></a></td>
-						<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+				<!-- 공지글 섹션 -->
+				<div class="notice-section mb-4">
+					<table class="table table-hover styled-table">
+						<thead>
+							<tr>
+								<th>제목</th>
+								<th>작성일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- adminWrite를 사용하여 공지사항 출력 -->
+							<tr th:each="notice : ${adminWrite}">
+								<td><a th:href="@{/getCommuBoard(communityNo=${notice.communityNo})}"
+										th:text="${notice.title}"></a></td>
+								<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-		<!-- 나머지 게시글 목록 섹션 -->
-		<table class="table table-hover styled-table">
-			<thead>
-				<tr>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>조회수</th>
-					<th>좋아요</th>
-					<th>댓글수</th>
-					<th>작성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="community : ${memberWrite.content}">
-					<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
-							th:text="${community.title}"></a></td>
-					<td th:text="${community.member.name}"></td>
-					<td th:text="${community.viewCount}"></td>
-					<td th:text="${community.likeCount}"></td>
-					<td th:text="${community.commentCount}"></td>
-					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
-				</tr>
-			</tbody>
-		</table>
+				<!-- 나머지 게시글 목록 섹션 -->
+				<table class="table table-hover styled-table">
+					<thead>
+						<tr>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>조회수</th>
+							<th>좋아요</th>
+							<th>댓글수</th>
+							<th>작성일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="community : ${communities.content}">
+							<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
+									th:text="${community.title}"></a></td>
+							<td th:text="${community.member?.name}"></td>
+							<td th:text="${community.viewCount}"></td>
+							<td th:text="${community.likeCount}"></td>
+							<td th:text="${community.commentCount}"></td>
+							<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
+						</tr>
+					</tbody>
+				</table>
 
-		<!-- member 게시글 페이징 섹션 -->
-		<div class="bottom-container">
-			
-		<div class="pagination-container">
-			<div class="pagination">
-				<a th:if="${memberWrite.number > 0}" th:href="@{/communityBoardList(page=${memberWrite.number - 1})}"
-					class="prev-page">이전</a>
-				<ul>
-					<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
-						<a th:href="@{/communityBoardList(page=${pageNum - 1})}" th:text="${pageNum}"
-							th:classappend="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
-					</li>
-				</ul>
-				<a th:if="${memberCurrentPage < memberTotalPages}"
-					th:href="@{/communityBoardList(page=${memberCurrentPage})}" class="next-page">다음</a>
-			</div>
-		</div>
-		</div>
+				<div class="pagination" th:if="${communities != null and not communities.empty}">
+					<a th:if="${communities.number > 0}"
+						th:href="@{/communityBoardList(page=${communities.number - 1}, search=${search})}">이전</a>
+					<ul>
+						<li th:each="pageNum : ${#numbers.sequence(1, memberTotalPages)}">
+							<a th:href="@{/communityBoardList(page=${pageNum - 1}, search=${search})}"
+								th:text="${pageNum}"
+								th:class="${pageNum == memberCurrentPage ? 'current-page' : ''}"></a>
+						</li>
+					</ul>
+					<a th:if="${memberCurrentPage < memberTotalPages}"
+						th:href="@{/communityBoardList(page=${communities.number + 1}, search=${search})}">다음</a>
+				</div>
 
-		<th:block th:include="footer.html"></th:block>
+				<th:block th:include="footer.html"></th:block>
 
 
-		<!-- 부트스트랩 JS -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+				<!-- 부트스트랩 JS -->
+				<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+				<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
