@@ -27,7 +27,7 @@
 				<tr th:each="notice : ${adminWrite}">
 					<td><a th:href="@{/getTradeBoard(tradeBoardNo=${notice.tradeBoardNo})}"
 							th:text="${notice.title}"></a></td>
-					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
+					<td th:text="${#dates.format(notice.registrationDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
