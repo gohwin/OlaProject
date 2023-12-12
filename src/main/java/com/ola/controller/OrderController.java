@@ -37,23 +37,6 @@ public class OrderController {
 	@Autowired
 	private OrderListRepository orderRepo;
 
-	@GetMapping("/basketOrder")
-	public String orderView(@RequestParam("basketId") Long basketId, @RequestParam("productNo") Long productNo,
-			Model model) {
-		// basketId를 사용하여 장바구니 정보를 조회합니다.
-		Basket basket = basketRepo.findById(basketId).orElse(null);
-
-		// productId를 사용하여 주문할 상품 정보를 조회합니다.
-		Product product = prodRepo.findById(productNo).orElse(null);
-
-		// 장바구니와 상품 정보를 모델에 추가합니다.
-		model.addAttribute("basket", basket);
-		model.addAttribute("product", product);
-
-		// 주문 페이지로 이동합니다.
-		return "order/basketOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
-	}
-
 	@PostMapping("/basketOrder")
 	@Transactional
 	public String submitOrder(@RequestParam Map<String, String> allParams,
@@ -146,11 +129,13 @@ public class OrderController {
 	}
 
 	@GetMapping("/directOrderView")
-	public String directOrder(@RequestParam("productNo") Long productNo, Model model) {
+	public String directOrder(@RequestParam("productNo") Long productNo, @AuthenticationPrincipal SecurityUser principal, Model model) {
 	    Product product = prodRepo.findById(productNo)
 	                     .orElseThrow(() -> new IllegalArgumentException("Invalid product No:" + productNo));
-
+	    Member member = principal.getMember();
+	    
 	    model.addAttribute("product", product);
+	    model.addAttribute("member", member);
 
 	    return "order/directOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
 	}
