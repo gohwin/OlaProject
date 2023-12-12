@@ -19,29 +19,30 @@ import com.ola.security.SecurityUser;
 public class ReplyController {
 	@Autowired
 	private ReplyRepository replyRepo;
-	
+
 	@Autowired
 	private CommunityRepository commuRepo;
 
 	@PostMapping("/addReply")
-    public String addReply(@RequestParam("communityNo") Long communityNo,
-                           @RequestParam("replycontent") String content,
-                           Authentication authentication) {
-        SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
-        Member currentMember = userDetails.getMember();
+	public String addReply(@RequestParam("communityNo") Long communityNo, @RequestParam("replycontent") String content,
+			Authentication authentication) {
+		SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
+		Member currentMember = userDetails.getMember();
 
-        Community community = commuRepo.findById(communityNo)
-                              .orElseThrow(() -> new IllegalArgumentException("Invalid community No:" + communityNo));
+		Community community = commuRepo.findById(communityNo)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid community No:" + communityNo));
 
-        Reply reply = new Reply();
-        reply.setMember(currentMember);
-        reply.setCommunity(community);
-        reply.setContent(content);
-        reply.setRegDate(new Date()); // Assuming you have a regDate field for the registration date
+		Reply reply = new Reply();
+		reply.setMember(currentMember);
+		reply.setCommunity(community);
+		reply.setContent(content);
+		reply.setRegDate(new Date());
+		replyRepo.save(reply);
 
-        replyRepo.save(reply);
+		community.setCommentCount(community.getCommentCount() + 1);
+		commuRepo.save(community);
 
-        return "redirect:/getCommuBoard?communityNo=" + communityNo;
-    }
+		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	}
 
 }

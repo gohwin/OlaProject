@@ -90,7 +90,6 @@ public class BoardController {
 		} else {
 			communities = comRepo.findAll(pageable);
 		}
-
 		model.addAttribute("communities", communities);
 		model.addAttribute("memberCurrentPage", communities.getNumber() + 1);
 		model.addAttribute("memberTotalPages", communities.getTotalPages());
