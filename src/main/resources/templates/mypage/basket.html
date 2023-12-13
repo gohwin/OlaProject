@@ -126,6 +126,7 @@
 		<p>장바구니에 제품이 없습니다.</p>
 	</div>
 
+
 	<div
 		th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
 		<form id="orderForm" th:action="@{/basketOrder}" method="post"
@@ -188,7 +189,8 @@
 	<span id="memberZipNum" style="display: none;"
 		th:text="${member.zipNum}"></span>
 	<span id="firstProductName" style="display: none;"
-		th:text="${basket.products[0].productName}"></span>
+    th:if="${not #lists.isEmpty(basket.products)}"
+    th:text="${basket.products[0].productName}"></span>
 	<span id="totalProductCount" style="display: none;"
 		th:text="${#lists.size(basket.products)}"></span>
 

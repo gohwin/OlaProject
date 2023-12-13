@@ -73,12 +73,18 @@ public class MyPageController {
 	    // 현재 로그인한 사용자의 Member 객체를 가져옵니다.
 	    Member member = principal.getMember();
 
-	    // 사용자와 연관된 단일 Basket 객체를 조회합니다.
-	    // findByMember 메소드는 Member 객체를 받아 해당 Member와 연관된 Basket 객체를 반환합니다.
-	    // 실제 구현에 따라 메소드 이름과 로직이 다를 수 있습니다.
+	    // 사용자와 연관된 Basket 객체를 조회합니다.
 	    Basket basket = basketRepo.findByUser(member);
 
-	    // 조회된 Basket 객체를 모델에 추가합니다.
+	    // 만약 조회된 Basket 객체가 없다면 빈 객체를 생성합니다.
+	    if (basket == null) {
+	        basket = new Basket();
+	        basket.setMember(member);
+	        // 빈 객체를 저장합니다.
+	        basketRepo.save(basket);
+	    }
+
+	    // 조회된 또는 생성된 Basket 객체를 모델에 추가합니다.
 	    model.addAttribute("member", member);
 	    model.addAttribute("basket", basket);
 
@@ -104,6 +110,7 @@ public class MyPageController {
         // 클라이언트에 성공 메시지를 보냅니다.
         return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
     }
+
 
 
 
