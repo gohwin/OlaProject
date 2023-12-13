@@ -91,42 +91,43 @@ public class OrderController {
 
 	@PostMapping("/insertBasket")
 	public String insertBasketAction(@RequestParam("productNo") Long productNo,
-			@AuthenticationPrincipal SecurityUser principal, Model model) {
-		int quantity = 1;
-		// 현재 로그인한 사용자의 Member 객체를 가져옵니다.
-		Member member = principal.getMember();
+	        @AuthenticationPrincipal SecurityUser principal, Model model) {
+	    int quantity = 1; // 기본 수량
+	    Member member = principal.getMember();
+	    Basket basket = basketRepo.findByUser(member);
 
-		// 사용자와 연관된 Basket 객체를 조회합니다.
-		Basket basket = basketRepo.findByUser(member);
+	    if (basket != null) {
+	        Product product = prodRepo.findById(productNo).orElse(null);
 
-		// 장바구니에 상품을 추가합니다.
-		if (basket != null) {
-			// 상품을 Product 테이블에서 조회합니다.
-			Product product = prodRepo.findById(productNo).orElse(null);
+	        if (product != null) {
+	            // 장바구니에 상품이 이미 있는지 확인합니다.
+	            if (basket.getProducts().contains(product)) {
+	                // 상품이 이미 있으면, 수량을 증가시킵니다.
+	                int existingQuantity = basket.getProductQuantityMap().getOrDefault(productNo, 0);
+	                basket.getProductQuantityMap().put(productNo, existingQuantity + 1);
+	            } else {
+	                // 상품이 없으면, 새로 추가합니다.
+	                basket.addProduct(product, quantity);
+	            }
+	            basketRepo.save(basket);
+	        }
+	    } else {
+	        // 사용자와 연관된 Basket 객체가 없는 경우, 새로운 Basket 객체를 생성합니다.
+	        basket = Basket.builder().member(member).build();
+	        basketRepo.save(basket);
 
-			if (product != null) {
-				// 상품이 존재하면 장바구니에 추가합니다.
-				basket.addProduct(product, quantity);
-				basketRepo.save(basket);
-			}
-		} else {
-			// 사용자와 연관된 Basket 객체가 없는 경우, 새로운 Basket 객체를 생성합니다.
-			basket = Basket.builder().member(member).build();
-			basketRepo.save(basket);
-
-			// 상품을 Product 테이블에서 조회합니다.
-			Product product = prodRepo.findById(productNo).orElse(null);
-
-			if (product != null) {
-				// 상품이 존재하면 장바구니에 추가합니다.
-				basket.addProduct(product, quantity);
-				basketRepo.save(basket);
-			}
-		}
-		model.addAttribute("basket", basket);
-		// 장바구니 페이지로 리다이렉트합니다.
-		return "redirect:/mypage/basket";
+	        Product product = prodRepo.findById(productNo).orElse(null);
+	        if (product != null) {
+	            // 상품이 존재하면 장바구니에 추가합니다.
+	            basket.addProduct(product, quantity);
+	            basketRepo.save(basket);
+	        }
+	    }
+	    model.addAttribute("basket", basket);
+	    return "redirect:/mypage/basket";
 	}
+
+
 
 	@GetMapping("/directOrderView")
 	public String directOrder(@RequestParam("productNo") Long productNo, @AuthenticationPrincipal SecurityUser principal, Model model) {
