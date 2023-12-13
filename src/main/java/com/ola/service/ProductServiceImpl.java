@@ -19,15 +19,17 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
     private ProductRepository productRepository;
 
-    private String uploadDirectory = "/images/shoes";
+    private String uploadDirectory = "/images/";
 
     @Override
-    public String uploadImage(MultipartFile imageFile) throws IOException {
+    public String uploadImage(MultipartFile imageFile, int prodCategory) throws IOException {
         // 파일 이름 생성
         String fileName = imageFile.getOriginalFilename();
+        
+        String category = convertCategoryToName(prodCategory);
 
         // 이미지 파일 저장 (절대 경로 사용)
-        Path uploadPath = Paths.get(uploadDirectory);
+        Path uploadPath = Paths.get(uploadDirectory + category);
         
         // 디렉토리가 없는 경우 생성
         if (!Files.exists(uploadPath)) {
@@ -39,6 +41,23 @@ public class ProductServiceImpl implements ProductService {
 
         return fileName;
     }
+    
+    private String convertCategoryToName(int category) {
+	    switch (category) {
+	        case 1:
+	            return "top";
+	        case 2:
+	            return "bottom";
+	        case 3:
+	            return "shoes";
+	        case 4:
+	            return "etc";
+	        case 5:
+	            return "sales";
+	        default:
+	            return "unknown"; // Default case if category does not match
+	    }
+	}
 
 
 

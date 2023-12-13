@@ -33,8 +33,7 @@
 				<div th:each="product, iterStat : ${top}" class="col mb-5">
 					<div class="card h-100">
 						<!-- Product image-->
-						<img class="card-img-top" src="https://via.placeholder.com/450x300"
-							alt="/images/logo/CLEX_logo.jpg">
+						<img class="product-image" th:src="'/images/' + ${category[iterStat.index]} + '/' + ${product.image}">
 						<!-- Product details-->
 						<div class="card-body p-4">
 							<div class="text-center">
