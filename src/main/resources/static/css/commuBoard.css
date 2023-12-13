@@ -1,51 +1,87 @@
-.notice-section, .styled-table {
-    margin-bottom: 20px; /* 하단 여백 */
+.notice-section,
+.styled-table {
+	margin-bottom: 20px;
+	/* 하단 여백 */
 }
 
 .styled-table thead th {
-    background-color: #f4f4f4; /* 헤더 배경색 */
-    border-bottom: 2px solid #dee2e6; /* 하단 테두리 */
+	background-color: #f4f4f4;
+	/* 헤더 배경색 */
+	border-bottom: 2px solid #dee2e6;
+	/* 하단 테두리 */
+}
+
+/* 검색 폼 스타일링 */
+.search-form {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.search-form input[type="text"] {
+	padding: 10px;
+	margin-right: 5px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+}
+
+.search-form button {
+	padding: 10px 15px;
+	border: none;
+	border-radius: 4px;
+	background-color: #4CAF50;
+	color: white;
+	cursor: pointer;
+}
+
+.search-form button:hover {
+	background-color: #45a049;
 }
 
 /* 게시물 등록 버튼 스타일링 */
-.register-link, .btn-primary {
-    margin-bottom: 20px; /* 버튼 하단 여백 */
+.register-link,
+.btn-primary {
+	margin-bottom: 20px;
+	/* 버튼 하단 여백 */
 }
 
 /* 페이징 섹션 스타일링 */
 /* 페이징 컨테이너 스타일링 */
 .pagination-commu {
-    text-align: center; /* 텍스트 중앙 정렬 */
-    margin-bottom: 20px;
-    margin-top: 20px;
+	text-align: center;
+	/* 텍스트 중앙 정렬 */
+	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
 /* 페이징 내부 ul 스타일링 */
 .pagination-commu ul {
-    display: inline-block; /* 리스트를 인라인 블록 요소로 설정 */
-    list-style: none; /* 기본 목록 스타일 제거 */
-    padding: 0;
+	display: inline-block;
+	/* 리스트를 인라인 블록 요소로 설정 */
+	list-style: none;
+	/* 기본 목록 스타일 제거 */
+	padding: 0;
 }
 
 /* 페이징 내부 li 및 a 스타일링 */
 .pagination-commu ul li {
-    display: inline; /* 리스트 아이템을 가로로 나열 */
+	display: inline;
+	/* 리스트 아이템을 가로로 나열 */
 }
 
 .pagination-commu a {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    color: black;
-    text-decoration: none;
-    border-radius: 4px;
+	margin: 0 5px;
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	color: black;
+	text-decoration: none;
+	border-radius: 4px;
 }
 
 .pagination-commu a:hover {
-    background-color: #f4f4f4;
+	background-color: #f4f4f4;
 }
 
 .pagination-commu .current-page {
-    font-weight: bold;
-    background-color: #ddd;
+	font-weight: bold;
+	background-color: #ddd;
 }
