@@ -50,4 +50,11 @@ public class Basket {
         // productQuantityMap에 수량 추가
         this.productQuantityMap.put(product.getProductNo(), quantity);
     }
+    
+    public void removeProduct(Long productNo) {
+        // products 세트에서 상품 제거
+        this.products.removeIf(product -> product.getProductNo().equals(productNo));
+        // productQuantityMap에서 해당 상품의 수량 제거
+        this.productQuantityMap.remove(productNo);
+    }
 }

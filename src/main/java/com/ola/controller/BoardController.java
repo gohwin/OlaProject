@@ -214,8 +214,6 @@ public class BoardController {
 	@PostMapping("/board/tradeInsert")
 	public String tradeInsertAction(@ModelAttribute TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
 
-		board.setRegistrationDate(new Date());
-
 		board.setMember(principal.getMember());
 
 		boardService.insertTradeBoard(board);
