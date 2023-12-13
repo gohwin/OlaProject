@@ -15,7 +15,7 @@
 		<div class="product-container">
 			<!-- topProducts 리스트를 순회하여 상품 출력 -->
 			<div th:each="product : ${sales}" class="product" th:data-product-no="${product.productNo}">
-				<img th:src="'/images/sales/' + ${product.image}" alt="Product Image" class="product-image">
+				<img class="product-image" th:src="'/images/' + ${category[iterStat.index]} + '/' + ${product.image}">
 				<h4 th:text="${product.productName}"></h4>
 				<p th:text="${product.price}"></p>
 			</div>

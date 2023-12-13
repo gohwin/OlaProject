@@ -53,7 +53,7 @@ public class adminProductController {
 //	            Model model
 	    ) {
 	        try {
-	            String imageUrl = productService.uploadImage(imageFile);
+	            String imageUrl = productService.uploadImage(imageFile, prodCategory);
 	            productService.addProduct(productName, prodCategory, price, prodSize, salesQuantity, inventory, imageUrl);
 //	            model.addAttribute("message", "Product added successfully.");
 	        } catch (Exception e) {

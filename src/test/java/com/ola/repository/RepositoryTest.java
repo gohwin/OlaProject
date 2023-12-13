@@ -131,27 +131,31 @@ public class RepositoryTest {
 	@Disabled
 	@Test
 	public void testProduct() {
-		IntStream.rangeClosed(1, 5).forEach(i -> {
+		IntStream.rangeClosed(1, 14).forEach(i -> {
 			Product product = Product.builder()
-					.productName("임시상품" + i)
-					.prodCategory(4)
-					.price(30000L)
-					.prodSize("XL")
+					.productName("bottom" + i)
+					.prodCategory(2)
+					.price(10000L)
+					.prodSize("L")
 					.salesQuantity(0L)
 					.inventory(1000)
+					.image("bottom"+i+".jpg")
 					.build();
 			prodRepo.save(product);
 		});
-		
+		IntStream.rangeClosed(1, 15).forEach(i -> {
+			
 		Product product2 = Product.builder()
-				.productName("테스트")
+				.productName("shoes"+i)
 				.prodCategory(3)
 				.price(15000L)
 				.prodSize("XL")
 				.salesQuantity(0L)
 				.inventory(1000)
+				.image("shoes"+i+".jpg")
 				.build();
 		prodRepo.save(product2);
+		});
 	}
 	
 	@Disabled

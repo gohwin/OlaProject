@@ -10823,4 +10823,8 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+  .product-image {
+    width: 450px;
+    height: 300px;
+}
 }
