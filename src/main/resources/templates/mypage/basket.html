@@ -17,22 +17,23 @@
 
 	// 함수를 수정하여 각 상품의 가격과 수량을 기반으로 총 금액을 계산
 	function calculateTotalAmount() {
-    var totalAmount = 0;
-    var inputElements = document.querySelectorAll('input[type="number"][name^="quantity_"]');
-    
-    inputElements.forEach(function(inputElement) {
-        var quantity = parseInt(inputElement.value);
-        var price = parseInt(inputElement.getAttribute('data-price'));
-        totalAmount += quantity * price;
-    });
-    
-    var totalAmountElement = document.getElementById('totalAmount');
-    if (totalAmountElement) {
-        totalAmountElement.textContent = totalAmount;
-    }
-    
-    return totalAmount;
-}
+		var totalAmount = 0;
+		var inputElements = document
+				.querySelectorAll('input[type="number"][name^="quantity_"]');
+
+		inputElements.forEach(function(inputElement) {
+			var quantity = parseInt(inputElement.value);
+			var price = parseInt(inputElement.getAttribute('data-price'));
+			totalAmount += quantity * price;
+		});
+
+		var totalAmountElement = document.getElementById('totalAmount');
+		if (totalAmountElement) {
+			totalAmountElement.textContent = totalAmount;
+		}
+
+		return totalAmount;
+	}
 
 	$(document).ready(
 			function() {
@@ -46,28 +47,32 @@
 		var totalAmount = calculateTotalAmount(); // 총액 계산
 
 		var buyerEmail = document.getElementById('memberEmail').textContent;
-        var buyerName = document.getElementById('memberName').textContent;
-        var buyerTel = document.getElementById('memberPhone').textContent;
-        var buyerAddr = document.getElementById('memberAddress').textContent + ' ' + document.getElementById('memberDetailedAddress').textContent;
-        var buyerPostcode = document.getElementById('memberZipNum').textContent;
+		var buyerName = document.getElementById('memberName').textContent;
+		var buyerTel = document.getElementById('memberPhone').textContent;
+		var buyerAddr = document.getElementById('memberAddress').textContent
+				+ ' '
+				+ document.getElementById('memberDetailedAddress').textContent;
+		var buyerPostcode = document.getElementById('memberZipNum').textContent;
 
-        var firstProductName = document.getElementById('firstProductName').textContent;
-        var totalProductCount = parseInt(document.getElementById('totalProductCount').textContent, 10);
+		var firstProductName = document.getElementById('firstProductName').textContent;
+		var totalProductCount = parseInt(document
+				.getElementById('totalProductCount').textContent, 10);
 
-        var orderName = totalProductCount > 1 ? firstProductName + ' 외 ' + (totalProductCount - 1) + '건' : firstProductName;
+		var orderName = totalProductCount > 1 ? firstProductName + ' 외 '
+				+ (totalProductCount - 1) + '건' : firstProductName;
 
 		IMP.request_pay({
 			pg : '9810030929',
-            pay_method : 'card',
-            merchant_uid : new Date().getTime(), // 상점에서 생성한 고유 주문번호
-            name : '주문명: ' + orderName,
-            amount : totalAmount, // 계산된 총 금액 사용
-            buyer_email : buyerEmail,
-            buyer_name : buyerName,
-            buyer_tel : buyerTel,
-            buyer_addr : buyerAddr,
-            buyer_postcode : buyerPostcode,
-            m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
+			pay_method : 'card',
+			merchant_uid : new Date().getTime(), // 상점에서 생성한 고유 주문번호
+			name : '주문명: ' + orderName,
+			amount : totalAmount, // 계산된 총 금액 사용
+			buyer_email : buyerEmail,
+			buyer_name : buyerName,
+			buyer_tel : buyerTel,
+			buyer_addr : buyerAddr,
+			buyer_postcode : buyerPostcode,
+			m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
 		}, function(rsp) { // callback
 			if (rsp.success) {
 				var form = document.getElementById("orderForm");
@@ -90,6 +95,7 @@
 		th:if="${basket == null || basket.products == null || basket.products.isEmpty()}">
 		<p>장바구니에 제품이 없습니다.</p>
 	</div>
+
 
 	<div
 		th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
@@ -134,15 +140,22 @@
 	<div class="shopping-button">
 		<a th:href="@{/item/all}"><button>쇼핑하기</button></a>
 	</div>
-	
+
 	<span id="memberEmail" style="display: none;" th:text="${member.email}"></span>
-    <span id="memberName" style="display: none;" th:text="${member.name}"></span>
-    <span id="memberPhone" style="display: none;" th:text="${member.phoneNumber}"></span>
-    <span id="memberAddress" style="display: none;" th:text="${member.address}"></span>
-    <span id="memberDetailedAddress" style="display: none;" th:text="${member.detailedAddress}"></span>
-    <span id="memberZipNum" style="display: none;" th:text="${member.zipNum}"></span>
-	<span id="firstProductName" style="display: none;" th:text="${basket.products[0].productName}"></span>
-    <span id="totalProductCount" style="display: none;" th:text="${#lists.size(basket.products)}"></span>
-	
+	<span id="memberName" style="display: none;" th:text="${member.name}"></span>
+	<span id="memberPhone" style="display: none;"
+		th:text="${member.phoneNumber}"></span>
+	<span id="memberAddress" style="display: none;"
+		th:text="${member.address}"></span>
+	<span id="memberDetailedAddress" style="display: none;"
+		th:text="${member.detailedAddress}"></span>
+	<span id="memberZipNum" style="display: none;"
+		th:text="${member.zipNum}"></span>
+	<span id="firstProductName" style="display: none;"
+    th:if="${not #lists.isEmpty(basket.products)}"
+    th:text="${basket.products[0].productName}"></span>
+	<span id="totalProductCount" style="display: none;"
+		th:text="${#lists.size(basket.products)}"></span>
+
 </body>
 </html>
