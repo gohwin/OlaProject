@@ -168,6 +168,7 @@ public class BoardController {
 			return "errorPage";
 		}
 	}
+	
 
 	@PostMapping("/editCommunity/save")
 	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
@@ -190,7 +191,9 @@ public class BoardController {
 	}
 
 	@PostMapping("/updateBoard")
-	public String updateTrade(@ModelAttribute TradeBoard tradeBoard) {
+	public String updateTrade(@RequestParam("title") String title, @RequestParam("newContent") String content, @ModelAttribute TradeBoard tradeBoard) {
+		tradeBoard.setTitle(title);
+		tradeBoard.setContent(content);
 		boardService.updateBoard(tradeBoard);
 		return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoard.getTradeBoardNo();
 	}
