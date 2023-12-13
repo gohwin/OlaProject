@@ -42,4 +42,5 @@ public class TradeBoard {
 
     private String title;
 
+
 }

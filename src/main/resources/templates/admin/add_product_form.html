@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Simple Sidebar - Start Bootstrap Template</title>
+	<!-- Favicon-->
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+	<!-- Core theme CSS (includes Bootstrap)-->
+	<link href="/adminPage/css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div class="d-flex" id="wrapper">
+		<!-- Sidebar-->
+		<div class="border-end bg-white" id="sidebar-wrapper">
+			<div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
+			<div class="list-group list-group-flush">
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/products}">상품관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/community}">자유게시판관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/tradeBoard}">중고거래게시판</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+			</div>
+		</div>
+		<!-- Page content wrapper-->
+		<div id="page-content-wrapper">
+			<!-- Top navigation-->
+			<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+				<div class="container-fluid">
+					<button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+						data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation"><span
+							class="navbar-toggler-icon"></span></button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+							<li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<!-- Page content-->
+			<h1>Add Product</h1>
+			<div id="page-content-wrapper">
+				<h1>Add Product</h1>
+				<form th:action="@{/admin/addProduct}" method="POST" enctype="multipart/form-data" id="product" name="product">
+					<label for="productName">Product Name:</label>
+					<input type="text" id="productName" name="productName" required><br><br>
+					<!-- name을 Product 엔티티의 필드 이름과 일치 -->
+
+					<label for="prodCategory">Product Category:</label>
+					<select id="prodCategory" name="prodCategory" required> <!-- name을 Product 엔티티의 필드 이름과 일치 -->
+						<option value="1">Top</option>
+						<option value="2">Bottom</option>
+						<option value="3">Shoes</option>
+						<option value="4">Etc</option>
+						<option value="5">Sale</option>
+					</select><br><br>
+
+					<label for="price">Price:</label>
+					<input type="number" id="price" name="price" required><br><br>
+
+					<label for="prodSize">Product Size:</label>
+					<input type="text" id="prodSize" name="prodSize" required><br><br> <!-- name을 Product 엔티티의 필드 이름과 일치 -->
+
+					<label for="salesQuantity">Sales Quantity:</label>
+					<input type="number" id="salesQuantity" name="salesQuantity" required><br><br>
+
+					<label for="inventory">Inventory:</label>
+					<input type="number" id="inventory" name="inventory" required><br><br>
+
+					<label for="image">Image:</label>
+					<input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Bootstrap core JS-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Core theme JS-->
+	<script src="/adminPage/js/scripts.js"></script>
+</body>
+
+</html>
