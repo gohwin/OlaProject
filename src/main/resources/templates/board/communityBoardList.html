@@ -2,10 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<!-- 부트스트랩 CSS -->
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/commuBoard.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<!-- 부트스트랩 CSS -->
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="/css/commuBoard.css" rel="stylesheet" />
 
 </head>
 
@@ -19,57 +21,61 @@
 		<input type="text" name="search" th:value="${search}" placeholder="검색어 입력" />
 		<button type="submit">검색</button>
 	</form>
+
 	<div class="container mt-3">
-		<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물 등록</a>
-
-		<!-- 공지글 섹션 -->
-		<div class="notice-section mb-4">
-			<h2>공지 글</h2>
-			<table class="table table-hover styled-table">
-				<thead>
-					<tr>
-						<th>제목</th>
-						<th>작성일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- adminWrite를 사용하여 공지사항 출력 -->
-					<tr th:each="notice : ${adminWrite}">
-						<td><a th:href="@{/getCommuBoard(communityNo=${notice.communityNo})}"
-								th:text="${notice.title}"></a></td>
-						<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<!-- 나머지 게시글 목록 섹션 -->
+		<a th:href="@{/board/communityInsert}" class="btn btn-primary mb-3">게시물
+			등록</a>
+	</div>
+	<!-- 공지글 섹션 -->
+	<div class="notice-section mb-4">
+		<h2>공지 글</h2>
 		<table class="table table-hover styled-table">
 			<thead>
 				<tr>
 					<th>제목</th>
-					<th>작성자</th>
-					<th>조회수</th>
-					<th>좋아요</th>
-					<th>댓글수</th>
 					<th>작성일</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="community : ${communities.content}">
-					<td><a th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
-							th:text="${community.title}"></a></td>
-					<td th:text="${community.member.name}"></td>
-					<td th:text="${community.viewCount}"></td>
-					<td th:text="${community.likeCount}"></td>
-					<td th:text="${community.commentCount}"></td>
-					<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
+				<!-- adminWrite를 사용하여 공지사항 출력 -->
+				<tr th:each="notice : ${adminWrite}">
+					<td><a
+						th:href="@{/getCommuBoard(communityNo=${notice.communityNo})}"
+						th:text="${notice.title}"></a></td>
+					<td th:text="${#dates.format(notice.regDate, 'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
+	<!-- 나머지 게시글 목록 섹션 -->
+	<table class="table table-hover styled-table">
+		<thead>
+			<tr>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회수</th>
+				<th>좋아요</th>
+				<th>댓글수</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="community : ${communities.content}">
+				<td><a
+					th:href="@{/getCommuBoard(communityNo=${community.communityNo})}"
+					th:text="${community.title}"></a></td>
+				<td th:text="${community.member.name}"></td>
+				<td th:text="${community.viewCount}"></td>
+				<td th:text="${community.likeCount}"></td>
+				<td th:text="${community.commentCount}"></td>
+				<td th:text="${#dates.format(community.regDate, 'yyyy-MM-dd')}"></td>
+			</tr>
+		</tbody>
+	</table>
+
 
 		<!-- member 게시글 페이징 섹션 -->
-
 
 
 		<div class="pagination-commu">
@@ -87,13 +93,15 @@
 
 
 
-		<th:block th:include="footer.html"></th:block>
+	<th:block th:include="footer.html"></th:block>
 
 
-		<!-- 부트스트랩 JS -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<!-- 부트스트랩 JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

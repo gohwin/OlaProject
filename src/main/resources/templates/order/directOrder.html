@@ -1,101 +1,118 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Order Page</title>
-     <!-- jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-    <!-- iamport.payment.js -->
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-    <script>
-        var IMP = window.IMP; 
-        IMP.init("imp12332144"); 
-      
-        var today = new Date();   
-        var hours = today.getHours(); // 시
-        var minutes = today.getMinutes();  // 분
-        var seconds = today.getSeconds();  // 초
-        var milliseconds = today.getMilliseconds();
-        var makeMerchantUid = hours +  minutes + seconds + milliseconds;
-        
-        function updateTotalAmount() {
-            var quantity = parseInt(document.getElementById('quantity').value);
-            var price = parseInt(document.getElementById('dataPrice').textContent);
-            var totalAmount = quantity * price;
-            document.getElementById('totalAmount').textContent = totalAmount;
-        }
-        
+<meta charset="UTF-8">
+<title>Order Page</title>
+<!-- jQuery -->
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script>
+	var IMP = window.IMP;
+	IMP.init("imp12332144");
 
-        function requestPay(event) {
-        	event.preventDefault();
+	var today = new Date();
+	var hours = today.getHours(); // 시
+	var minutes = today.getMinutes(); // 분
+	var seconds = today.getSeconds(); // 초
+	var milliseconds = today.getMilliseconds();
+	var makeMerchantUid = hours + minutes + seconds + milliseconds;
 
-        	 // 숨겨진 HTML 요소에서 member 정보를 가져옵니다.
-            var memberEmail = document.getElementById('email').textContent;
-		    var memberName = document.getElementById('name').textContent;
-		    var memberTel = document.getElementById('phone').textContent;
-		    var memberAddr = document.getElementById('address').textContent + ' ' + document.getElementById('detailed').textContent;;
-		    var memberPostcode = document.getElementById('zipNum').textContent;
-		    var productName = document.getElementById('prodName').textContent;
-            var productPrice = parseInt(document.getElementById('totalAmount').textContent, 10);
-            
-            IMP.request_pay({
-                pg : '9810030929',
-                pay_method : 'card',
-                merchant_uid: makeMerchantUid, //상점에서 생성한 고유 주문번호
-                name: '주문명:' + productName, // 상품 이름을 주문명에 추가
-                amount : productPrice,
-                buyer_email: memberEmail,
-                buyer_name: memberName,
-                buyer_tel: memberTel,
-                buyer_addr: memberAddr,
-                buyer_postcode: memberPostcode,
-            }, function (rsp) { // callback
-                if (rsp.success) {
-                	var form = document.getElementById("orderForm");
-                    form.submit();
-                } else {
-                    console.log(rsp);
-                }
-            });
-        }
-    </script>
+	function updateTotalAmount() {
+		var quantity = parseInt(document.getElementById('quantity').value);
+		var price = parseInt(document.getElementById('dataPrice').textContent);
+		var totalAmount = quantity * price;
+
+		// 총 금액이 80000원을 넘지 않을 경우 3000원 추가
+		if (parseInt(totalAmount, 10) <= 80000) {
+			totalAmount = parseInt(totalAmount, 10) + 3000;
+		}
+		document.getElementById('totalAmount').textContent = totalAmount + '원';
+	}
+
+	function requestPay(event) {
+		event.preventDefault();
+
+		// 숨겨진 HTML 요소에서 member 정보를 가져옵니다.
+		var memberEmail = document.getElementById('email').textContent;
+		var memberName = document.getElementById('name').textContent;
+		var memberTel = document.getElementById('phone').textContent;
+		var memberAddr = document.getElementById('address').textContent + ' '
+				+ document.getElementById('detailed').textContent;
+		;
+		var memberPostcode = document.getElementById('zipNum').textContent;
+		var productName = document.getElementById('prodName').textContent;
+		var productPrice = parseInt(
+				document.getElementById('totalAmount').textContent, 10);
+
+		IMP.request_pay({
+			pg : '9810030929',
+			pay_method : 'card',
+			merchant_uid : makeMerchantUid, //상점에서 생성한 고유 주문번호
+			name : '주문명:' + productName, // 상품 이름을 주문명에 추가
+			amount : productPrice,
+			buyer_email : memberEmail,
+			buyer_name : memberName,
+			buyer_tel : memberTel,
+			buyer_addr : memberAddr,
+			buyer_postcode : memberPostcode,
+		}, function(rsp) { // callback
+			if (rsp.success) {
+				var form = document.getElementById("orderForm");
+				form.submit();
+			} else {
+				console.log(rsp);
+			}
+		});
+	}
+</script>
 </head>
-<body>
+<body onload="updateTotalAmount()">
 
 	<!-- member 정보를 숨겨진 HTML 요소에 저장합니다. -->
-    <span id="email" style="display: none;" th:text="${member.email}"></span>
-    <span id="name" style="display: none;" th:text="${member.name}"></span>
-    <span id="phone" style="display: none;" th:text="${member.phoneNumber}"></span>
-    <span id="address" style="display: none;" th:text="${member.address}"></span>
-    <span id="detailed" style="display: none;" th:text="${member.detailedAddress}"></span>
-    <span id="zipNum" style="display: none;" th:text="${member.zipNum}"></span>
-    <span id="prodName" style="display: none;" th:text="${product.productName}"></span>
-    <h1>Order Page</h1>
+	<span id="email" style="display: none;" th:text="${member.email}"></span>
+	<span id="name" style="display: none;" th:text="${member.name}"></span>
+	<span id="phone" style="display: none;" th:text="${member.phoneNumber}"></span>
+	<span id="address" style="display: none;" th:text="${member.address}"></span>
+	<span id="detailed" style="display: none;"
+		th:text="${member.detailedAddress}"></span>
+	<span id="zipNum" style="display: none;" th:text="${member.zipNum}"></span>
+	<span id="prodName" style="display: none;"
+		th:text="${product.productName}"></span>
+	<h1>Order Page</h1>
 
-    <!-- Display product information -->
-    <h2>Product Information</h2>
-    <p>
-        Product Name: <span th:text="${product.productName}"></span>
-    </p>
-    <p>
-        Price: <span id="dataPrice" th:text="${product.price}"></span>
-    </p>
+	<!-- Display product information -->
+	<h2>Product Information</h2>
+	<p>
+		Product Name: <span th:text="${product.productName}"></span>
+	</p>
+	<p>
+		Price: <span id="dataPrice" th:text="${product.price}"></span>
+	</p>
+	<p>
+		배송비 : 3000원		(80,000원 이상 주문 시 무료배송)
+	</p>
+	<!-- Order form -->
+	<h2>Order Form</h2>
+	<form id="orderForm" th:action="@{/directOrder}" method="post"
+		onsubmit="requestPay(event)">
+		<!-- Hidden field for productNo -->
+		<input type="hidden" name="productNo" th:value="${product.productNo}" />
 
-    <!-- Order form -->
-    <h2>Order Form</h2>
-    <form id="orderForm" th:action="@{/directOrder}" method="post" onsubmit="requestPay(event)">
-        <!-- Hidden field for productNo -->
-        <input type="hidden" name="productNo" th:value="${product.productNo}" />
+		<!-- Quantity input field -->
+		<label for="quantity">Quantity:</label> <input type="number"
+			id="quantity" name="quantity" min="1" required value="1"
+			onchange="updateTotalAmount()" />
 
-        <!-- Quantity input field -->
-        <label for="quantity">Quantity:</label> 
-<input type="number" id="quantity" name="quantity" min="1" required value="1" onchange="updateTotalAmount()" />
-        
-        <!-- Total Amount -->
-        <p>Total Amount: <span id="totalAmount" th:text="${product.price}"></span></p>
+		<!-- Total Amount -->
+		<p>
+			Total Amount: <span id="totalAmount" th:text="${product.price}"></span>
+		</p>
 
-        <!-- Submit button -->
-        <button type="submit">Order</button>
-    </form>
+		<!-- Submit button -->
+		<button type="submit">Order</button>
+	</form>
 </body>
 </html>
