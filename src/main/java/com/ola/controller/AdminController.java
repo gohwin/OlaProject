@@ -42,9 +42,9 @@ public class AdminController {
 	@Autowired
 	private ProductRepository prodRepo;
 
-	@GetMapping("/adminMain")
-	public String adminMain() {
-		return "adminMain"; // 이 부분은 실제 리턴하는 뷰의 이름입니다.
+	@GetMapping("/adminMain2")
+	public String adminMain2() {
+		return "adminMain2"; // 이 부분은 실제 리턴하는 뷰의 이름입니다.
 	}
 
 	@GetMapping("/adminCommunityBoardList")

@@ -11,6 +11,7 @@ import com.ola.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+	
 	@Query("SELECT p FROM Product p WHERE p.prodCategory = :category")
 	List<Product> findByProdCategory(@Param("category") int category);
 }

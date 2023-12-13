@@ -27,3 +27,4 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 	Page<Community> findByTitleContaining(@Param("search") String title, Pageable pageable);
 
 }
+

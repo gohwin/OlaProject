@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,21 @@ public class ProductServiceImpl implements ProductService {
         product.setInventory(inventory);
         product.setImage(imageUrl);
 
+        productRepository.save(product);
+    }
+
+
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+    
+    @Override
+    public void reduceInventory(Long productNo, int quantity) {
+        Product product = productRepository.findById(productNo)
+            .orElseThrow(() -> new IllegalStateException("Product not found"));
+        product.reduceInventory(quantity);
         productRepository.save(product);
     }
 
