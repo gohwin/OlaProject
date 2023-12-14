@@ -14,7 +14,7 @@
 	<link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
 	<link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
 	<link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
-<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+	<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
 
 </head>
@@ -35,12 +35,13 @@
 					<h3 class="product-name" th:text="${product.productName}"></h3>
 					<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
 					<!-- 상품 설명 -->
-					<p>설명설명설명설명</p>
+					<p>설명</p>
 					<!-- 사이즈 정보 추가 -->
 					<div class="sizes">
 						<span>SIZE</span>
-						<p>XL</p> <!-- 동적 사이즈 정보 -->
+						<p th:text="${product.prodSize}"></p>
 					</div>
+
 
 
 					<!-- 배송 정보 추가 -->

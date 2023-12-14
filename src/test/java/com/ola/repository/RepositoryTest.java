@@ -133,28 +133,54 @@ public class RepositoryTest {
 	public void testProduct() {
 		IntStream.rangeClosed(1, 14).forEach(i -> {
 			Product product = Product.builder()
+					.productName("top" + i)
+					.prodCategory(1)
+					.price(10000L)
+					.prodSize("L")
+					.salesQuantity(0L)
+					.inventory(1000)
+					.image("top"+i+".jpg")
+					.build();
+			prodRepo.save(product);
+		});
+		
+		IntStream.rangeClosed(1, 14).forEach(i -> {
+			Product product1 = Product.builder()
 					.productName("bottom" + i)
-					.prodCategory(2)
+					.prodCategory(1)
 					.price(10000L)
 					.prodSize("L")
 					.salesQuantity(0L)
 					.inventory(1000)
 					.image("bottom"+i+".jpg")
 					.build();
-			prodRepo.save(product);
+			prodRepo.save(product1);
 		});
+		
 		IntStream.rangeClosed(1, 15).forEach(i -> {
-			
-		Product product2 = Product.builder()
-				.productName("shoes"+i)
-				.prodCategory(3)
+			Product product3 = Product.builder()
+					.productName("shoes"+i)
+					.prodCategory(4)
+					.price(25000L)
+					.prodSize("265")
+					.salesQuantity(0L)
+					.inventory(1000)
+					.image("shoes"+i+".jpg")
+					.build();
+			prodRepo.save(product3);
+		});
+		
+		IntStream.rangeClosed(1, 15).forEach(i -> {
+		Product product4 = Product.builder()
+				.productName("etc"+i)
+				.prodCategory(4)
 				.price(15000L)
-				.prodSize("XL")
+				.prodSize("f")
 				.salesQuantity(0L)
 				.inventory(1000)
-				.image("shoes"+i+".jpg")
+				.image("etc"+i+".jpg")
 				.build();
-		prodRepo.save(product2);
+		prodRepo.save(product4);
 		});
 	}
 	
