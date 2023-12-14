@@ -12,13 +12,12 @@
 	<header th:include="header :: body"></header>
 
 	<div class="like-section">
-		<button id="likeButton" class="btn"
-			th:classappend="${#lists.contains(community.likedByMembers, member)} ? 'btn-warning' : 'btn-success'"
-			th:onclick="'javascript:toggleLike(' + ${community.communityNo} + ');'">
-			<span
-				th:text="${#lists.contains(community.likedByMembers, member)} ? '좋아요 취소' : '좋아요'"></span>
-		</button>
-	</div>
+        <button id="likeButton" class="btn"
+            th:classappend="${isLikedByCurrentUser} ? 'btn-warning' : 'btn-success'"
+            th:onclick="'javascript:toggleLike(' + ${community.communityNo} + ');'">
+            <span th:text="${isLikedByCurrentUser} ? '좋아요 취소' : '좋아요'"></span>
+        </button>
+    </div>
 
 	<!-- 게시글 내용 Section -->
 	<table class="table table-hover styled-table">
@@ -107,28 +106,22 @@
 			window.history.back();
 		}
 		function toggleLike(communityNo) {
-			$.ajax({
-				url : '/toggleLike',
-				type : 'POST',
-				data : {
-					communityNo : communityNo
-				},
-				success : function(response) {
-					// 업데이트된 상태에 따라 버튼 텍스트 및 스타일 변경
-					if (response.liked) {
-						$('#likeButton').text('좋아요 취소').removeClass(
-								'btn-success').addClass('btn-warning');
-					} else {
-						$('#likeButton').text('좋아요').removeClass('btn-warning')
-								.addClass('btn-success');
-					}
-				},
-				error : function(error) {
-					// 에러 처리
-					console.error(error);
-				}
-			});
-		}
+            $.ajax({
+                url : '/toggleLike',
+                type : 'POST',
+                data : { communityNo : communityNo },
+                success : function(response) {
+                    if (response.liked) {
+                        $('#likeButton').text('좋아요 취소').removeClass('btn-success').addClass('btn-warning');
+                    } else {
+                        $('#likeButton').text('좋아요').removeClass('btn-warning').addClass('btn-success');
+                    }
+                },
+                error : function(error) {
+                    console.error(error);
+                }
+            });
+        }
 	</script>
 
 	<th:block th:include="footer.html"></th:block>
