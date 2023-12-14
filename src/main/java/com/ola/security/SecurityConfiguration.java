@@ -36,7 +36,7 @@ public class SecurityConfiguration {
 		security.formLogin().loginPage("/system/login").successHandler((request, response, authentication) -> {
 			Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 			if (roles.contains("ROLE_ADMIN")) {
-				response.sendRedirect("/adminMain2");
+				response.sendRedirect("/admin/products");
 			} else {
 				response.sendRedirect("/main");
 			}
