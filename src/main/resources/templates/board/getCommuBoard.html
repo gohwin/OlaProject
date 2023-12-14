@@ -92,7 +92,9 @@
 				<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
 				<button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
 			</form>
-			<button type="button" class="btn btn-secondary" onclick="goBack()">뒤로 가기</button>
+			<form method="get" th:action="@{/communityBoardList}">
+				<button type="submit" class="btn btn-secondary">뒤로 가기</button>
+			</form>
 		</div>
 
 		<script>
@@ -100,7 +102,6 @@
 				window.history.back();
 			}
 		</script>
-		</div>
 
 		<th:block th:include="footer.html"></th:block>
 		<!-- Bootstrap JS -->

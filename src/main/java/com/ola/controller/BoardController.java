@@ -215,7 +215,7 @@ public class BoardController {
 	public String tradeInsertAction(@ModelAttribute TradeBoard board, @AuthenticationPrincipal SecurityUser principal) {
 
 		board.setMember(principal.getMember());
-
+		board.setRegistrationDate(new Date());
 		boardService.insertTradeBoard(board);
 
 		return "redirect:/tradeBoardList";
