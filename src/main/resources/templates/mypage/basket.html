@@ -25,7 +25,14 @@
 			var quantity = parseInt(inputElement.value);
 			var price = parseInt(inputElement.getAttribute('data-price'));
 			totalAmount += quantity * price;
+			
+			// 총 금액이 80000원을 넘지 않을 경우 3000원 추가
+			if (parseInt(totalAmount, 10) < 80000) {
+				totalAmount = parseInt(totalAmount, 10) + 3000;
+			}
+			document.getElementById('totalAmount').textContent = totalAmount + '원';
 		});
+		
 
 		var totalAmountElement = document.getElementById('totalAmount');
 		if (totalAmountElement) {
@@ -164,7 +171,7 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="3">Total Amount: <span id="totalAmount">0</span></td>
+						<td colspan="3">Total Amount: <span id="totalAmount"></span></td>
 					</tr>
 				</tfoot>
 			</table>
