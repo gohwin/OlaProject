@@ -103,35 +103,32 @@ public class BoardServiceImpl implements BoardService {
 		return comRepo.findByMemberWrite(pageable);
 	}
 
-	public void likeCommunity(Long communityNo, String memberId) {
-		Community community = comRepo.findById(communityNo).orElse(null);
-		Member member = memberRepo.findById(memberId).orElse(null);
+	@Transactional
+    public boolean toggleLike(Long communityNo, String memberId) {
+        Optional<Community> communityOpt = comRepo.findById(communityNo);
+        Optional<Member> memberOpt = memberRepo.findById(memberId);
 
-		if (community != null && member != null) {
-			// Check if the member has already liked the community
-			if (!community.getLikedByMembers().contains(member)) {
-				int currentLikeCount = community.getLikeCount();
-				community.setLikeCount(currentLikeCount + 1);
-				community.getLikedByMembers().add(member);
-				comRepo.save(community);
-			}
-		}
-	}
+        if (communityOpt.isPresent() && memberOpt.isPresent()) {
+            Community community = communityOpt.get();
+            Member member = memberOpt.get();
 
-	public void unlikeCommunity(Long communityNo, String memberId) {
-		Community community = comRepo.findById(communityNo).orElse(null);
-		Member member = memberRepo.findById(memberId).orElse(null);
+            boolean isLiked = community.getLikedByMembers().contains(member);
+            if (isLiked) {
+                // 이미 좋아요 상태이면 좋아요 취소
+                community.getLikedByMembers().remove(member);
+                community.setLikeCount(community.getLikeCount() - 1);
+            } else {
+                // 좋아요 상태가 아니면 좋아요 추가
+                community.getLikedByMembers().add(member);
+                community.setLikeCount(community.getLikeCount() + 1);
+            }
 
-		if (community != null && member != null) {
-			// Check if the member has liked the community
-			if (community.getLikedByMembers().contains(member)) {
-				int currentLikeCount = community.getLikeCount();
-				community.setLikeCount(currentLikeCount - 1);
-				community.getLikedByMembers().remove(member);
-				comRepo.save(community);
-			}
-		}
-	}
+            comRepo.save(community);
+            return !isLiked;
+        }
+
+        return false;
+    }
 
 	// 게시글 삭제 서비스 메소드
 	public void deleteCommunity(Long communityNo) {

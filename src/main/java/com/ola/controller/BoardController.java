@@ -1,7 +1,9 @@
 package com.ola.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
@@ -251,20 +254,14 @@ public class BoardController {
 		}
 	}
 
-	@PostMapping("/likeCommunity")
-	public String likeCommunity(@RequestParam Long communityNo, Authentication authentication) {
-		String memberId = authentication.getName();
-		boardService.likeCommunity(communityNo, memberId);
-
-		return "redirect:/getCommuBoard?communityNo=" + communityNo;
-	}
-
-	@PostMapping("/unlikeCommunity")
-	public String unlikeCommunity(@RequestParam Long communityNo, Authentication authentication) {
-		String memberId = authentication.getName();
-		boardService.unlikeCommunity(communityNo, memberId);
-
-		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	@PostMapping("/toggleLike")
+	@ResponseBody
+	public Map<String, Boolean> toggleLike(@RequestParam Long communityNo, Authentication authentication) {
+	    String memberId = authentication.getName();
+	    boolean liked = boardService.toggleLike(communityNo, memberId);
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("liked", liked);
+	    return response;
 	}
 
 }
