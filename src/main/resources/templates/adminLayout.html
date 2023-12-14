@@ -39,52 +39,18 @@
 							class="navbar-toggler-icon"></span></button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-							<li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
-							<li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-									data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item" href="#!">Action</a>
-									<a class="dropdown-item" href="#!">Another action</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#!">Something else here</a>
-								</div>
+							<li class="nav-item active"><a class="nav-link" th:href="@{/adminMain2}">Home</a></li>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
 			<!-- Page content-->
-			<div class="container-fluid">
-        <h3>상품 관리</h3>
-        <a th:href="@{/admin/addProductForm}" class="btn btn-primary">상품 등록</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>상품 번호</th>
-                    <th>상품명</th>
-                    <th>카테고리</th>
-                    <th>가격</th>
-                    <th>사이즈</th>
-                    <th>판매 수량</th>
-                    <th>재고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.productNo}">1</td>
-                  <td><a th:href="@{/admin/editProduct/{productId}(productId=${product.productNo})}" th:text="${product.productName}">상품명</a></td>
-
-                    <td th:text="${product.prodCategory}">카테고리</td>
-                    <td th:text="${product.price}">가격</td>
-                    <td th:text="${product.prodSize}">사이즈</td>
-                    <td th:text="${product.salesQuantity}">판매 수량</td>
-                    <td th:text="${product.inventory}">재고</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+			 <div class="container-fluid">
+                <div th:replace="tradeBoard_list::/board/tradeBoard_list.html">
+                    <!-- 개별 페이지의 내용이 들어갈 부분 -->
+                </div>
+            </div>
 		</div>
 	</div>
 	<!-- Bootstrap core JS-->

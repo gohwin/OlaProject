@@ -19,9 +19,12 @@
 		<div class="border-end bg-white" id="sidebar-wrapper">
 			<div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
 			<div class="list-group list-group-flush">
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/products}">상품관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/community}">자유게시판관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/tradeBoard}">중고거래게시판</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/products}">상품관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/community}">자유게시판관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/tradeBoard}">중고거래게시판</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
@@ -56,35 +59,29 @@
 				</div>
 			</nav>
 			<!-- Page content-->
-			<div class="container-fluid">
-        <h3>상품 관리</h3>
-        <a th:href="@{/admin/addProductForm}" class="btn btn-primary">상품 등록</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>상품 번호</th>
-                    <th>상품명</th>
-                    <th>카테고리</th>
-                    <th>가격</th>
-                    <th>사이즈</th>
-                    <th>판매 수량</th>
-                    <th>재고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.productNo}">1</td>
-                  <td><a th:href="@{/admin/editProduct/{productId}(productId=${product.productNo})}" th:text="${product.productName}">상품명</a></td>
+			<div class="container my-4">
+				<h1 class="mb-4">중고거래 게시글 상세보기</h1>
+				<div class="card">
+					<div class="card-body">
+						<h2 class="card-title" th:text="${tradeBoard.title}">게시글 제목</h2>
+						<p class="card-text"><strong>작성자:</strong> <span th:text="${tradeBoard.member.memberId}"></span>
+						</p>
+						<p class="card-text"><strong>등록일:</strong> <span
+								th:text="${tradeBoard.registrationDate}"></span></p>
+						<p class="card-text">
+							<strong>거래 유형:</strong>
+							<span class="badge bg-primary" th:if="${tradeBoard.tradeType == 1}">판매중</span>
+							<span class="badge bg-secondary" th:if="${tradeBoard.tradeType == 2}">구매중</span>
+							<span class="badge bg-success" th:if="${tradeBoard.tradeType == 3}">판매완료</span>
+							<span class="badge bg-danger" th:if="${tradeBoard.tradeType == 4}">구매완료</span>
+						</p>
+						<p class="card-text"><strong>내용:</strong></p>
+						<p class="card-text" th:text="${tradeBoard.content}">게시글 내용</p>
+						<!-- 추가적인 기능 버튼이나 링크를 여기에 추가할 수 있습니다. -->
+					</div>
+				</div>
+			</div>
 
-                    <td th:text="${product.prodCategory}">카테고리</td>
-                    <td th:text="${product.price}">가격</td>
-                    <td th:text="${product.prodSize}">사이즈</td>
-                    <td th:text="${product.salesQuantity}">판매 수량</td>
-                    <td th:text="${product.inventory}">재고</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 		</div>
 	</div>
 	<!-- Bootstrap core JS-->

@@ -1,6 +1,5 @@
 package com.ola.adminController;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,42 +24,65 @@ public class adminProductController {
 	private ProductService productService;
 	@Autowired
 	private ProductRepository productRepo;
-	
 
-    /* 상품목록 페이지 이동 */
+	/* 상품목록 페이지 이동 */
 	@GetMapping("/admin/products")
 	public String showProductList(Model model) {
 		List<Product> productList = productService.getAllProducts();
 		model.addAttribute("products", productList);
 		return "/admin/product_list"; // Thymeleaf 템플릿 파일 이름
 	}
-	
+
 	/* 상품등록 버튼 눌렀을때 상품추가(입력)페이지 이동 */
-	 @GetMapping("/admin/addProductForm")
-	    public String showAddProductForm(Model model) {
-	        model.addAttribute("product", new Product());
-	        return "/admin/add_product_form"; // 상품 추가 폼 페이지
+	@GetMapping("/admin/addProductForm")
+	public String showAddProductForm(Model model) {
+		model.addAttribute("product", new Product());
+		return "/admin/add_product_form"; // 상품 추가 폼 페이지
+	}
+	
+	/* 상품 추가 하는 메소드*/
+	@PostMapping("/admin/addProduct")
+	public String addProductAction(@RequestParam("productName") String productName,
+			@RequestParam("prodCategory") int prodCategory, @RequestParam("price") Long price,
+			@RequestParam("prodSize") String prodSize, @RequestParam("salesQuantity") Long salesQuantity,
+			@RequestParam("inventory") int inventory, @RequestParam("image") MultipartFile imageFile) {
+		try {
+			String imageUrl = productService.uploadImage(imageFile, prodCategory);
+			productService.addProduct(productName, prodCategory, price, prodSize, salesQuantity, inventory, imageUrl);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return "redirect:/admin/products"; // 다시 제품 추가 폼으로 리다이렉트
+	}
+	
+	/* 제품 수정페이지 이동 */
+	   @GetMapping("/admin/editProduct/{productId}")
+	    public String editProduct(@PathVariable Long productId, Model model) {
+	        Product product = productService.getProductById(productId);
+	        if (product == null) {
+	            // 상품이 없을 경우 처리
+	        }
+	        model.addAttribute("product", product);
+	        return "/admin/editProduct"; // 상품을 편집하기 위한 editProduct.html 템플릿을 생성하세요.
+	    }
+
+	   /* 상품 수정 */
+	    @PostMapping("/admin/updateProduct")
+	    public String updateProduct(@ModelAttribute Product product) {
+	        productService.updateProduct(product);
+	        return "redirect:/admin/products"; // 상품 목록으로 다시 리다이렉션
+	    }
+	    
+	    /* 상품 삭제*/
+	    @GetMapping("/admin/deleteProduct/{productId}")
+	    public String deleteProduct(@PathVariable Long productId) {
+	        productService.deleteProduct(productId);
+	        return "redirect:/admin/products"; // 상품 목록으로 다시 리다이렉션
 	    }
 	 
-	 @PostMapping("/admin/addProduct")
-	    public String addProductAction(
-	            @RequestParam("productName") String productName,
-	            @RequestParam("prodCategory") int prodCategory,
-	            @RequestParam("price") Long price,
-	            @RequestParam("prodSize") String prodSize,
-	            @RequestParam("salesQuantity") Long salesQuantity,
-	            @RequestParam("inventory") int inventory,
-	            @RequestParam("image") MultipartFile imageFile
-//	            Model model
-	    ) {
-	        try {
-	            String imageUrl = productService.uploadImage(imageFile, prodCategory);
-	            productService.addProduct(productName, prodCategory, price, prodSize, salesQuantity, inventory, imageUrl);
-//	            model.addAttribute("message", "Product added successfully.");
-	        } catch (Exception e) {
-	            e.printStackTrace();
-//	            model.addAttribute("error", "Error adding product.");
-	        }
-	        return "redirect:/admin/products"; // 다시 제품 추가 폼으로 리다이렉트
-	    }
+	 
+	 
+	 
 }

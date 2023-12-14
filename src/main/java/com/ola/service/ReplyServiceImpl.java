@@ -1,6 +1,7 @@
 package com.ola.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -64,19 +65,25 @@ public class ReplyServiceImpl implements ReplyService {
 		}
 	}
 
-	@Transactional
-	@Override
-	public void deleteReply(Long replyNo) {
-		Reply reply = replyRepository.findById(replyNo).orElse(null);
-		if (reply != null) {
-			replyRepository.deleteById(replyNo);
-		}
-	}
+    @Override
+    @Transactional
+    public void deleteReply(Long replyId) {
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new RuntimeException("Reply not found")); // 또는 사용자 정의 예외 처리
+        reply.setDeleted(true);
+        replyRepository.save(reply);
+    }
+	
 
 	@Override
 	public Community getCommunityByReplyNo(Long replyNo) {
 		Reply reply = replyRepository.findById(replyNo).orElse(null);
 		return (reply != null) ? reply.getCommunity() : null;
 	}
+
+	 @Override
+	    public List<Reply> getRepliesByCommunity(Community community) {
+	        return replyRepository.findByCommunityOrderByRegDateAsc(community);
+	    }
 
 }

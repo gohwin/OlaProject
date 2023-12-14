@@ -42,4 +42,16 @@ public class Reply {
 	@Column(name = "reg_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date regDate;
 
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "CHAR(1) default 'N'")
+    private char deleted = 'N'; // 기본값 'N'
+
+    // Getter와 Setter 추가
+    public boolean isDeleted() {
+        return this.deleted == 'Y';
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted ? 'Y' : 'N';
+    }
+
 }
