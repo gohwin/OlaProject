@@ -115,17 +115,21 @@ public class BoardController {
 	}
 
 	@GetMapping("/getCommuBoard")
-	public String getCommunity(@RequestParam Long communityNo, Model model) {
-		// 조회수 증가를 위해 서비스 계층의 메소드를 호출
-		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
+    public String getCommunity(@RequestParam Long communityNo, Model model, Authentication authentication) {
+        Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
-		if (community != null) {
-			model.addAttribute("community", community);
-			return "board/getCommuBoard";
-		} else {
-			return "errorPage";
-		}
-	}
+        if (community != null) {
+            String currentUserId = authentication.getName();
+            boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
+                .anyMatch(member -> member.getMemberId().equals(currentUserId));
+
+            model.addAttribute("community", community);
+            model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
+            return "board/getCommuBoard"; // 커뮤니티 상세보기 페이지
+        } else {
+            return "errorPage";
+        }
+    }
 
 	@GetMapping("/board/communityInsert")
 	public String communityInsertView() {
