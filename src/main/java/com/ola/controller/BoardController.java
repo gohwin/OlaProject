@@ -102,7 +102,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/getTradeBoard")
-	public String getTradeBoardView(@RequestParam Long tradeBoardNo, Model model) {
+	public String getTradeBoardView(@RequestParam("tradeBoardNo") Long tradeBoardNo, Model model) {
 		TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
 
 		if (tradeBoard != null) {
@@ -172,7 +172,7 @@ public class BoardController {
 			model.addAttribute("tradeBoard", tradeBoard);
 			return "/board/updateTradeForm";
 		} else {
-			return "errorPage";
+			return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoardNo;
 		}
 	}
 	
