@@ -104,31 +104,31 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Transactional
-    public boolean toggleLike(Long communityNo, String memberId) {
-        Optional<Community> communityOpt = comRepo.findById(communityNo);
-        Optional<Member> memberOpt = memberRepo.findById(memberId);
+	public boolean toggleLike(Long communityNo, String memberId) {
+		Optional<Community> communityOpt = comRepo.findById(communityNo);
+		Optional<Member> memberOpt = memberRepo.findById(memberId);
 
-        if (communityOpt.isPresent() && memberOpt.isPresent()) {
-            Community community = communityOpt.get();
-            Member member = memberOpt.get();
+		if (communityOpt.isPresent() && memberOpt.isPresent()) {
+			Community community = communityOpt.get();
+			Member member = memberOpt.get();
 
-            boolean isLiked = community.getLikedByMembers().contains(member);
-            if (isLiked) {
-                // 이미 좋아요 상태이면 좋아요 취소
-                community.getLikedByMembers().remove(member);
-                community.setLikeCount(community.getLikeCount() - 1);
-            } else {
-                // 좋아요 상태가 아니면 좋아요 추가
-                community.getLikedByMembers().add(member);
-                community.setLikeCount(community.getLikeCount() + 1);
-            }
+			boolean isLiked = community.getLikedByMembers().contains(member);
+			if (isLiked) {
+				// 이미 좋아요 상태이면 좋아요 취소
+				community.getLikedByMembers().remove(member);
+				community.setLikeCount(community.getLikeCount() - 1);
+			} else {
+				// 좋아요 상태가 아니면 좋아요 추가
+				community.getLikedByMembers().add(member);
+				community.setLikeCount(community.getLikeCount() + 1);
+			}
 
-            comRepo.save(community);
-            return !isLiked;
-        }
+			comRepo.save(community);
+			return !isLiked;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	// 게시글 삭제 서비스 메소드
 	public void deleteCommunity(Long communityNo) {

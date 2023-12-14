@@ -25,18 +25,19 @@
 			var quantity = parseInt(inputElement.value);
 			var price = parseInt(inputElement.getAttribute('data-price'));
 			totalAmount += quantity * price;
-			
-			// 총 금액이 80000원을 넘지 않을 경우 3000원 추가
-			if (parseInt(totalAmount, 10) < 80000) {
-				totalAmount = parseInt(totalAmount, 10) + 3000;
-			}
-			document.getElementById('totalAmount').textContent = totalAmount + '원';
 		});
-		
+
+		var shippingIncludedText = "원"; // 기본 텍스트
+
+		// 총 금액이 80000원 미만일 경우에만 3000원 추가
+		if (totalAmount < 80000) {
+			totalAmount += 3000;
+			shippingIncludedText += " (배송비 포함)"; // 배송비가 포함된 경우에만 추가 텍스트
+		}
 
 		var totalAmountElement = document.getElementById('totalAmount');
 		if (totalAmountElement) {
-			totalAmountElement.textContent = totalAmount;
+			totalAmountElement.textContent = totalAmount + shippingIncludedText;
 		}
 
 		return totalAmount;
@@ -94,34 +95,33 @@
 	});
 
 	function removeProduct(button) {
-	    var productNo = button.getAttribute('data-product-no');
+		var productNo = button.getAttribute('data-product-no');
 
-	    // "상품을 삭제하시겠습니까?" 라는 확인 메시지를 표시
-	    var isConfirmed = confirm("상품을 삭제하시겠습니까?");
+		// "상품을 삭제하시겠습니까?" 라는 확인 메시지를 표시
+		var isConfirmed = confirm("상품을 삭제하시겠습니까?");
 
-	    // 사용자가 '확인'을 클릭한 경우에만 삭제 진행
-	    if (isConfirmed) {
-	        $.ajax({
-	            url: '/mypage/deleteBasket',
-	            type: 'POST',
-	            data: { productNo: productNo },
-	            success: function(response) {
-	                // 응답 처리, 페이지 새로 고침 혹은 테이블에서 행 제거
-	                alert("상품이 삭제되었습니다.");
-	                window.location.reload(); // 페이지 새로 고침
-	            },
-	            error: function(xhr, status, error) {
-	                console.error("삭제 중 오류 발생: ", error);
-	            }
-	        });
-	    } else {
-	        // 사용자가 '취소'를 클릭한 경우
-	        return false;
-	    }
+		// 사용자가 '확인'을 클릭한 경우에만 삭제 진행
+		if (isConfirmed) {
+			$.ajax({
+				url : '/mypage/deleteBasket',
+				type : 'POST',
+				data : {
+					productNo : productNo
+				},
+				success : function(response) {
+					// 응답 처리, 페이지 새로 고침 혹은 테이블에서 행 제거
+					alert("상품이 삭제되었습니다.");
+					window.location.reload(); // 페이지 새로 고침
+				},
+				error : function(xhr, status, error) {
+					console.error("삭제 중 오류 발생: ", error);
+				}
+			});
+		} else {
+			// 사용자가 '취소'를 클릭한 경우
+			return false;
+		}
 	}
-
-
-
 </script>
 </head>
 <body>
@@ -162,7 +162,8 @@
 							<td th:text="${product.price}"></td>
 							<td>
 								<!-- 삭제 버튼 -->
-								<button type="button" onclick="removeProduct(this)" th:data-product-no="${product.productNo}">삭제</button>
+								<button type="button" onclick="removeProduct(this)"
+									th:data-product-no="${product.productNo}">삭제</button>
 							</td>
 						</tr>
 					</th:block>
@@ -196,8 +197,8 @@
 	<span id="memberZipNum" style="display: none;"
 		th:text="${member.zipNum}"></span>
 	<span id="firstProductName" style="display: none;"
-    th:if="${not #lists.isEmpty(basket.products)}"
-    th:text="${basket.products[0].productName}"></span>
+		th:if="${not #lists.isEmpty(basket.products)}"
+		th:text="${basket.products[0].productName}"></span>
 	<span id="totalProductCount" style="display: none;"
 		th:text="${#lists.size(basket.products)}"></span>
 
