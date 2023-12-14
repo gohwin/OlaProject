@@ -30,9 +30,7 @@ public interface BoardService {
 
 	Page<Community> communityBoardList(Pageable pageable);
 
-	void likeCommunity(Long communityNo, String memberId);
-
-	void unlikeCommunity(Long communityNo, String memberId);
+	boolean toggleLike(Long communityNo, String memberId);
 
 	Page<Community> getBoardByTitle(String search, Pageable pageable);
 

@@ -1,116 +1,144 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-    <meta charset="UTF-8">
-    <!-- Custom CSS for Board View -->
-    <link href="/css/boardView.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<!-- Custom CSS for Board View -->
+<link href="/css/boardView.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header th:include="header :: body"></header>
+	<header th:include="header :: body"></header>
 
-    <!-- 좋아요 버튼 Section -->
-    <div class="like-section">
-        <form th:action="@{/likeCommunity}" method="post">
-            <input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-            <button type="submit" class="btn btn-success">좋아요</button>
-        </form>
+	<div class="like-section">
+		<button id="likeButton" class="btn"
+			th:classappend="${#lists.contains(community.likedByMembers, member)} ? 'btn-warning' : 'btn-success'"
+			th:onclick="'javascript:toggleLike(' + ${community.communityNo} + ');'">
+			<span
+				th:text="${#lists.contains(community.likedByMembers, member)} ? '좋아요 취소' : '좋아요'"></span>
+		</button>
+	</div>
 
-        <!-- 좋아요 취소 버튼 -->
-        <form th:action="@{/unlikeCommunity}" method="post">
-            <input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-            <button type="submit" class="btn btn-warning">좋아요 취소</button>
-        </form>
-    </div>
+	<!-- 게시글 내용 Section -->
+	<table class="table table-hover styled-table">
+		<tbody>
+			<tr>
+				<th class="CommuTitle-th">게시글 제목</th>
+				<td class="CommuTitle-td"><span th:text="${community.title}"></span></td>
+			</tr>
+			<tr>
+				<th class="CommuContant-th">게시글 내용</th>
+				<td class="CommuContant-td"><textarea
+						class="form-control content-textarea" rows="10" maxlength="100"
+						th:text="${community.content}" readonly></textarea></td>
+			</tr>
+			<tr>
+				<th class="author-th">작성자</th>
+				<td class="author-td"><span th:text="${community.member.name}"></span></td>
+				<th class="date-th">등록 날짜</th>
+				<td class="date-td"><span
+					th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
+			</tr>
+		</tbody>
+	</table>
 
-    <!-- 게시글 내용 Section -->
-    <table class="table table-hover styled-table">
-        <tbody>
-            <tr>
-                <th class="CommuTitle-th">게시글 제목</th>
-                <td class="CommuTitle-td"><span th:text="${community.title}"></span></td>
-            </tr>
-            <tr>
-                <th class="CommuContant-th">게시글 내용</th>
-                <td class="CommuContant-td">
-                    <textarea class="form-control content-textarea" rows="10" maxlength="100" th:text="${community.content}" readonly></textarea>
-                </td>
-            </tr>
-            <tr>
-                <th class="author-th">작성자</th>
-                <td class="author-td"><span th:text="${community.member.name}"></span></td>
-                <th class="date-th">등록 날짜</th>
-                <td class="date-td"><span th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
-            </tr>
-        </tbody>
-    </table>
+	<!-- 댓글 Section -->
+	<div class="comments-section">
+		<h2 class="comment-title">댓글</h2>
+		<table class="comments-table">
+			<thead>
+				<tr>
+					<th style="text-align: center;">이름</th>
+					<th>댓글</th>
+					<th>작성날짜</th>
+				</tr>
+			</thead>
+			<tbody th:each="reply : ${community.replies}">
+				<tr class="reply">
+					<td class="reply-author" th:text="${reply.member.name}"></td>
+					<td class="reply-content" th:text="${reply.content}"></td>
+					<td class="reply-date"
+						th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				</tr>
+				<!-- 댓글 삭제 버튼 폼 - 각 댓글에 대해 표시 -->
+				<tr th:if="!${#lists.isEmpty(community.replies)}">
+					<td colspan="3">
+						<form th:action="@{/deleteReply}" method="post">
+							<input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
+							<button type="submit" class="btn btn-danger mt-2">댓글 삭제</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-    <!-- 댓글 Section -->
-    <div class="comments-section">
-        <h2 class="comment-title">댓글</h2>
-        <table class="comments-table">
-            <thead>
-                <tr>
-                    <th style="text-align: center;">이름</th>
-                    <th>댓글</th>
-                    <th>작성날짜</th>
-                </tr>
-            </thead>
-            <tbody th:each="reply : ${community.replies}">
-                <tr class="reply">
-                    <td class="reply-author" th:text="${reply.member.name}"></td>
-                    <td class="reply-content" th:text="${reply.content}"></td>
-                    <td class="reply-date" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                </tr>
-                <!-- 댓글 삭제 버튼 폼 - 각 댓글에 대해 표시 -->
-                <tr th:if="!${#lists.isEmpty(community.replies)}">
-                    <td colspan="3">
-                        <form th:action="@{/deleteReply}" method="post">
-                            <input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
-                            <button type="submit" class="btn btn-danger mt-2">댓글 삭제</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<div class="comment-form">
+		<h3 class="comment-title">댓글 작성</h3>
+		<form th:action="@{/addReply}" method="post">
+			<input type="hidden" name="communityNo"
+				th:value="${community.communityNo}" />
+			<textarea name="replycontent" class="form-control"></textarea>
+			<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
+		</form>
+	</div>
 
-    <div class="comment-form">
-        <h3 class="comment-title">댓글 작성</h3>
-        <form th:action="@{/addReply}" method="post">
-            <input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-            <textarea name="replycontent" class="form-control"></textarea>
-            <button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
-        </form>
-    </div>
+	<!-- 게시글 관리 Section -->
+	<div class="management-section">
+		<form
+			th:action="@{/editBoard/{communityNo}(communityNo=${community.communityNo})}"
+			method="get">
+			<button type="submit" class="btn btn-info">게시글 수정</button>
+		</form>
+		<form th:action="@{/deleteBoard}" method="post">
+			<input type="hidden" name="communityNo"
+				th:value="${community.communityNo}" />
+			<button type="submit" class="btn btn-danger"
+				onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
+		</form>
+		<form method="get" th:action="@{/communityBoardList}">
+			<button type="submit" class="btn btn-secondary">뒤로 가기</button>
+		</form>
+	</div>
 
-    <!-- 게시글 관리 Section -->
-    <div class="management-section">
-        <form th:action="@{/editBoard/{communityNo}(communityNo=${community.communityNo})}" method="get">
-            <button type="submit" class="btn btn-info">게시글 수정</button>
-        </form>
-        <form th:action="@{/deleteBoard}" method="post">
-            <input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-            <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
-        </form>
-        <form method="get" th:action="@{/communityBoardList}">
-            <button type="submit" class="btn btn-secondary">뒤로 가기</button>
-        </form>
-    </div>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+		function toggleLike(communityNo) {
+			$.ajax({
+				url : '/toggleLike',
+				type : 'POST',
+				data : {
+					communityNo : communityNo
+				},
+				success : function(response) {
+					// 업데이트된 상태에 따라 버튼 텍스트 및 스타일 변경
+					if (response.liked) {
+						$('#likeButton').text('좋아요 취소').removeClass(
+								'btn-success').addClass('btn-warning');
+					} else {
+						$('#likeButton').text('좋아요').removeClass('btn-warning')
+								.addClass('btn-success');
+					}
+				},
+				error : function(error) {
+					// 에러 처리
+					console.error(error);
+				}
+			});
+		}
+	</script>
 
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-
-    <th:block th:include="footer.html"></th:block>
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<th:block th:include="footer.html"></th:block>
+	<!-- Bootstrap JS -->
+	<!-- Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
