@@ -39,7 +39,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	@Disabled
+
 	@Test
 	public void member2Insert() {
 		Member member = Member.builder().name("안중근")
@@ -55,7 +55,7 @@ public class RepositoryTest {
 		memberRepo.save(member);
 	}
 	
-	@Disabled
+
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -90,7 +90,7 @@ public class RepositoryTest {
 
 	}
 
-	@Disabled
+
 	@Test
 	public void testCommuBoard() {
 		
@@ -110,7 +110,7 @@ public class RepositoryTest {
 		});
 	}
 	
-	@Disabled
+
 	@Test
 	public void testTradeBoard() {
 		
@@ -128,7 +128,7 @@ public class RepositoryTest {
 		});
 	}
 	
-	@Disabled
+
 	@Test
 	public void testProduct() {
 		IntStream.rangeClosed(1, 14).forEach(i -> {
@@ -184,7 +184,7 @@ public class RepositoryTest {
 		});
 	}
 	
-	@Disabled
+
 	@Test
 	public void testBasket() {
 

@@ -19,9 +19,12 @@
 		<div class="border-end bg-white" id="sidebar-wrapper">
 			<div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
 			<div class="list-group list-group-flush">
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/products}">상품관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/community}">자유게시판관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/tradeBoard}">중고거래게시판</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/products}">상품관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/community}">자유게시판관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/tradeBoard}">중고거래게시판</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
@@ -56,35 +59,39 @@
 				</div>
 			</nav>
 			<!-- Page content-->
-			<div class="container-fluid">
-        <h3>상품 관리</h3>
-        <a th:href="@{/admin/addProductForm}" class="btn btn-primary">상품 등록</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>상품 번호</th>
-                    <th>상품명</th>
-                    <th>카테고리</th>
-                    <th>가격</th>
-                    <th>사이즈</th>
-                    <th>판매 수량</th>
-                    <th>재고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.productNo}">1</td>
-                  <td><a th:href="@{/admin/editProduct/{productId}(productId=${product.productNo})}" th:text="${product.productName}">상품명</a></td>
+			<div class="container">
+				<h1 class="mt-4">Community Post Detail</h1>
+				<div class="card mt-4">
+					<div class="card-body">
+						<h3 class="card-title" th:text="${community.title}"></h3>
+						<p class="card-text" th:text="${community.content}"></p>
+						<p class="card-text">작성자: <span th:text="${community.member.memberId}"></span></p>
+						<p class="card-text">조회수: <span th:text="${community.viewCount}"></span></p>
+						<p class="card-text">댓글수: <span th:text="${community.commentCount}"></span></p>
+						<p class="card-text">좋아요: <span th:text="${community.likeCount}"></span></p>
+						<p class="card-text">등록일: <span
+								th:text="${#dates.format(community.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+					</div>
+				</div>
+				<!--댓글 출력-->
+				<div class="container mt-4">
+					<h2>댓글</h2>
+					<div th:if="${replies.empty}">
+						<p>댓글이 없습니다.</p>
+					</div>
+					<div th:each="reply : ${replies}">
+						<div class="card mb-2">
+							<div class="card-body">
+								<p class="card-text" th:if="${!reply.isDeleted}" th:text="${reply.content}"></p>
+								<p class="card-text">작성자: <span th:text="${reply.member.memberId}"></span></p>
+								<p class="card-text">작성일: <span
+										th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
 
-                    <td th:text="${product.prodCategory}">카테고리</td>
-                    <td th:text="${product.price}">가격</td>
-                    <td th:text="${product.prodSize}">사이즈</td>
-                    <td th:text="${product.salesQuantity}">판매 수량</td>
-                    <td th:text="${product.inventory}">재고</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- Bootstrap core JS-->

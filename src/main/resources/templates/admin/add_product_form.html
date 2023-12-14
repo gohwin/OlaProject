@@ -48,41 +48,67 @@
 				</div>
 			</nav>
 			<!-- Page content-->
-			<h1>Add Product</h1>
 			<div id="page-content-wrapper">
-				<h1>Add Product</h1>
-				<form th:action="@{/admin/addProduct}" method="POST" enctype="multipart/form-data" id="product" name="product">
-					<label for="productName">Product Name:</label>
-					<input type="text" id="productName" name="productName" required><br><br>
-					<!-- name을 Product 엔티티의 필드 이름과 일치 -->
+				<div class="container-fluid">
+					<h1 class="mt-4">Add Product</h1>
+					<form th:action="@{/admin/addProduct}" method="POST" enctype="multipart/form-data" id="product"
+						name="product">
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="productName">Product Name:</label>
+								<input type="text" class="form-control" id="productName" name="productName" required>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="prodCategory">Product Category:</label>
+								<select class="form-control" id="prodCategory" name="prodCategory" required>
+									<option value="1">Top</option>
+									<option value="2">Bottom</option>
+									<option value="3">Shoes</option>
+									<option value="4">Etc</option>
+									<option value="5">Sale</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="price">Price:</label>
+								<input type="number" class="form-control" id="price" name="price" required>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="prodSize">Product Size:</label>
+								<input type="text" class="form-control" id="prodSize" name="prodSize" required>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="salesQuantity">Sales Quantity:</label>
+								<input type="number" class="form-control" id="salesQuantity" name="salesQuantity"
+									required>
+							</div>
+						</div>
+						<div class="col-md-2">
 
-					<label for="prodCategory">Product Category:</label>
-					<select id="prodCategory" name="prodCategory" required> <!-- name을 Product 엔티티의 필드 이름과 일치 -->
-						<option value="1">Top</option>
-						<option value="2">Bottom</option>
-						<option value="3">Shoes</option>
-						<option value="4">Etc</option>
-						<option value="5">Sale</option>
-					</select><br><br>
-
-					<label for="price">Price:</label>
-					<input type="number" id="price" name="price" required><br><br>
-
-					<label for="prodSize">Product Size:</label>
-					<input type="text" id="prodSize" name="prodSize" required><br><br> <!-- name을 Product 엔티티의 필드 이름과 일치 -->
-
-					<label for="salesQuantity">Sales Quantity:</label>
-					<input type="number" id="salesQuantity" name="salesQuantity" required><br><br>
-
-					<label for="inventory">Inventory:</label>
-					<input type="number" id="inventory" name="inventory" required><br><br>
-
-					<label for="image">Image:</label>
-					<input type="file" id="image" name="image" accept="image/*" required><br><br>
-
-					<input type="submit" value="Submit">
-				</form>
+							<div class="form-group">
+								<label for="inventory">Inventory:</label>
+								<input type="number" class="form-control" id="inventory" name="inventory" required>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="image">Image:</label>
+								<input type="file" class="form-control-file" id="image" name="image" accept="image/*"
+									required>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
 			</div>
+
 		</div>
 	</div>
 	<!-- Bootstrap core JS-->

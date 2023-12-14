@@ -19,4 +19,10 @@ public class TradeBoardServiceImpl implements TradeBoardService {
     public List<TradeBoard> getAllTradeBoards() {
         return tradeBoardRepository.findAll();
     }
+
+    /* 중고거래 게시글 상세보기 */
+    @Override
+    public TradeBoard getTradeBoardById(Long id) {
+        return tradeBoardRepository.findById(id).orElse(null);
+    }
 }

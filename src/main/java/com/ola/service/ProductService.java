@@ -16,4 +16,12 @@ public interface ProductService {
     
     void reduceInventory(Long productNo, int quantity);
     
+    /* 상품 수정페이지 찾는 서비스*/
+    Product getProductById(Long productNo);
+    
+    /* 상품 수정 */
+    Product updateProduct(Product product);
+    
+    /* 상품 삭제*/
+    void deleteProduct(Long productId);
 }

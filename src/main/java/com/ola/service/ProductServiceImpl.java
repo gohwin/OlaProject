@@ -90,4 +90,22 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    /*상품 수정 페이지*/
+    @Override
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
+
+    /* 상품 수정*/
+    @Override
+    public Product updateProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    /* 상품 삭제 */
+    @Override
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
 }

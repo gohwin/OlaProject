@@ -59,35 +59,55 @@
 				</div>
 			</nav>
 			<!-- Page content-->
-			<div class="container-fluid">
-				<h3>커뮤니티 게시판</h3>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>번호</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>조회수</th>
-							<th>댓글수</th>
-							<th>좋아요</th>
-							<th>등록일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="community : ${communities}">
-							<td th:text="${community.communityNo}"></td>
-							<td><a th:href="@{/admin/community/detail/{communityId}(communityId=${community.communityNo})}"
-									th:text="${community.title}"></a></td>
-							<td th:text="${community.member.memberId}"></td>
-							<td th:text="${community.viewCount}"></td>
-							<td th:text="${community.commentCount}"></td>
-							<td th:text="${community.likeCount}"></td>
-							<td th:text="${community.regDate}"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			
+			  <!-- Page content-->
+            <div class="container-fluid">
+                <h1 class="mt-4">Edit Product</h1>
+
+                <form th:object="${product}" th:action="@{/admin/updateProduct}" method="post">
+                    <input type="hidden" th:field="*{productNo}">
+                    <div class="form-group">
+                        <label for="productName">상품명:</label>
+                        <input type="text" class="form-control" id="productName" name="productName"
+                            th:field="*{productName}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prodCategory">카테고리:</label>
+                        <input type="number" class="form-control" id="prodCategory" name="prodCategory"
+                            th:field="*{prodCategory}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">가격:</label>
+                        <input type="number" class="form-control" id="price" name="price" th:field="*{price}"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prodSize">사이즈:</label>
+                        <input type="text" class="form-control" id="prodSize" name="prodSize"
+                            th:field="*{prodSize}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesQuantity">판매 수량:</label>
+                        <input type="number" class="form-control" id="salesQuantity" name="salesQuantity"
+                            th:field="*{salesQuantity}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inventory">재고:</label>
+                        <input type="number" class="form-control" id="inventory" name="inventory"
+                            th:field="*{inventory}" required>
+                    </div>
+                    <!-- 이미지 업로드 기능을 추가할 수 있습니다. -->
+                    <div class="form-group">
+                        <label for="image">이미지:</label>
+                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*"
+                            th:field="*{image}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <a th:href="@{/admin/deleteProduct/{productId}(productId=${product.productNo})}"
+                        class="btn btn-danger">삭제</a>
+                </form>
+
+                <!-- 필요한 스크립트를 추가하세요. -->
+            </div>
 		</div>
 	</div>
 	<!-- Bootstrap core JS-->
