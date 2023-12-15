@@ -147,7 +147,7 @@ public class RepositoryTest {
 		IntStream.rangeClosed(1, 14).forEach(i -> {
 			Product product1 = Product.builder()
 					.productName("bottom" + i)
-					.prodCategory(1)
+					.prodCategory(2)
 					.price(10000L)
 					.prodSize("L")
 					.salesQuantity(0L)
@@ -160,7 +160,7 @@ public class RepositoryTest {
 		IntStream.rangeClosed(1, 15).forEach(i -> {
 			Product product3 = Product.builder()
 					.productName("shoes"+i)
-					.prodCategory(4)
+					.prodCategory(3)
 					.price(25000L)
 					.prodSize("265")
 					.salesQuantity(0L)

@@ -254,7 +254,7 @@ public class BoardController {
 			boardService.deleteBoard(tradeBoardNo);
 			return "redirect:/tradeBoardList";
 		} else {
-			return "redirect:/login"; // 로그인되지 않은 사용자라면 로그인 페이지로 리다이렉트 또는 다른 처리
+			return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoardNo; // 로그인되지 않은 사용자라면 로그인 페이지로 리다이렉트 또는 다른 처리
 		}
 	}
 
