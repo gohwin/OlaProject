@@ -64,13 +64,41 @@ public class adminProductController {
 	        if (product == null) {
 	            // 상품이 없을 경우 처리
 	        }
+	        String category = getCategoryName(product.getProdCategory());
+	        model.addAttribute("category", category);
 	        model.addAttribute("product", product);
 	        return "/admin/editProduct"; // 상품을 편집하기 위한 editProduct.html 템플릿을 생성하세요.
 	    }
+	   
+	   private String getCategoryName(int category) {
+		    switch (category) {
+		        case 1:
+		            return "top";
+		        case 2:
+		            return "bottom";
+		        case 3:
+		            return "shoes";
+		        case 4:
+		            return "etc";
+		        case 5:
+		            return "sales";
+		        case 6:
+		            return "soldout";
+		        default:
+		            return "unknown"; // 기본값, 범위 밖의 카테고리 번호 처리
+		    }
+		}
 
 	   /* 상품 수정 */
 	    @PostMapping("/admin/updateProduct")
-	    public String updateProduct(@ModelAttribute Product product) {
+	    public String updateProduct(@RequestParam("productNo")Long productNo,
+	    							@RequestParam("image") MultipartFile imageFile,
+	    							@RequestParam("prodCategory") int prodCategory) throws IOException {
+	    	Product product = productService.getProductById(productNo);
+	    	if(!imageFile.isEmpty()) {
+	    		String image = productService.uploadImage(imageFile, prodCategory);
+	    		product.setImage(image);
+	    	}
 	        productService.updateProduct(product);
 	        return "redirect:/admin/products"; // 상품 목록으로 다시 리다이렉션
 	    }
@@ -78,7 +106,8 @@ public class adminProductController {
 	    /* 상품 삭제*/
 	    @GetMapping("/admin/deleteProduct/{productId}")
 	    public String deleteProduct(@PathVariable Long productId) {
-	        productService.deleteProduct(productId);
+	    	productService.deleteProduct(productId);
+	        
 	        return "redirect:/admin/products"; // 상품 목록으로 다시 리다이렉션
 	    }
 	 

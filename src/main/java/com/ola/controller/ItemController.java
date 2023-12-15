@@ -40,6 +40,7 @@ public class ItemController {
 	    categoryMap.put(3, "shoes");
 	    categoryMap.put(4, "etc");
 	    categoryMap.put(5, "sales");
+	    categoryMap.put(6, "soldout");
 
 	    // 모든 상품의 카테고리 값을 문자열로 변환하여 리스트에 저장
 	    for (Product product : prodList) {
