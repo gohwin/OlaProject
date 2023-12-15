@@ -14,10 +14,9 @@
 </head>
 
 <body>
-	<div class="d-flex" id="wrapper">
-
-		<!-- Page content-->
-		<div th:fragment="tradeBoard_list">
+	<!-- Page content-->
+	<th:block th:replace="~{/layout/adminLayout :: setContent(~{this :: content})}">
+		<th:block th:fragment="content">
 			<div class="container-fluid">
 				<h3>중고거래 게시판</h3>
 				<table class="table">
@@ -51,9 +50,10 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-	</div>
-	</div>
+		</th:block>
+	</th:block>
+
+
 	<!-- Bootstrap core JS-->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->

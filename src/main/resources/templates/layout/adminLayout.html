@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<th:block block th:fragment="setContent(content)">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -19,9 +19,12 @@
 		<div class="border-end bg-white" id="sidebar-wrapper">
 			<div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
 			<div class="list-group list-group-flush">
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/products}">상품관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/community}">자유게시판관리</a>
-				<a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/admin/tradeBoard}">중고거래게시판</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/products}">상품관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/community}">자유게시판관리</a>
+				<a class="list-group-item list-group-item-action list-group-item-light p-3"
+					th:href="@{/admin/tradeBoard}">중고거래게시판</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
 				<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
@@ -46,17 +49,19 @@
 				</div>
 			</nav>
 			<!-- Page content-->
+			<!-- 이곳에 다른 페이지의 내용이 들어갑니다 -->
 			 <div class="container-fluid">
-                <div th:replace="tradeBoard_list::/board/tradeBoard_list.html">
-                    <!-- 개별 페이지의 내용이 들어갈 부분 -->
-                </div>
-            </div>
+				 <th:block th:replace="${content}">
+					 
+				 </th:block>
+			 </div> 
 		</div>
+	</div>
 	</div>
 	<!-- Bootstrap core JS-->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="/adminPage/js/scripts.js"></script>
 </body>
-
+</th:block>
 </html>
