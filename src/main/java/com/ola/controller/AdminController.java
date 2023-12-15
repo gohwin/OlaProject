@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
+import com.ola.entity.OrderList;
 import com.ola.entity.Product;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.CommunityRepository;
+import com.ola.repository.OrderListRepository;
 import com.ola.repository.ProductRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
@@ -41,6 +43,9 @@ public class AdminController {
 	
 	@Autowired
 	private ProductRepository prodRepo;
+	
+	@Autowired
+	private OrderListRepository orderRepo;
 
 	@GetMapping("/adminMain2")
 	public String adminMain2() {
@@ -167,6 +172,7 @@ public class AdminController {
 		
 		return "redirect:adminCommunityBoardList";
 	}
+	
 	
 	@GetMapping("/admin/adminAll")
 	public String showAllPage(Model model) {
