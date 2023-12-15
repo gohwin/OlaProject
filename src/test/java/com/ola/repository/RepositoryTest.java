@@ -1,6 +1,8 @@
 package com.ola.repository;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Disabled;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ola.entity.Basket;
 import com.ola.entity.Community;
 import com.ola.entity.Member;
+import com.ola.entity.OrderList;
 import com.ola.entity.Product;
 import com.ola.entity.Role;
 import com.ola.entity.TradeBoard;
@@ -35,6 +38,9 @@ public class RepositoryTest {
 	
 	@Autowired
 	private BasketRepository basketRepo;
+	
+	@Autowired
+	private OrderListRepository orderRepo;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -205,6 +211,26 @@ public class RepositoryTest {
 	        
 	        basketRepo.save(basket);
 	    
+	}
+	
+	@Test
+	public void testOrderList() {
+		Member member = memberRepo.findById("member").get();
+		
+		IntStream.rangeClosed(1, 30).forEach(i -> {
+		
+		Map<Long, Integer> productQuantities = new HashMap<>();
+        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+
+        OrderList orderList = OrderList.builder()
+                .member(member)
+                .orderDate(new Date()) // Set current date for order date
+                .productQuantities(productQuantities)
+                .build();
+        
+        orderRepo.save(orderList);
+		});
 	}
 
 
