@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta tags, title, and CSS links -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/adminPage/css/styles.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawSalesVolumeChart();
+            drawSalesAmountChart();
+        }
+
+        function drawSalesVolumeChart() {
+            var salesVolumeData = /*[[${salesVolumeData}]]*/ {}; // 예: {1: 120, 2: 200, ...}
+            var totalVolume = 0;
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Product');
+            data.addColumn('number', 'Sales Volume');
+
+            for (var productId in salesVolumeData) {
+                if (salesVolumeData.hasOwnProperty(productId)) {
+                    totalVolume += salesVolumeData[productId];
+                    data.addRow(['Product ' + productId, salesVolumeData[productId]]);
+                }
+            }
+
+            var options = {
+                title: 'Product Sales Volume',
+                width: 600,
+                height: 400
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('sales_volume_chart'));
+            chart.draw(data, options);
+
+            document.getElementById('total_sales_volume').innerText = '총 판매량: ' + totalVolume + '개';
+        }
+
+        function drawSalesAmountChart() {
+            var salesAmountData = /*[[${salesAmountData}]]*/ {}; // 예: {1: 150000, 2: 300000, ...}
+            var totalAmount = 0;
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Product');
+            data.addColumn('number', 'Sales Amount');
+
+            for (var productId in salesAmountData) {
+                if (salesAmountData.hasOwnProperty(productId)) {
+                    totalAmount += salesAmountData[productId];
+                    data.addRow(['Product ' + productId, salesAmountData[productId]]);
+                }
+            }
+
+            var options = {
+                title: 'Product Sales Amount',
+                width: 600,
+                height: 400
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('sales_amount_chart'));
+            chart.draw(data, options);
+
+            document.getElementById('total_sales_amount').innerText = '총 판매액: ' + totalAmount.toLocaleString() + ' 원';
+        }
+
+        /*]]>*/
+    </script>
+</head>
+<body>
+    <th:block th:replace="~{/layout/adminLayout :: setContent(~{this :: content})}">
+        <th:block th:fragment="content">
+            <div class="d-flex" id="wrapper">
+                <!-- Sidebar -->
+                <div class="border-end bg-white" id="sidebar-wrapper">
+                    <!-- Sidebar Content -->
+                    <!-- ... -->
+                </div>
+
+                <!-- Page content wrapper -->
+                <div id="page-content-wrapper">
+                    <!-- Top navigation -->
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                        <!-- Navbar Content -->
+                        <!-- ... -->
+                    </nav>
+
+                    <!-- Page content -->
+                    <div class="container-fluid">
+                        <!-- 버튼 추가 -->
+                        <div>
+                            <a href="/admin/saleChart" class="btn btn-primary" onclick="drawCharts()">전체</a>
+                            <a href="/admin/saleChart/1month" class="btn btn-primary" onclick="drawCharts()">1개월</a>
+                            <a href="/admin/saleChart/3months" class="btn btn-primary" onclick="drawCharts()">3개월</a>
+                            <a href="/admin/saleChart/6months" class="btn btn-primary" onclick="drawCharts()">6개월</a>
+                            <a href="/admin/saleChart/1year" class="btn btn-primary" onclick="drawCharts()">1년</a>
+                        </div>
+
+                        <!-- Google Chart를 위한 divs -->
+                        <div id="sales_volume_chart"></div>
+                        <div id="total_sales_volume"></div> <!-- 총 판매량 표시 -->
+                        <div id="sales_amount_chart"></div>
+                        <div id="total_sales_amount"></div> <!-- 총 판매액 표시 -->
+
+                        <!-- 기타 HTML 컨텐츠 -->
+                        <!-- ... -->
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+
+    <!-- Bootstrap core JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS -->
+    <script src="/adminPage/js/scripts.js"></script>
+</body>
+</html>
