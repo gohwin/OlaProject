@@ -108,7 +108,7 @@ public class MyPageController {
         // 클라이언트에 성공 메시지를 보냅니다.
         return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
     }
-
+//
 
 
 
