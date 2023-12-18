@@ -172,7 +172,7 @@
 									<!-- 수량 입력 필드 with onchange event --> <input type="number"
 										th:name="'quantity_' + ${product.productNo}"
 										th:value="${basket.productQuantityMap[product.productNo]}" min="1"
-										onchange="calculateTotalAmount()" th:data-price="${product.price}" />
+										th:max="${product.inventory}" onchange="calculateTotalAmount()" th:data-price="${product.price}" />
 								</td>
 								<td th:text="${product.price}"></td>
 								<td>

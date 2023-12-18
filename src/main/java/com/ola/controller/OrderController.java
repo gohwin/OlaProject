@@ -77,16 +77,30 @@ public class OrderController {
 	}
 
 	@GetMapping("/orderDetails")
-	public String orderDetails(@RequestParam("orderNo") Long orderNo, Model model) {
-		// orderNo를 사용하여 주문 세부 정보를 가져오는 서비스 메소드를 호출
-		OrderList orderDetails = orderRepo.getOrderDetails(orderNo);
+    public String orderDetails(@RequestParam("orderNo") Long orderNo, Model model) {
+        OrderList orderDetails = orderRepo.getOrderDetails(orderNo);
+        Map<Long, String> productNames = new HashMap<>();
+        Long totalOrderPrice = 0L;
 
-		// orderDetails를 모델에 추가
-		model.addAttribute("orderDetails", orderDetails);
+        if (orderDetails != null) {
+            for (Map.Entry<Long, Integer> entry : orderDetails.getProductQuantities().entrySet()) {
+                Long productId = entry.getKey();
+                Integer quantity = entry.getValue();
 
-		// orderDetails.html로 이동
-		return "order/orderDetail"; // 주문 세부 정보를 표시할 Thymeleaf 템플릿 파일명
-	}
+                Product product = prodRepo.findById(productId).orElse(null);
+                if (product != null) {
+                    productNames.put(productId, product.getProductName());
+                    totalOrderPrice += product.getPrice() * quantity;  // 총 주문가격 계산
+                }
+            }
+        }
+
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("productNames", productNames);
+        model.addAttribute("totalOrderPrice", totalOrderPrice);
+
+        return "order/orderDetail";
+    }
 
 	@PostMapping("/insertBasket")
 	public String insertBasketAction(@RequestParam("productNo") Long productNo,

@@ -25,16 +25,21 @@
                 <td>
                     <table>
                         <tr>
-                            <th>Product No</th>
+                            <th>Product Name</th>
                             <th>Quantity</th>
                         </tr>
                         <!-- 주문 상품 목록 표시 -->
                         <tr th:each="entry : ${orderDetails.productQuantities}">
-                            <td th:text="${entry.key}"></td>
+                            <td th:text="${productNames[entry.key]}"> </td>
                             <td th:text="${entry.value}"></td>
                         </tr>
                     </table>
                 </td>
+            </tr>
+            <!-- 총 주문가격 표시 -->
+            <tr>
+                <th>Total Price:</th>
+                <td th:text="${totalOrderPrice} + '원'"></td>
             </tr>
         </table>
     </div>
