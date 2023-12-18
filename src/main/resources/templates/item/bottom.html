@@ -14,14 +14,6 @@
 	<!-- Core theme CSS (includes Bootstrap)-->
 	<link rel="stylesheet" th:href="@{/shopItem/css/styles.css}" type="text/css">
 
-	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/elegant-icons.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/magnific-popup.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/nice-select.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
-	<link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
 </head>
 
 <body>
@@ -67,7 +59,7 @@
 			});
 		});
 	</script>
-	<footer th:include="footer :: body"></footer>
+	<th:block th:include="footer.html"></th:block>
 </body>
 
 </html>
