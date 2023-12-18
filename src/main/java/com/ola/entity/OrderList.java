@@ -1,5 +1,6 @@
 package com.ola.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "ORDER_LIST")
 public class OrderList {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_no")
@@ -49,5 +51,6 @@ public class OrderList {
     @CreatedDate
     @Column(name="regdate", updatable=false)
     private Date orderDate;
+
 
 }

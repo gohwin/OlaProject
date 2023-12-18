@@ -95,6 +95,13 @@ public class OrderController {
 	@PostMapping("/insertBasket")
 	public String insertBasketAction(@RequestParam("productNo") Long productNo,
 			@AuthenticationPrincipal SecurityUser principal, Model model) {
+
+
+		if (principal == null) {
+			// 사용자가 인증되지 않았으므로 로그인 페이지로 리디렉션합니다.
+			return "redirect:/system/login";
+		}
+
 		int quantity = 1; // 기본 수량
 		Member member = principal.getMember();
 		Basket basket = basketRepo.findByUser(member);
@@ -133,6 +140,7 @@ public class OrderController {
 	@GetMapping("/directOrderView")
 	public String directOrder(@RequestParam("productNo") Long productNo,
 			@AuthenticationPrincipal SecurityUser principal, Model model) {
+
 		Product product = prodRepo.findById(productNo)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid product No:" + productNo));
 		Member member = principal.getMember();
@@ -142,6 +150,38 @@ public class OrderController {
 
 		return "order/directOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
 	}
+
+		if (principal == null) {
+			// 사용자가 인증되지 않았으므로 로그인 페이지로 리디렉션합니다.
+			return "redirect:/system/login";
+		}
+		Product product = prodRepo.findById(productNo)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid product No:" + productNo));
+		Member member = principal.getMember();
+		String categoryName = convertCategoryToName(product.getProdCategory());
+		model.addAttribute("product", product);
+		model.addAttribute("member", member);
+		model.addAttribute("category", categoryName);
+		return "order/directOrder"; // 주문 페이지의 Thymeleaf 템플릿 파일명을 사용합니다.
+	}
+
+	private String convertCategoryToName(int category) {
+		switch (category) {
+		case 1:
+			return "top";
+		case 2:
+			return "bottom";
+		case 3:
+			return "shoes";
+		case 4:
+			return "etc";
+		case 5:
+			return "sales";
+		default:
+			return "unknown"; // Default case if category does not match
+		}
+	}
+
 
 	@PostMapping("/directOrder")
 	@Transactional
