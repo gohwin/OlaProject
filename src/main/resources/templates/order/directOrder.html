@@ -90,7 +90,8 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="card">
-					<img src="product-image.jpg" class="card-img-top" alt="Product Image">
+					<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image"
+						class="product-image">
 					<div class="card-body">
 						<h5 class="card-title">Product Name: <span th:text="${product.productName}"></span></h5>
 						<p class="card-text">Price: <span id="dataPrice" th:text="${product.price}"></span></p>
@@ -109,7 +110,7 @@
 					<p>Total Amount: <span id="totalAmount" th:text="${product.price}" class="font-weight-bold"></span>
 					</p>
 					<button type="submit" class="btn btn-primary">Order</button>
-					 <a href="javascript:history.back()" class="btn btn-secondary">뒤로 가기</a>
+					<a href="javascript:history.back()" class="btn btn-secondary">뒤로 가기</a>
 				</form>
 			</div>
 		</div>
