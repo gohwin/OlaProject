@@ -3,15 +3,16 @@ package com.ola.adminController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Community;
 import com.ola.entity.Reply;
+import com.ola.repository.CommunityRepository;
 import com.ola.service.CommunityService;
 import com.ola.service.ReplyService;
 
@@ -23,6 +24,9 @@ public class adminCommunityController {
 	
 	@Autowired
 	private ReplyService replyService;
+	
+	@Autowired
+	private CommunityRepository communityRepo;
 
 	@GetMapping("/admin/community")
 	public String showCommunityList(Model model) {
@@ -45,6 +49,13 @@ public class adminCommunityController {
             return "redirect:/admin/community";
         }
     }
+	
+	@PostMapping("/admin/community/delete/{communityNo}")
+	public String adminDeleteCommunity(@PathVariable("communityNo") Long communityId, Model model) {
+		communityRepo.deleteById(communityId);
+		model.addAttribute("communities", communityService.getAllCommunities());
+		return "/admin/community_list"; // 해당하는 Thymeleaf 템플릿 이름
+	}
 	
 	
 }
