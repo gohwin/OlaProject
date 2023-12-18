@@ -218,13 +218,11 @@ public class RepositoryTest {
 	        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
 	        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
 
-	        List<String> productNames = Arrays.asList("Product 1", "Product 2"); // Change product names accordingly
 
 	        OrderList orderList = OrderList.builder()
 	                .member(member)
 	                .orderDate(new Date()) // Set the current date for the order date
 	                .productQuantities(productQuantities)
-	                .productNames(productNames)
 	                .build();
 
 	        orderRepo.save(orderList);
