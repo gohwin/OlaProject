@@ -2,7 +2,6 @@ package com.ola.entity;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -43,9 +42,8 @@ public class OrderList {
 
     @ElementCollection
     @CollectionTable(name = "order_product_quantity", joinColumns = @JoinColumn(name = "order_no"))
-    @MapKeyColumn(name = "product_no")
+    @MapKeyColumn(name = "product_no") // `@MapKeyJoinColumn` 대신 `@MapKeyColumn` 사용
     @Column(name = "quantity")
-    @Builder.Default
     private Map<Long, Integer> productQuantities = new HashMap<>();
 
     @CreatedDate

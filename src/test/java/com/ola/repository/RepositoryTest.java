@@ -45,7 +45,7 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-
+	
 	@Test
 	public void member2Insert() {
 		Member member = Member.builder().name("안중근")

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ola.entity.Member;
 import com.ola.entity.OrderList;
+import com.ola.entity.Product;
 
 public interface OrderListRepository extends JpaRepository<OrderList, Long> {
 	
@@ -16,4 +17,6 @@ public interface OrderListRepository extends JpaRepository<OrderList, Long> {
 	
 	@Query("SELECT o FROM OrderList o WHERE o.orderNo=:orderNo")
 	OrderList getOrderDetails(@Param(value="orderNo")Long orderNo);
+	
+
 }
