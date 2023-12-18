@@ -115,21 +115,21 @@ public class BoardController {
 	}
 
 	@GetMapping("/getCommuBoard")
-    public String getCommunity(@RequestParam Long communityNo, Model model, Authentication authentication) {
-        Community community = boardService.getCommunityWithRepliesByNo(communityNo);
+	public String getCommunity(@RequestParam Long communityNo, Model model, Authentication authentication) {
+		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
-        if (community != null) {
-            String currentUserId = authentication.getName();
-            boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
-                .anyMatch(member -> member.getMemberId().equals(currentUserId));
+		if (community != null) {
+			String currentUserId = authentication.getName();
+			boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
+					.anyMatch(member -> member.getMemberId().equals(currentUserId));
 
-            model.addAttribute("community", community);
-            model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
-            return "board/getCommuBoard"; // 커뮤니티 상세보기 페이지
-        } else {
-            return "errorPage";
-        }
-    }
+			model.addAttribute("community", community);
+			model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
+			return "board/getCommuBoard"; // 커뮤니티 상세보기 페이지
+		} else {
+			return "errorPage";
+		}
+	}
 
 	@GetMapping("/board/communityInsert")
 	public String communityInsertView() {
@@ -175,7 +175,6 @@ public class BoardController {
 			return "redirect:/getTradeBoard?tradeBoardNo=" + tradeBoardNo;
 		}
 	}
-	
 
 	@PostMapping("/editCommunity/save")
 	public String saveEditedCommunity(@RequestParam Long communityNo, @RequestParam String newContent,
@@ -198,7 +197,8 @@ public class BoardController {
 	}
 
 	@PostMapping("/updateBoard")
-	public String updateTrade(@RequestParam("title") String title, @RequestParam("newContent") String content, @ModelAttribute TradeBoard tradeBoard) {
+	public String updateTrade(@RequestParam("title") String title, @RequestParam("newContent") String content,
+			@ModelAttribute TradeBoard tradeBoard) {
 		tradeBoard.setTitle(title);
 		tradeBoard.setContent(content);
 		boardService.updateBoard(tradeBoard);
@@ -261,11 +261,11 @@ public class BoardController {
 	@PostMapping("/toggleLike")
 	@ResponseBody
 	public Map<String, Boolean> toggleLike(@RequestParam Long communityNo, Authentication authentication) {
-	    String memberId = authentication.getName();
-	    boolean liked = boardService.toggleLike(communityNo, memberId);
-	    Map<String, Boolean> response = new HashMap<>();
-	    response.put("liked", liked);
-	    return response;
+		String memberId = authentication.getName();
+		boolean liked = boardService.toggleLike(communityNo, memberId);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("liked", liked);
+		return response;
 	}
 
 }
