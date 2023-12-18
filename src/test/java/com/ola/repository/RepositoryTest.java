@@ -1,10 +1,11 @@
 package com.ola.repository;
 
+
 import java.util.Calendar;
 import java.util.Arrays;
+
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -293,6 +294,12 @@ public class RepositoryTest {
         cal2MonthsAgo.add(Calendar.MONTH, -2);
         Date twoMonthsAgo = cal2MonthsAgo.getTime();
 
+	        OrderList orderList = OrderList.builder()
+	                .member(member)
+	                .orderDate(new Date()) // Set the current date for the order date
+	                .productQuantities(productQuantities)
+	                .build();
+    
         // 2달 전 주문 생성 (2개, 제품 번호 3L과 4L 주문)
         IntStream.rangeClosed(1, 2).forEach(i -> {
             Map<Long, Integer> productQuantities = new HashMap<>();
