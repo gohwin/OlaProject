@@ -1,17 +1,17 @@
 package com.ola.repository;
 
 import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ola.entity.Basket;
 import com.ola.entity.Community;
@@ -46,7 +46,6 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-
 	@Test
 	public void member2Insert() {
 		Member member = Member.builder().name("안중근")
@@ -62,7 +61,6 @@ public class RepositoryTest {
 		memberRepo.save(member);
 	}
 	
-
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -97,7 +95,6 @@ public class RepositoryTest {
 
 	}
 
-
 	@Test
 	public void testCommuBoard() {
 		
@@ -117,7 +114,6 @@ public class RepositoryTest {
 		});
 	}
 	
-
 	@Test
 	public void testTradeBoard() {
 		
@@ -135,7 +131,6 @@ public class RepositoryTest {
 		});
 	}
 	
-
 	@Test
 	public void testProduct() {
 		IntStream.rangeClosed(1, 14).forEach(i -> {
@@ -312,10 +307,6 @@ public class RepositoryTest {
 
             orderRepo.save(orderList);
         });
-
-        
-        
-        
 	}
 
 

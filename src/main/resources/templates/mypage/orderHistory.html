@@ -1,52 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>My Orders</title>
+	<meta charset="UTF-8">
+	<title>My Orders</title>
 </head>
+
 <body>
-    <header th:insert="header :: body"></header>
-    <h1>My Orders</h1>
-    <div th:if="${myOrders != null and not myOrders.isEmpty()}">
-        <table>
-            <thead>
-                <tr>
-                    <th>Order No</th>
-                    <th>Date</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <th:block th:each="order : ${myOrders}">
-                    <tr>
-                        <td th:text="${order.orderNo}"></td>
-                        <td th:text="${order.orderDate}"></td>
-                        <td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
-                    </tr>
-                </th:block>
-            </tbody>
-        </table>
-    </div>
-    <div th:if="${myOrders == null or myOrders.isEmpty()}">
-        <table>
-            <thead>
-                <tr>
-                    <th>Order No</th>
-                    <th>Date</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>No orders found.</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <a th:href="@{/mypage/mypages}"><button>뒤로 가기</button></a>
-    </div>
+	<header th:insert="header :: body"></header>
+	<h1>My Orders</h1>
+	<div th:if="${myOrders != null and not myOrders.isEmpty()}">
+		<table>
+			<thead>
+				<tr>
+					<th>Order No</th>
+					<th>Date</th>
+					<th>Product Name</th> <!-- 추가된 부분 -->
+					<th>Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="order : ${myOrders}">
+					<tr>
+						<td th:text="${order.orderNo}"></td>
+						<td th:text="${order.orderDate}"></td>
+						<td>
+							<div th:each="entry : ${order.productQuantities.entrySet()}">
+								<span
+									th:text="${productsMap[entry.key].productName}"></span>
+							</div>
+						</td>
+						<td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	<div th:if="${myOrders == null or myOrders.isEmpty()}">
+		<table>
+			<thead>
+				<tr>
+					<th>Order No</th>
+					<th>Date</th>
+					<th>Product Name</th> <!-- 추가된 부분 -->
+					<th>Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>No orders found.</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<a th:href="@{/mypage/mypages}"><button>뒤로 가기</button></a>
+	</div>
 </body>
+
 </html>

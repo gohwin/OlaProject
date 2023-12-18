@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Member Details</title>
+	<!-- Favicon-->
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+	<!-- Core theme CSS (includes Bootstrap)-->
+	<link href="/adminPage/css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+	<th:block th:replace="~{/layout/adminLayout :: setContent(~{this :: content})}">
+		<th:block th:fragment="content">
+			<!-- Page content-->
+			<div class="container-fluid">
+				<h3>회원 상세 정보</h3>
+				<div th:if="${member != null}">
+					<p>ID: <span th:text="${member.memberId}"></span></p>
+					<p>Name: <span th:text="${member.name}"></span></p>
+					<p>Email: <span th:text="${member.email}"></span></p>
+				</div>
+				<div th:if="${myOrders != null and not myOrders.isEmpty()}">
+					<table>
+						<thead>
+							<tr>
+								<th>Order No</th>
+								<th>Date</th>
+								<th>Product Name</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="order : ${myOrders}">
+								<tr>
+									<td th:text="${order.orderNo}"></td>
+									<td th:text="${order.orderDate}"></td>
+									<td>
+										<span th:if="${#lists.size(order.productNames) > 1}"
+											th:text="${order.productNames[0] + ' 외 ' + (#lists.size(order.productNames) - 1) + '건'}"></span>
+										<span th:unless="${#lists.size(order.productNames) > 1}"
+											th:text="${order.productNames[0]}"></span>
+									</td>
+									<td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+				<form action="/removeMember" method="post">
+					<input type="hidden" name="memberId" th:value="${member.memberId}" />
+					<button type="submit" class="btn btn-danger">회원 탈퇴</button>
+				</form>
+			</div>
+		</th:block>
+	</th:block>
+	<!-- Bootstrap core JS-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Core theme JS-->
+	<script src="/adminPage/js/scripts.js"></script>
+</body>
+
+</html>

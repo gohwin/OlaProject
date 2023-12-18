@@ -3,50 +3,81 @@
 
 <head>
 	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/mypage.css" rel="stylesheet" />
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/elegant-icons.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/magnific-popup.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/nice-select.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
+	<style>
+		.table th,
+		.table td {
+			padding: 0.5rem;
+			text-align: center;
+			/* 셀 패딩 조정 */
+		}
+
+		.table th {
+			background-color: #f8f9fa;
+			/* 헤더 배경색 */
+			color: #495057;
+			/* 헤더 텍스트 색상 */
+		}
+	</style>
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
 
-	<h1>마이페이지</h1>
-
-	<table>
-		<tr>
-			<th>항목</th>
-			<th>내용</th>
-		</tr>
-		<tr>
-			<td>이름</td>
-			<td th:text="${user.name}"></td>
-		</tr>
-		<tr>
-			<td>이메일</td>
-			<td th:text="${user.email}"></td>
-		</tr>
-		<tr>
-			<td>전화번호</td>
-			<td th:text="${user.phoneNumber}"></td>
-		</tr>
-		<tr>
-			<td>주소</td>
-			<td th:text="${user.address}"></td>
-		</tr>
-		<tr>
-			<td>상세주소</td>
-			<td th:text="${user.detailedAddress}"></td>
-		</tr>
-		<tr>
-			<td>주소번호</td>
-			<td th:text="${user.zipNum}"></td>
-		</tr>
-	</table>
-
-	<a th:href="@{/mypage/editProfile}" class="btn">프로필 수정</a>
-	<a th:href="@{/mypage/orderHistory}" class="btn">주문 내역</a>
-	<a th:href="@{/mypage/basket}" class="btn">장바구니</a>
-
+	<div class="container my-4">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						마이페이지
+					</div>
+					<div class="card-body">
+						<table class="table">
+							<tr>
+								<th>이름</th>
+								<td th:text="${user.name}"></td>
+							</tr>
+							<tr>
+								<th>이메일</th>
+								<td th:text="${user.email}"></td>
+							</tr>
+							<tr>
+								<th>전화번호</th>
+								<td th:text="${user.phoneNumber}"></td>
+							</tr>
+							<tr>
+								<th>주소</th>
+								<td th:text="${user.address}"></td>
+							</tr>
+							<tr>
+								<th>상세주소</th>
+								<td th:text="${user.detailedAddress}"></td>
+							</tr>
+							<tr>
+								<th>주소번호</th>
+								<td th:text="${user.zipNum}"></td>
+							</tr>
+						</table>
+						<div class="text-center">
+							<a th:href="@{/mypage/editProfile}" class="btn btn-primary mx-1">프로필 수정</a>
+							<a th:href="@{/mypage/orderHistory}" class="btn btn-secondary mx-1">주문 내역</a>
+							<a th:href="@{/mypage/basket}" class="btn btn-info mx-1">장바구니</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 </html>
