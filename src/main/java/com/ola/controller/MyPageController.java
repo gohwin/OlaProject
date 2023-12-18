@@ -1,5 +1,9 @@
 package com.ola.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Basket;
 import com.ola.entity.Member;
+import com.ola.entity.OrderList;
+import com.ola.entity.Product;
 import com.ola.repository.BasketRepository;
 import com.ola.repository.OrderListRepository;
+import com.ola.repository.ProductRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.UserService;
 
@@ -28,6 +35,8 @@ public class MyPageController {
 	private OrderListRepository orderRepo;
 	@Autowired
 	private BasketRepository basketRepo;
+	@Autowired
+	private ProductRepository productRepository;
 
 	@GetMapping("/mypages")
 	public String myPage(Model model, @AuthenticationPrincipal SecurityUser principal) {
@@ -59,12 +68,25 @@ public class MyPageController {
 		return "redirect:/mypage/mypages";
 	}
 
-	@GetMapping("/orderHistory")
-	public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
-		Member user = principal.getMember();
-		model.addAttribute("myOrders", orderRepo.findByMember(user));
-		return "mypage/orderHistory"; 
-	}
+	 @GetMapping("/orderHistory")
+	    public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
+	        Member user = principal.getMember();
+	        List<OrderList> myOrders = orderRepo.findByMember(user);
+	        Map<Long, Product> productsMap = new HashMap<>();
+
+	        for (OrderList order : myOrders) {
+	            for (Long productId : order.getProductQuantities().keySet()) {
+	                if (!productsMap.containsKey(productId)) {
+	                    productsMap.put(productId, productRepository.findById(productId).orElse(null));
+	                }
+	            }
+	        }
+
+	        model.addAttribute("myOrders", myOrders);
+	        model.addAttribute("productsMap", productsMap);
+	        return "mypage/orderHistory"; 
+	    }
+	
 	
 	@GetMapping("/basket")
 	public String basketView(Model model, @AuthenticationPrincipal SecurityUser principal) {
@@ -108,7 +130,7 @@ public class MyPageController {
         // 클라이언트에 성공 메시지를 보냅니다.
         return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
     }
-
+//
 
 
 

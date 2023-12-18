@@ -1,5 +1,8 @@
 package com.ola.adminController;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.Member;
+import com.ola.entity.OrderList;
+import com.ola.entity.Product;
+import com.ola.repository.BasketRepository;
+import com.ola.repository.CommunityRepository;
+import com.ola.repository.MemberRepository;
 import com.ola.repository.OrderListRepository;
+import com.ola.repository.ProductRepository;
+import com.ola.repository.ReplyRepository;
+import com.ola.repository.TradeBoardRepository;
 import com.ola.service.MemberService;
 
 @Controller
@@ -20,6 +31,18 @@ public class adminMemberController {
 	private MemberService memberService;
 	@Autowired
 	private OrderListRepository orderRepo;
+	@Autowired
+	private ProductRepository productRepo;
+	@Autowired
+	private MemberRepository memberRepo;
+	@Autowired
+	private CommunityRepository commuRepo;
+	@Autowired
+	private TradeBoardRepository tradeRepo;
+	@Autowired
+	private ReplyRepository replyRepo;
+	@Autowired
+	private BasketRepository basketRepo;
 
 	@GetMapping("/admin/member")
 	public String getAllMembers(Model model) {
@@ -37,10 +60,21 @@ public class adminMemberController {
 
 		if (memberOptional.isPresent()) {
 			Member member = memberOptional.get();
+			List<OrderList> myOrders = orderRepo.findByMember(member);
+			Map<Long, Product> productsMap = new HashMap<>();
+
+	        for (OrderList order : myOrders) {
+	            for (Long productId : order.getProductQuantities().keySet()) {
+	                if (!productsMap.containsKey(productId)) {
+	                    productsMap.put(productId, productRepo.findById(productId).orElse(null));
+	                }
+	            }
+	        }
 
 			// 모델에 회원 정보 추가
 			model.addAttribute("member", member);
 			model.addAttribute("myOrders", orderRepo.findByMember(member));
+			model.addAttribute("productsMap", productsMap);
 			// Thymeleaf 템플릿 이름 반환
 			return "admin/member_details";
 		} else {
@@ -51,7 +85,13 @@ public class adminMemberController {
 
 	@PostMapping("/removeMember")
 	public String deleteMember(Model model, @RequestParam("memberId") String memberId) {
-		memberService.deleteMemberById(memberId);
+			commuRepo.deleteByMember(memberId);
+			basketRepo.deleteByMember(memberId);
+			orderRepo.deleteByMember(memberId);
+			tradeRepo.deleteByMember(memberId);
+			replyRepo.deleteByMember(memberId);
+			memberService.deleteMemberById(memberId);
+		
 		model.addAttribute("members", memberService.getAllMembers());
 		return "admin/member_list";
 	}
