@@ -1,209 +1,218 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<link href="/css/main.css" rel="stylesheet" />
-<link href="/css/mypage.css" rel="stylesheet" />
-<title>Basket List</title>
-<!-- jQuery -->
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<!-- iamport.payment.js -->
-<script type="text/javascript"
-	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script>
-	var IMP = window.IMP;
-	IMP.init("imp12332144");
 
-	// 함수를 수정하여 각 상품의 가격과 수량을 기반으로 총 금액을 계산
-	function calculateTotalAmount() {
-		var totalAmount = 0;
-		var inputElements = document
+<head>
+	<meta charset="UTF-8">
+	<link href="/css/mypage.css" rel="stylesheet" />
+	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/elegant-icons.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/magnific-popup.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/nice-select.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/owl.carousel.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/slicknav.min.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/style.css}" type="text/css">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+	<title>Basket List</title>
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<!-- iamport.payment.js -->
+	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+	<script>
+		var IMP = window.IMP;
+		IMP.init("imp12332144");
+
+		// 함수를 수정하여 각 상품의 가격과 수량을 기반으로 총 금액을 계산
+		function calculateTotalAmount() {
+			var totalAmount = 0;
+			var inputElements = document
 				.querySelectorAll('input[type="number"][name^="quantity_"]');
 
-		inputElements.forEach(function(inputElement) {
-			var quantity = parseInt(inputElement.value);
-			var price = parseInt(inputElement.getAttribute('data-price'));
-			totalAmount += quantity * price;
-		});
+			inputElements.forEach(function (inputElement) {
+				var quantity = parseInt(inputElement.value);
+				var price = parseInt(inputElement.getAttribute('data-price'));
+				totalAmount += quantity * price;
+			});
 
-		var shippingIncludedText = "원"; // 기본 텍스트
+			var shippingIncludedText = "원"; // 기본 텍스트
 
-		// 총 금액이 80000원 미만일 경우에만 3000원 추가
-		if (totalAmount < 80000) {
-			totalAmount += 3000;
-			shippingIncludedText += " (배송비 포함)"; // 배송비가 포함된 경우에만 추가 텍스트
+			// 총 금액이 80000원 미만일 경우에만 3000원 추가
+			if (totalAmount < 80000) {
+				totalAmount += 3000;
+				shippingIncludedText += " (배송비 포함)"; // 배송비가 포함된 경우에만 추가 텍스트
+			}
+
+			var totalAmountElement = document.getElementById('totalAmount');
+			if (totalAmountElement) {
+				totalAmountElement.textContent = totalAmount + shippingIncludedText;
+			}
+
+			return totalAmount;
 		}
 
-		var totalAmountElement = document.getElementById('totalAmount');
-		if (totalAmountElement) {
-			totalAmountElement.textContent = totalAmount + shippingIncludedText;
-		}
-
-		return totalAmount;
-	}
-
-	$(document).ready(
-			function() {
+		$(document).ready(
+			function () {
 				calculateTotalAmount();
 				$('input[type="number"][name^="quantity_"]').change(
-						calculateTotalAmount);
+					calculateTotalAmount);
 			});
 
-	function requestPay(event) {
-		event.preventDefault();
-		var totalAmount = calculateTotalAmount(); // 총액 계산
+		function requestPay(event) {
+			event.preventDefault();
+			var totalAmount = calculateTotalAmount(); // 총액 계산
 
-		var buyerEmail = document.getElementById('memberEmail').textContent;
-		var buyerName = document.getElementById('memberName').textContent;
-		var buyerTel = document.getElementById('memberPhone').textContent;
-		var buyerAddr = document.getElementById('memberAddress').textContent
+			var buyerEmail = document.getElementById('memberEmail').textContent;
+			var buyerName = document.getElementById('memberName').textContent;
+			var buyerTel = document.getElementById('memberPhone').textContent;
+			var buyerAddr = document.getElementById('memberAddress').textContent
 				+ ' '
 				+ document.getElementById('memberDetailedAddress').textContent;
-		var buyerPostcode = document.getElementById('memberZipNum').textContent;
+			var buyerPostcode = document.getElementById('memberZipNum').textContent;
 
-		var firstProductName = document.getElementById('firstProductName').textContent;
-		var totalProductCount = parseInt(document
+			var firstProductName = document.getElementById('firstProductName').textContent;
+			var totalProductCount = parseInt(document
 				.getElementById('totalProductCount').textContent, 10);
 
-		var orderName = totalProductCount > 1 ? firstProductName + ' 외 '
+			var orderName = totalProductCount > 1 ? firstProductName + ' 외 '
 				+ (totalProductCount - 1) + '건' : firstProductName;
 
-		IMP.request_pay({
-			pg : '9810030929',
-			pay_method : 'card',
-			merchant_uid : new Date().getTime(), // 상점에서 생성한 고유 주문번호
-			name : '주문명: ' + orderName,
-			amount : totalAmount, // 계산된 총 금액 사용
-			buyer_email : buyerEmail,
-			buyer_name : buyerName,
-			buyer_tel : buyerTel,
-			buyer_addr : buyerAddr,
-			buyer_postcode : buyerPostcode,
-			m_redirect_url : '{결제 완료 후 리디렉션 될 URL}'
-		}, function(rsp) { // callback
-			if (rsp.success) {
-				var form = document.getElementById("orderForm");
-				form.submit();
-			} else {
-				console.log(rsp);
-			}
-		});
-	}
-	$(document).ready(function() {
-		calculateTotalAmount();
-	});
-
-	function removeProduct(button) {
-		var productNo = button.getAttribute('data-product-no');
-
-		// "상품을 삭제하시겠습니까?" 라는 확인 메시지를 표시
-		var isConfirmed = confirm("상품을 삭제하시겠습니까?");
-
-		// 사용자가 '확인'을 클릭한 경우에만 삭제 진행
-		if (isConfirmed) {
-			$.ajax({
-				url : '/mypage/deleteBasket',
-				type : 'POST',
-				data : {
-					productNo : productNo
-				},
-				success : function(response) {
-					// 응답 처리, 페이지 새로 고침 혹은 테이블에서 행 제거
-					alert("상품이 삭제되었습니다.");
-					window.location.reload(); // 페이지 새로 고침
-				},
-				error : function(xhr, status, error) {
-					console.error("삭제 중 오류 발생: ", error);
+			IMP.request_pay({
+				pg: '9810030929',
+				pay_method: 'card',
+				merchant_uid: new Date().getTime(), // 상점에서 생성한 고유 주문번호
+				name: '주문명: ' + orderName,
+				amount: totalAmount, // 계산된 총 금액 사용
+				buyer_email: buyerEmail,
+				buyer_name: buyerName,
+				buyer_tel: buyerTel,
+				buyer_addr: buyerAddr,
+				buyer_postcode: buyerPostcode,
+				m_redirect_url: '{결제 완료 후 리디렉션 될 URL}'
+			}, function (rsp) { // callback
+				if (rsp.success) {
+					var form = document.getElementById("orderForm");
+					form.submit();
+				} else {
+					console.log(rsp);
 				}
 			});
-		} else {
-			// 사용자가 '취소'를 클릭한 경우
-			return false;
 		}
-	}
-</script>
+		$(document).ready(function () {
+			calculateTotalAmount();
+		});
+
+		function removeProduct(button) {
+			var productNo = button.getAttribute('data-product-no');
+
+			// "상품을 삭제하시겠습니까?" 라는 확인 메시지를 표시
+			var isConfirmed = confirm("상품을 삭제하시겠습니까?");
+
+			// 사용자가 '확인'을 클릭한 경우에만 삭제 진행
+			if (isConfirmed) {
+				$.ajax({
+					url: '/mypage/deleteBasket',
+					type: 'POST',
+					data: {
+						productNo: productNo
+					},
+					success: function (response) {
+						// 응답 처리, 페이지 새로 고침 혹은 테이블에서 행 제거
+						alert("상품이 삭제되었습니다.");
+						window.location.reload(); // 페이지 새로 고침
+					},
+					error: function (xhr, status, error) {
+						console.error("삭제 중 오류 발생: ", error);
+					}
+				});
+			} else {
+				// 사용자가 '취소'를 클릭한 경우
+				return false;
+			}
+		}
+	</script>
 </head>
+
 <body>
 
 	<header th:include="header :: body"></header>
-	<h1>Basket List</h1>
-	<div
-		th:if="${basket == null || basket.products == null || basket.products.isEmpty()}">
-		<p>장바구니에 제품이 없습니다.</p>
-	</div>
+	<class="container my-4">
+		<h1 class="text-center mb-3">Basket List</h1>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div th:if="${basket == null || basket.products == null || basket.products.isEmpty()}"
+					class="empty-basket">
+					<i class="fa fa-shopping-cart fa-3x"></i>
+					<h3>장바구니에 제품이 없습니다</h3>
+					<p>다양한 상품을 확인해 보세요!</p>
+					<a href="/item/all" class="btn btn-primary">쇼핑 계속하기</a>
+				</div>
+			</div>
+		</div>
 
 
-	<div
-		th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
-		<form id="orderForm" th:action="@{/basketOrder}" method="post"
-			onsubmit="requestPay(event)">
-			<table>
-				<thead>
-					<tr>
-						<th>Product Name</th>
-						<th>Quantity</th>
-						<th>Price</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- Iterate through the products in the basket -->
-					<!-- Iterate through the products in the basket -->
-					<th:block th:each="product, productInfo : ${basket.products}">
+		<div th:if="${basket != null && basket.products != null && !basket.products.isEmpty()}">
+			<form id="orderForm" th:action="@{/basketOrder}" method="post" onsubmit="requestPay(event)">
+				<table>
+					<thead>
 						<tr>
-							<td th:text="${product.productName}"></td>
-							<td>
-								<!-- 수량 입력 필드 with onchange event --> <input type="number"
-								th:name="'quantity_' + ${product.productNo}"
-								th:value="${basket.productQuantityMap[product.productNo]}"
-								min="1" onchange="calculateTotalAmount()"
-								th:data-price="${product.price}" />
-							</td>
-							<td th:text="${product.price}"></td>
-							<td>
-								<!-- 삭제 버튼 -->
-								<button type="button" onclick="removeProduct(this)"
-									th:data-product-no="${product.productNo}">삭제</button>
-							</td>
+							<th>Product Name</th>
+							<th>Quantity</th>
+							<th>Price</th>
 						</tr>
-					</th:block>
+					</thead>
+					<tbody>
+						<!-- Iterate through the products in the basket -->
+						<!-- Iterate through the products in the basket -->
+						<th:block th:each="product, productInfo : ${basket.products}">
+							<tr>
+								<td th:text="${product.productName}"></td>
+								<td>
+									<!-- 수량 입력 필드 with onchange event --> <input type="number"
+										th:name="'quantity_' + ${product.productNo}"
+										th:value="${basket.productQuantityMap[product.productNo]}" min="1"
+										onchange="calculateTotalAmount()" th:data-price="${product.price}" />
+								</td>
+								<td th:text="${product.price}"></td>
+								<td>
+									<!-- 삭제 버튼 -->
+									<button type="button" onclick="removeProduct(this)"
+										th:data-product-no="${product.productNo}">삭제</button>
+								</td>
+							</tr>
+						</th:block>
 
-					</th:block>
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3">Total Amount: <span id="totalAmount"></span></td>
-					</tr>
-				</tfoot>
-			</table>
-			<!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
-			<input type="hidden" name="basketId" th:value="${basket.basketId}" />
-			<button type="submit">주문하기</button>
-		</form>
-	</div>
-	<!-- '쇼핑하기' 버튼 추가, item/all 로 이동 -->
-	<div class="shopping-button">
-		<a th:href="@{/item/all}"><button>쇼핑하기</button></a>
-	</div>
-	<div>
-        <a th:href="@{/mypage/mypages}"><button>뒤로 가기</button></a>
-    </div>
+						</th:block>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3">Total Amount: <span id="totalAmount"></span></td>
+						</tr>
+					</tfoot>
+				</table>
+				<!-- '주문하기' 버튼은 basket.products가 비어있지 않은 경우에만 표시됨 -->
+				<div class="d-flex justify-content-center">
+					<input type="hidden" name="basketId" th:value="${basket.basketId}" />
+					<button type="submit" class="btn btn-outline-primary mx-2">주문하기</button>
+					<a href="/item/all" class="btn btn-secondary mx-2">쇼핑하기</a>
+					<a href="/mypage/mypages" class="btn btn-info mx-2">뒤로 가기</a>
+				</div>
+			</form>
+		</div>
 
-	<span id="memberEmail" style="display: none;" th:text="${member.email}"></span>
-	<span id="memberName" style="display: none;" th:text="${member.name}"></span>
-	<span id="memberPhone" style="display: none;"
-		th:text="${member.phoneNumber}"></span>
-	<span id="memberAddress" style="display: none;"
-		th:text="${member.address}"></span>
-	<span id="memberDetailedAddress" style="display: none;"
-		th:text="${member.detailedAddress}"></span>
-	<span id="memberZipNum" style="display: none;"
-		th:text="${member.zipNum}"></span>
-	<span id="firstProductName" style="display: none;"
-		th:if="${not #lists.isEmpty(basket.products)}"
-		th:text="${basket.products[0].productName}"></span>
-	<span id="totalProductCount" style="display: none;"
-		th:text="${#lists.size(basket.products)}"></span>
 
+		<span id="memberEmail" style="display: none;" th:text="${member.email}"></span>
+		<span id="memberName" style="display: none;" th:text="${member.name}"></span>
+		<span id="memberPhone" style="display: none;" th:text="${member.phoneNumber}"></span>
+		<span id="memberAddress" style="display: none;" th:text="${member.address}"></span>
+		<span id="memberDetailedAddress" style="display: none;" th:text="${member.detailedAddress}"></span>
+		<span id="memberZipNum" style="display: none;" th:text="${member.zipNum}"></span>
+		<span id="firstProductName" style="display: none;" th:if="${not #lists.isEmpty(basket.products)}"
+			th:text="${basket.products[0].productName}"></span>
+		<span id="totalProductCount" style="display: none;" th:text="${#lists.size(basket.products)}"></span>
+
+	
 </body>
+
 </html>
