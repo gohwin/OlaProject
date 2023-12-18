@@ -53,8 +53,4 @@ public class OrderList {
 	@Column(name = "regdate", updatable = false)
 	private Date orderDate;
 	
-	@ElementCollection
-	@CollectionTable(name = "order_product_names", joinColumns = @JoinColumn(name = "order_no"))
-	@Column(name = "product_name")
-	private List<String> productNames = new ArrayList<>();
 }

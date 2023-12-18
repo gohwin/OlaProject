@@ -25,12 +25,10 @@
 						<td th:text="${order.orderNo}"></td>
 						<td th:text="${order.orderDate}"></td>
 						<td>
-							<span th:if="${#lists.size(order.productNames) > 1}"
-								th:text="${order.productNames[0] + ' 외 ' + (#lists.size(order.productNames) - 1) + '건'}"
-							></span>
-							<span th:unless="${#lists.size(order.productNames) > 1}"
-								th:text="${order.productNames[0]}"
-							></span>
+							<div th:each="entry : ${order.productQuantities.entrySet()}">
+								<span
+									th:text="${productsMap[entry.key].productName}"></span>
+							</div>
 						</td>
 						<td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
 					</tr>
