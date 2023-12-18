@@ -1,9 +1,7 @@
 package com.ola.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -53,8 +51,4 @@ public class OrderList {
 	@Column(name = "regdate", updatable = false)
 	private Date orderDate;
 	
-	@ElementCollection
-	@CollectionTable(name = "order_product_names", joinColumns = @JoinColumn(name = "order_no"))
-	@Column(name = "product_name")
-	private List<String> productNames = new ArrayList<>();
 }

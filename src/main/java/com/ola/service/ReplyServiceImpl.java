@@ -65,15 +65,10 @@ public class ReplyServiceImpl implements ReplyService {
 		}
 	}
 
-    @Override
-    @Transactional
-    public void deleteReply(Long replyId) {
-        Reply reply = replyRepository.findById(replyId)
-                .orElseThrow(() -> new RuntimeException("Reply not found")); // 또는 사용자 정의 예외 처리
-        reply.setDeleted(true);
-        replyRepository.save(reply);
-    }
-	
+	@Override
+	public void deleteReply(Long replyId) {
+		replyRepository.deleteById(replyId);
+	}
 
 	@Override
 	public Community getCommunityByReplyNo(Long replyNo) {
@@ -81,9 +76,9 @@ public class ReplyServiceImpl implements ReplyService {
 		return (reply != null) ? reply.getCommunity() : null;
 	}
 
-	 @Override
-	    public List<Reply> getRepliesByCommunity(Community community) {
-	        return replyRepository.findByCommunityOrderByRegDateAsc(community);
-	    }
+	@Override
+	public List<Reply> getRepliesByCommunity(Community community) {
+		return replyRepository.findByCommunityOrderByRegDateAsc(community);
+	}
 
 }
