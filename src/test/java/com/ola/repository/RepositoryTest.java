@@ -1,5 +1,6 @@
 package com.ola.repository;
 
+import java.util.Calendar;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -210,23 +211,102 @@ public class RepositoryTest {
 	
 	@Test
 	public void testOrderList() {
-	    Member member = memberRepo.findById("member").get();
+		Member member = memberRepo.findById("member").get();
+		
+		IntStream.rangeClosed(1, 30).forEach(i -> {
+		
+		Map<Long, Integer> productQuantities = new HashMap<>();
+        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
 
-	    IntStream.rangeClosed(1, 30).forEach(i -> {
+        OrderList orderList = OrderList.builder()
+                .member(member)
+                .orderDate(new Date()) // Set current date for order date
+                .productQuantities(productQuantities)
+                .build();
+        
+			orderRepo.save(orderList);
+		});
+        
+        // 3개월 전 날짜 계산
+        Calendar cal3MonthsAgo = Calendar.getInstance();
+        cal3MonthsAgo.add(Calendar.MONTH, -3);
+        Date threeMonthsAgo = cal3MonthsAgo.getTime();
 
-	        Map<Long, Integer> productQuantities = new HashMap<>();
-	        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
-	        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+        // 6개월 전 날짜 계산
+        Calendar cal6MonthsAgo = Calendar.getInstance();
+        cal6MonthsAgo.add(Calendar.MONTH, -6);
+        Date sixMonthsAgo = cal6MonthsAgo.getTime();
 
+        // 1년 전 날짜 계산
+        Calendar cal1YearAgo = Calendar.getInstance();
+        cal1YearAgo.add(Calendar.YEAR, -1);
+        Date oneYearAgo = cal1YearAgo.getTime();
 
-	        OrderList orderList = OrderList.builder()
-	                .member(member)
-	                .orderDate(new Date()) // Set the current date for the order date
-	                .productQuantities(productQuantities)
-	                .build();
+        // 3개월 전 주문 생성 (10개)
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            Map<Long, Integer> productQuantities = new HashMap<>();
+            productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+            productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
 
-	        orderRepo.save(orderList);
-	    });
+            OrderList orderList = OrderList.builder()
+                    .member(member)
+                    .orderDate(threeMonthsAgo)
+                    .productQuantities(productQuantities)
+                    .build();
+
+            orderRepo.save(orderList);
+        });
+
+        // 6개월 전 주문 생성 (10개)
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            Map<Long, Integer> productQuantities = new HashMap<>();
+            productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+            productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+
+            OrderList orderList = OrderList.builder()
+                    .member(member)
+                    .orderDate(sixMonthsAgo)
+                    .productQuantities(productQuantities)
+                    .build();
+
+            orderRepo.save(orderList);
+        });
+
+        // 1년 전 주문 생성 (10개)
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            Map<Long, Integer> productQuantities = new HashMap<>();
+            productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+            productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+
+            OrderList orderList = OrderList.builder()
+                    .member(member)
+                    .orderDate(oneYearAgo)
+                    .productQuantities(productQuantities)
+                    .build();
+
+            orderRepo.save(orderList);
+        });
+        
+     // 2달 전 날짜 계산
+        Calendar cal2MonthsAgo = Calendar.getInstance();
+        cal2MonthsAgo.add(Calendar.MONTH, -2);
+        Date twoMonthsAgo = cal2MonthsAgo.getTime();
+
+        // 2달 전 주문 생성 (2개, 제품 번호 3L과 4L 주문)
+        IntStream.rangeClosed(1, 2).forEach(i -> {
+            Map<Long, Integer> productQuantities = new HashMap<>();
+            productQuantities.put(3L, 1); // Assume product number 3L with quantity 1
+            productQuantities.put(4L, 2); // Assume product number 4L with quantity 2
+
+            OrderList orderList = OrderList.builder()
+                    .member(member)
+                    .orderDate(twoMonthsAgo)
+                    .productQuantities(productQuantities)
+                    .build();
+
+            orderRepo.save(orderList);
+        });
 	}
 
 

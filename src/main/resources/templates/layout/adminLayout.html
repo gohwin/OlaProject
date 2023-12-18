@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block block th:fragment="setContent(content)">
 
+
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,6 +31,8 @@
 						th:href="@{/admin/order_list}">주문현황</a>
 					<a class="list-group-item list-group-item-action list-group-item-light p-3"
 						th:href="@{/admin/member}">회원관리</a>
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+					 th:href="@{/admin/saleChart}">매출현황</a>
 					<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
 					<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
 				</div>
