@@ -3,47 +3,72 @@
 
 <head>
 	<meta charset="UTF-8">
-	<link href="/css/main.css" rel="stylesheet" />
-	<link href="/css/mypage.css" rel="stylesheet" />
+
+	<script src="/js/joinForm.js"></script> <!-- 정보수정과 회원가입이 유사하여 회원가입 폼 자바스크립트 참고 -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/daum_address_api.js"></script> <!-- 주소 api -->
 </head>
 
 <body>
 	<header th:include="header :: body"></header>
 
-	<table>
-		<form th:action="@{/mypage/editProfile}" method="post">
-			<tr>
-				<td><label for="name">이름:</label></td>
-				<td><input type="text" id="name" name="name" th:value="${user.name}" required></td>
-			</tr>
-			<tr>
-				<td><label for="email">이메일:</label></td>
-				<td><input type="email" id="email" name="email" th:value="${user.email}" required></td>
-			</tr>
-			<tr>
-				<td><label for="phoneNumber">전화번호:</label></td>
-				<td><input type="tel" id="phoneNumber" name="phoneNumber" th:value="${user.phoneNumber}" required></td>
-			</tr>
-			<tr>
-				<td><label for="address">주소:</label></td>
-				<td><input type="text" id="address" name="address" th:value="${user.address}" required></td>
-			</tr>
-			<tr>
-				<td><label for="detailedAddress">상세주소:</label></td>
-				<td><input type="text" id="detailedAddress" name="detailedAddress" th:value="${user.detailedAddress}"
-						required></td>
-			</tr>
-			<tr>
-				<td><label for="zipNum">우편번호:</label></td>
-				<td><input type="text" id="zipNum" name="zipNum" th:value="${user.zipNum}" required></td>
-			</tr>
-			<tr>
-				<td colspan="2"><button type="submit" class="btn">저장</button></td>
-			</tr>
-		</form>
-	</table>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">Profile Edit</div>
+					<div class="card-body">
+						<form th:action="@{/mypage/editProfile}" method="post">
 
-	<a th:href="@{/mypage/mypages}" class="btn">마이페이지로 돌아가기</a>
+							<div class="form-group">
+								<label for="name">아이디:</label>
+								<input type="text" class="form-control" id="memberId" name="memberId"
+									th:value="${user.memberId}" readonly>
+							</div>
+
+							<div class="form-group">
+								<label for="name">이름:</label>
+								<input type="text" class="form-control" id="name" name="name" th:value="${user.name}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="email">이메일:</label>
+								<input type="email" class="form-control" id="email" name="email"
+									th:value="${user.email}" required>
+							</div>
+
+							<div class="form-group">
+								<label for="phoneNumber">전화번호:</label>
+								<input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+									th:value="${user.phoneNumber}" required>
+							</div>
+							<div class="form-group">
+								<label for="address" class="cols-sm-2 control-label">주소</label>
+								<div class="cols-sm-10">
+									<div class="input-group input-group-with-margin">
+										<span class="input-group-addon"><aria-hidden="true"></span>
+										<input type="text" id="zipNum" name="zipNum" class="form-control"
+											th:value="${user.zipNum}" style="width: 120px;">
+										<span class="input-group-btn">
+											<input type="button" class="btn btn-default"
+												onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+										</span>
+									</div>
+									<input type="text" id="address" name="address" class="form-control"
+										th:value="${user.address}" required>
+									<input type="text" id="detailedAddress" name="detailedAddress" class="form-control"
+										th:value="${user.detailedAddress}" required>
+									<input type="hidden" id="sample6_extraAddress" name="sample6_extraAddress">
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">저장</button>
+							<a th:href="@{/mypage/mypages}" class="btn btn-secondary">마이페이지로 돌아가기</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<th:block th:include="footer.html"></th:block>
 </body>
