@@ -1,5 +1,6 @@
 package com.ola.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,24 +33,28 @@ import lombok.NoArgsConstructor;
 @Table(name = "ORDER_LIST")
 public class OrderList {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_no")
-    private Long orderNo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_no")
+	private Long orderNo;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "member_id")
-    private Member member;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
-    @ElementCollection
-    @CollectionTable(name = "order_product_quantity", joinColumns = @JoinColumn(name = "order_no"))
-    @MapKeyColumn(name = "product_no")
-    @Column(name = "quantity")
-    @Builder.Default
-    private Map<Long, Integer> productQuantities = new HashMap<>();
+	@ElementCollection
+	@CollectionTable(name = "order_product_quantity", joinColumns = @JoinColumn(name = "order_no"))
+	@MapKeyColumn(name = "product_no")
+	@Column(name = "quantity")
+	@Builder.Default
+	private Map<Long, Integer> productQuantities = new HashMap<>();
 
-    @CreatedDate
-    @Column(name="regdate", updatable=false)
-    private Date orderDate;
-
+	@CreatedDate
+	@Column(name = "regdate", updatable = false)
+	private Date orderDate;
+	
+	@ElementCollection
+	@CollectionTable(name = "order_product_names", joinColumns = @JoinColumn(name = "order_no"))
+	@Column(name = "product_name")
+	private List<String> productNames = new ArrayList<>();
 }

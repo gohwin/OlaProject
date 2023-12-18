@@ -1,16 +1,16 @@
 package com.ola.repository;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ola.entity.Basket;
 import com.ola.entity.Community;
@@ -45,7 +45,6 @@ public class RepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-
 	@Test
 	public void member2Insert() {
 		Member member = Member.builder().name("안중근")
@@ -61,7 +60,6 @@ public class RepositoryTest {
 		memberRepo.save(member);
 	}
 	
-
 	@Test
 	public void testAdminInsert() {
 		Member member =
@@ -96,7 +94,6 @@ public class RepositoryTest {
 
 	}
 
-
 	@Test
 	public void testCommuBoard() {
 		
@@ -116,7 +113,6 @@ public class RepositoryTest {
 		});
 	}
 	
-
 	@Test
 	public void testTradeBoard() {
 		
@@ -134,7 +130,6 @@ public class RepositoryTest {
 		});
 	}
 	
-
 	@Test
 	public void testProduct() {
 		IntStream.rangeClosed(1, 14).forEach(i -> {
@@ -215,22 +210,25 @@ public class RepositoryTest {
 	
 	@Test
 	public void testOrderList() {
-		Member member = memberRepo.findById("member").get();
-		
-		IntStream.rangeClosed(1, 30).forEach(i -> {
-		
-		Map<Long, Integer> productQuantities = new HashMap<>();
-        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
-        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+	    Member member = memberRepo.findById("member").get();
 
-        OrderList orderList = OrderList.builder()
-                .member(member)
-                .orderDate(new Date()) // Set current date for order date
-                .productQuantities(productQuantities)
-                .build();
-        
-        orderRepo.save(orderList);
-		});
+	    IntStream.rangeClosed(1, 30).forEach(i -> {
+
+	        Map<Long, Integer> productQuantities = new HashMap<>();
+	        productQuantities.put(1L, 2); // Assume product number 1 with quantity 2
+	        productQuantities.put(2L, 3); // Assume product number 2 with quantity 3
+
+	        List<String> productNames = Arrays.asList("Product 1", "Product 2"); // Change product names accordingly
+
+	        OrderList orderList = OrderList.builder()
+	                .member(member)
+	                .orderDate(new Date()) // Set the current date for the order date
+	                .productQuantities(productQuantities)
+	                .productNames(productNames)
+	                .build();
+
+	        orderRepo.save(orderList);
+	    });
 	}
 
 
