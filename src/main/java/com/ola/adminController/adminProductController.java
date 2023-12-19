@@ -86,6 +86,7 @@ public class adminProductController {
 			return "soldout";
 		default:
 			return "unknown"; // 기본값, 범위 밖의 카테고리 번호 처리
+
 		}
 	}
 
@@ -102,6 +103,7 @@ public class adminProductController {
 			newProduct.setImage(product.getImage());
 		}
 		productService.updateProduct(newProduct);
+
 		return "redirect:/admin/products";
 	}
 

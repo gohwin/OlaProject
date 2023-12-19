@@ -16,35 +16,33 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder=true)
+@Builder(toBuilder = true)
 @Entity
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productNo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long productNo;
 
-    private String productName;
+	private String productName;
 
-    private int prodCategory;
+	private int prodCategory;
 
-    private Long price;
+	private Long price;
 
-    private String prodSize;
+	private String prodSize;
 
-    private Long salesQuantity;
+	private Long salesQuantity;
 
-    // 재고
-    private int inventory;
+	// 재고
+	private int inventory;
 
-    private String image;
-    
-    // 재고 수량 감소 메소드
-    public void reduceInventory(int quantity) {
-        if (this.inventory < quantity) {
-            throw new IllegalStateException("Insufficient inventory for product: " + this.productName);
-        }
-        this.inventory -= quantity;
-    }
 
+	// 재고 수량 감소 메소드
+	public void reduceInventory(int quantity) {
+		if (this.inventory < quantity) {
+			throw new IllegalStateException("Insufficient inventory for product: " + this.productName);
+		}
+		this.inventory -= quantity;
+	}
 }
