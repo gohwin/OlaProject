@@ -33,6 +33,8 @@ public class Product {
 	private String prodSize;
 
 	private Long salesQuantity;
+	
+	private String image;
 
 	// 재고
 	private int inventory;
