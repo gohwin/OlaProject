@@ -27,6 +27,6 @@ public interface OrderListRepository extends JpaRepository<OrderList, Long> {
     List<OrderList> findOrdersBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
     
     @Modifying
-    @Query("DELETE FROM OrderList r WHERE r.member.memberId LIKE %:memberId%")
+    @Query("DELETE FROM OrderList o WHERE o.member.memberId LIKE %:memberId%")
 	void deleteByMember(@Param("memberId") String memberId);
 }

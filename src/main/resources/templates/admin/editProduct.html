@@ -76,7 +76,8 @@
                         <label for="image">이미지:</label>
                         <img th:if="${product.image != null}" th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image" style="max-width: 200px; max-height: 200px;"/>
                         
-                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*" th:field="*{image}">
+                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" accept="image/*">
+
                     </div>
 					<button type="submit" class="btn btn-primary">저장</button>
 					<a th:href="@{/admin/deleteProduct/{productId}(productId=${product.productNo})}"

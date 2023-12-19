@@ -39,7 +39,7 @@ public class Product {
 
     private String image;
     
- // 재고 수량 감소 메소드
+    // 재고 수량 감소 메소드
     public void reduceInventory(int quantity) {
         if (this.inventory < quantity) {
             throw new IllegalStateException("Insufficient inventory for product: " + this.productName);
