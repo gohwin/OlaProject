@@ -1,57 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+
 <body>
     <header th:insert="header :: body"></header>
-    <h1>Order Details</h1>
-    
-    <!-- 주문 세부 정보를 표시 -->
-    <div th:if="${orderDetails != null}">
-        <table>
-            <tr>
-                <th>Order No:</th>
-                <td th:text="${orderDetails.orderNo}"></td>
-            </tr>
-            <tr>
-                <th>Order Date:</th>
-                <td th:text="${orderDetails.orderDate}"></td>
-            </tr>
-            <!-- 주문 상품 정보 표시 -->
-            <tr>
-                <th>Order Items:</th>
-                <td>
-                    <table>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Order Details</h1>
+        
+        <!-- 주문 세부 정보를 표시 -->
+        <div th:if="${orderDetails != null}" class="card mb-4">
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
+                            <th scope="row">Order No:</th>
+                            <td th:text="${orderDetails.orderNo}"></td>
                         </tr>
-                        <!-- 주문 상품 목록 표시 -->
-                        <tr th:each="entry : ${orderDetails.productQuantities}">
-                            <td th:text="${productNames[entry.key]}"> </td>
-                            <td th:text="${entry.value}"></td>
+                        <tr>
+                            <th scope="row">Order Date:</th>
+                            <td th:text="${orderDetails.orderDate}"></td>
                         </tr>
-                    </table>
-                </td>
-            </tr>
-            <!-- 총 주문가격 표시 -->
-            <tr>
-                <th>Total Price:</th>
-                <td th:text="${totalOrderPrice} + '원'"></td>
-            </tr>
-        </table>
+                        <tr>
+                            <th scope="row">Order Items:</th>
+                            <td>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="entry : ${orderDetails.productQuantities}">
+                                            <td th:text="${productNames[entry.key]}"></td>
+                                            <td th:text="${entry.value}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Price:</th>
+                            <td th:text="${totalOrderPrice} + '원'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a th:href="@{/mypage/mypages}" class="btn btn-secondary">Back to My Page</a>
+        </div>
+        
+        <!-- 주문 세부 정보가 없을 경우 표시 -->
+        <div th:if="${orderDetails == null}" class="alert alert-warning" role="alert">
+            No order details found.
+        </div>
     </div>
-    
-    <div>
-        <a th:href="@{/mypage/mypages}"><button>뒤로 가기</button></a>
-    </div>
-    
-    <!-- 주문 세부 정보가 없을 경우 표시 -->
-    <div th:if="${orderDetails == null}">
-        <p>No order details found.</p>
-    </div>
-    <th:block th:include="footer.html"></th:block>
+
+    <footer th:include="footer.html"></footer>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>
