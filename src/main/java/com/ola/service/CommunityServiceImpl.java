@@ -1,13 +1,15 @@
 package com.ola.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ola.entity.Community;
-import com.ola.entity.Reply;
 import com.ola.repository.CommunityRepository;
 import com.ola.repository.ReplyRepository;
 
@@ -32,8 +34,11 @@ public class CommunityServiceImpl implements CommunityService {
         return communityRepository.findById(communityId).orElse(null);
     }
 
+    /* 항목별 게시글 나열*/
+	@Override
+	public Page<Community> getSortedCommunities(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-
-
-    // 기타 필요한 메소드 구현
 }

@@ -33,6 +33,8 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 	@Modifying
 	@Query("DELETE FROM Community r WHERE r.member.memberId LIKE %:memberId%")
 	void deleteByMember(@Param("memberId") String memberId);
+	
+	
 
 }
 

@@ -20,9 +20,9 @@
         <header th:include="header :: body"></header>
         <!-- Section-->
        <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
+    <div class="container px-4 px-lg-4 mt-3">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div th:each="product, iterStat : ${prodList}" th:if="${category[iterStat.index] != 'soldout'}" class="col mb-5">
+            <div th:each="product, iterStat : ${prodList}" th:if="${category[iterStat.index] != 'soldout'}" class="col mb-4">
                 <div class="card h-100">
                     <!-- Product image-->
                     <img class="product-image" th:src="'/images/' + ${category[iterStat.index]} + '/' + ${product.image}">

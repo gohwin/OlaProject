@@ -4,10 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
@@ -28,6 +31,7 @@ import com.ola.repository.CommunityRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
+import com.ola.service.CommunityService;
 
 @Controller
 public class BoardController {
@@ -38,6 +42,9 @@ public class BoardController {
 	private TradeBoardRepository boardRepo;
 	@Autowired
 	private CommunityRepository comRepo;
+	@Autowired
+	private CommunityService communityService;
+	
 
 	@GetMapping("/tradeBoardList")
 	public String tradeBoardList(Model model, Authentication authentication,
@@ -74,12 +81,24 @@ public class BoardController {
 	public String communityBoardList(Model model, Authentication authentication,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "searchType", defaultValue = "title") String searchType,
+			@RequestParam Optional<String> sortOrder,
 			@PageableDefault(size = 10, sort = "regDate", direction = Direction.DESC) Pageable pageable) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			// 사용자가 로그인하지 않았거나 인증되지 않았을 경우, 로그인 페이지로 리다이렉트
 			return "redirect:/system/login";
 		}
 
+		 String currentSortOrder = sortOrder.orElse("regDate,desc");
+		    model.addAttribute("currentSortOrder", currentSortOrder);
+
+		    
+		// 정렬 옵션 처리
+	    if (sortOrder.isPresent()) {
+	        String[] sort = sortOrder.get().split(",");
+	        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), 
+	                                  Sort.Direction.fromString(sort[1]), sort[0]);
+	    }
+	    
 		List<Community> adminWrite = comRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
@@ -100,6 +119,20 @@ public class BoardController {
 
 		return "board/communityBoardList";
 	}
+	
+	@GetMapping("/sortedCommunityBoardList")
+	public String sortedCommunityBoardList(Model model, 
+	                                       @RequestParam Optional<String> sortOrder,
+	                                       @PageableDefault(size = 10) Pageable pageable) {
+	    String[] sort = sortOrder.orElse("regDate,desc").split(",");
+	    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), 
+	                              Sort.Direction.fromString(sort[1]), sort[0]);
+
+	    Page<Community> communities = communityService.getSortedCommunities(pageable);
+	    model.addAttribute("communities", communities);
+	    return "board/communityBoardList";
+	}
+	
 
 	@GetMapping("/getTradeBoard")
 	public String getTradeBoardView(@RequestParam("tradeBoardNo") Long tradeBoardNo, Model model) {

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>My Orders</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
-	<header th:insert="header :: body"></header>
-	<h1>My Orders</h1>
-	<div th:if="${myOrders != null and not myOrders.isEmpty()}">
-		<table>
-			<thead>
-				<tr>
-					<th>Order No</th>
-					<th>Date</th>
-					<th>Product Name</th> <!-- 추가된 부분 -->
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="order : ${myOrders}">
+    <header th:insert="header :: body"></header>
+
+    <div class="container mt-4">
+        <h1 class="text-center">My Orders</h1>
+
+        <div th:if="${myOrders != null and not myOrders.isEmpty()}" class="mt-4">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Order No</th>
+                        <th>Date</th>
+                        <th>Product Name</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <th:block th:each="order : ${myOrders}">
 					<tr>
 						<td th:text="${order.orderNo}"></td>
 						<td th:text="${order.orderDate}"></td>
@@ -33,33 +39,27 @@
 						<td><a th:href="@{/orderDetails(orderNo=${order.orderNo})}">View Details</a></td>
 					</tr>
 				</th:block>
-			</tbody>
-		</table>
-	</div>
-	<div th:if="${myOrders == null or myOrders.isEmpty()}">
-		<table>
-			<thead>
-				<tr>
-					<th>Order No</th>
-					<th>Date</th>
-					<th>Product Name</th> <!-- 추가된 부분 -->
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>No orders found.</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div>
-		<a th:href="@{/mypage/mypages}"><button>뒤로 가기</button></a>
-	</div>
-	<th:block th:include="footer.html"></th:block>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${myOrders == null or myOrders.isEmpty()}" class="mt-4">
+            <div class="alert alert-warning" role="alert">
+                No orders found.
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{/mypage/mypages}" class="btn btn-secondary">Back to My Page</a>
+        </div>
+    </div>
+
+    <footer th:include="footer.html"></footer>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
