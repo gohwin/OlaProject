@@ -37,7 +37,6 @@ public class Product {
 	// 재고
 	private int inventory;
 
-	private String image;
 
 	// 재고 수량 감소 메소드
 	public void reduceInventory(int quantity) {
@@ -46,5 +45,4 @@ public class Product {
 		}
 		this.inventory -= quantity;
 	}
-
 }

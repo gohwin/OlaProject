@@ -86,36 +86,23 @@ public class adminProductController {
 			return "soldout";
 		default:
 			return "unknown"; // 기본값, 범위 밖의 카테고리 번호 처리
+
 		}
 	}
 
+	/* 상품 수정 */
 	@PostMapping("/admin/updateProduct")
-	public String updateProduct(@RequestParam("productNo") Long productNo,
-			@RequestParam("productName") String productName, @RequestParam("prodCategory") int prodCategory,
-			@RequestParam("price") Long price, @RequestParam("prodSize") String prodSize,
-			@RequestParam("salesQuantity") Long salesQuantity, @RequestParam("inventory") int inventory,
-			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-
-		// 기존 상품 정보를 가져옴
-		Product existingProduct = productService.getProductById(productNo);
-
-		if (existingProduct != null) {
-			// 업데이트할 필드 설정
-			existingProduct.setProductName(productName);
-			existingProduct.setProdCategory(prodCategory);
-			existingProduct.setPrice(price);
-			existingProduct.setProdSize(prodSize);
-			existingProduct.setSalesQuantity(salesQuantity);
-			existingProduct.setInventory(inventory);
-
-			if (imageFile != null && !imageFile.isEmpty()) {
-				// 이미지 파일이 전송되었을 경우에만 처리
-				String imagePath = productService.uploadImage(imageFile, prodCategory);
-				existingProduct.setImage(imagePath);
-			}
-
-			productService.updateProduct(existingProduct);
+	public String updateProduct(@RequestParam("productNo")Long productNo,
+								@ModelAttribute("product") Product newProduct,
+								@RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+		if (!imageFile.isEmpty()) {
+			String imagePath = productService.uploadImage(imageFile, newProduct.getProdCategory());
+			newProduct.setImage(imagePath);
+		} else {
+			Product product = productService.getProductById(productNo);
+			newProduct.setImage(product.getImage());
 		}
+		productService.updateProduct(newProduct);
 
 		return "redirect:/admin/products";
 	}
