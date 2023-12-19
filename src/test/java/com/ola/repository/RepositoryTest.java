@@ -2,9 +2,9 @@ package com.ola.repository;
 
 import java.util.Calendar;
 import java.util.Arrays;
-
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -155,6 +155,7 @@ public class RepositoryTest {
 
 			orderRepo.save(orderList);
 		});
+
 
 		// 3개월 전 날짜 계산
 		Calendar cal3MonthsAgo = Calendar.getInstance();
