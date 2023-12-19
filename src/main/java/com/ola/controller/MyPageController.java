@@ -68,76 +68,73 @@ public class MyPageController {
 		return "redirect:/mypage/mypages";
 	}
 
-	 @GetMapping("/orderHistory")
-	    public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
-	        Member user = principal.getMember();
-	        List<OrderList> myOrders = orderRepo.findByMember(user);
-	        Map<Long, Product> productsMap = new HashMap<>();
+	@GetMapping("/orderHistory")
+	public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
+		Member user = principal.getMember();
+		List<OrderList> myOrders = orderRepo.findByMember(user);
+		Map<Long, Product> productsMap = new HashMap<>();
 
-	        for (OrderList order : myOrders) {
-	            for (Long productId : order.getProductQuantities().keySet()) {
-	                if (!productsMap.containsKey(productId)) {
-	                    productsMap.put(productId, productRepository.findById(productId).orElse(null));
-	                }
-	            }
-	        }
+		for (OrderList order : myOrders) {
+			for (Long productId : order.getProductQuantities().keySet()) {
+				if (!productsMap.containsKey(productId)) {
+					productsMap.put(productId, productRepository.findById(productId).orElse(null));
+				}
+			}
+		}
 
-	        model.addAttribute("myOrders", myOrders);
-	        model.addAttribute("productsMap", productsMap);
-	        return "mypage/orderHistory"; 
-	    }
-	
-	
+		model.addAttribute("myOrders", myOrders);
+		model.addAttribute("productsMap", productsMap);
+		return "mypage/orderHistory";
+	}
+
 	@GetMapping("/basket")
 	public String basketView(Model model, @AuthenticationPrincipal SecurityUser principal) {
-	    // 현재 로그인한 사용자의 Member 객체를 가져옵니다.
-	    Member member = principal.getMember();
+		if (principal == null) {
+			// User is not authenticated, redirect to the login page
+			return "redirect:/system/login";
+		}
 
-	    // 사용자와 연관된 Basket 객체를 조회합니다.
-	    Basket basket = basketRepo.findByUser(member);
+		// 현재 로그인한 사용자의 Member 객체를 가져옵니다.
+		Member member = principal.getMember();
 
-	    // 만약 조회된 Basket 객체가 없다면 빈 객체를 생성합니다.
-	    if (basket == null) {
-	        basket = new Basket();
-	        basket.setMember(member);
-	        // 빈 객체를 저장합니다.
-	        basketRepo.save(basket);
-	    }
+		// 사용자와 연관된 Basket 객체를 조회합니다.
+		Basket basket = basketRepo.findByUser(member);
 
-	    // 조회된 또는 생성된 Basket 객체를 모델에 추가합니다.
-	    model.addAttribute("member", member);
-	    model.addAttribute("basket", basket);
+		// 만약 조회된 Basket 객체가 없다면 빈 객체를 생성합니다.
+		if (basket == null) {
+			basket = new Basket();
+			basket.setMember(member);
+			// 빈 객체를 저장합니다.
+			basketRepo.save(basket);
+		}
 
-	    // 장바구니 페이지의 Thymeleaf 템플릿 파일명을 반환합니다.
-	    return "mypage/basket";
+		// 조회된 또는 생성된 Basket 객체를 모델에 추가합니다.
+		model.addAttribute("member", member);
+		model.addAttribute("basket", basket);
+
+		// 장바구니 페이지의 Thymeleaf 템플릿 파일명을 반환합니다.
+		return "mypage/basket";
 	}
-	
+
 	@PostMapping("/deleteBasket")
-    public ResponseEntity<?> removeProductFromBasket(@RequestParam Long productNo, @AuthenticationPrincipal SecurityUser principal) {
-        // 현재 로그인한 사용자 정보를 가져옵니다.
-        Member member = principal.getMember();
+	public ResponseEntity<?> removeProductFromBasket(@RequestParam Long productNo,
+			@AuthenticationPrincipal SecurityUser principal) {
+		// 현재 로그인한 사용자 정보를 가져옵니다.
+		Member member = principal.getMember();
 
-        // 사용자의 장바구니를 조회합니다.
-        Basket basket = basketRepo.findByUser(member);
+		// 사용자의 장바구니를 조회합니다.
+		Basket basket = basketRepo.findByUser(member);
 
-        // 장바구니에서 해당 상품을 찾아 삭제합니다.
-        // 이 부분은 당신의 도메인 모델에 따라 다를 수 있습니다.
-        basket.removeProduct(productNo);
+		// 장바구니에서 해당 상품을 찾아 삭제합니다.
+		// 이 부분은 당신의 도메인 모델에 따라 다를 수 있습니다.
+		basket.removeProduct(productNo);
 
-        // 변경된 장바구니를 저장합니다.
-        basketRepo.save(basket);
+		// 변경된 장바구니를 저장합니다.
+		basketRepo.save(basket);
 
-        // 클라이언트에 성공 메시지를 보냅니다.
-        return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
-    }
+		// 클라이언트에 성공 메시지를 보냅니다.
+		return ResponseEntity.ok("상품이 성공적으로 삭제되었습니다.");
+	}
 //
-
-
-
-
-
-
-
-
 
 }
