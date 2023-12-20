@@ -1,6 +1,6 @@
 package com.ola.controller;
 
-import java.util.Map;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ola.dto.PasswordResetRequest;
 import com.ola.service.EmailService;
 import com.ola.service.MemberService;
+import com.ola.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,6 +23,9 @@ public class FindUserController {
 
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private UserService userService;
     
     @Autowired
 	private EmailService emailService;
@@ -64,17 +70,18 @@ public class FindUserController {
         }
     }
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String newPassword, HttpSession httpSession) {
-        String userId = (String) httpSession.getAttribute("memberId"); // 세션에서 사용자 ID 가져오기
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증 실패");
-        }
-
-        boolean isUpdated = memberService.updatePassword(userId, newPassword);
-        if (isUpdated) {
-            return ResponseEntity.ok(Map.of("success", true, "message", "비밀번호가 변경되었습니다."));
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request) {
+        boolean result = userService.resetPassword(request.getMemberId(), request.getNewPassword());
+        if (result) {
+            return ResponseEntity.ok(new HashMap<String, Object>() {{
+                put("success", true);
+                put("message", "비밀번호가 성공적으로 변경되었습니다.");
+            }});
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false, "message", "비밀번호 변경 실패"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<String, Object>() {{
+                put("success", false);
+                put("message", "비밀번호 변경에 실패했습니다.");
+            }});
         }
     }
    
