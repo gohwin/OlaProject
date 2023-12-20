@@ -1,6 +1,7 @@
 package com.ola.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ola.entity.Member;
@@ -10,8 +11,9 @@ import com.ola.repository.MemberRepository;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private MemberRepository userRepository;
-
+	private MemberRepository userRepository; // member를 user로 잘못 입력;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Override
 	public Member getUserById(String memberId) {
 		return userRepository.findById(memberId).orElse(null);
@@ -32,5 +34,18 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(existingUser);
 		}
 	}
+	
+	@Override
+	public boolean resetPassword(String memberId, String newPassword) {
+	    Member member = userRepository.findByMemberId(memberId);
+	    if (member == null) {
+	        return false;
+	    }
+	    String encryptedPassword = passwordEncoder.encode(newPassword); // 비밀번호 암호화
+	    member.setPassword(encryptedPassword);
+	    userRepository.save(member);
+	    return true;
+	}
+	
 
 }
