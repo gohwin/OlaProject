@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<!-- Custom CSS for Board View -->
 	<link href="/css/boardView.css" rel="stylesheet" />
+	<!--폰트 어썸 라이브러리 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -40,8 +42,9 @@
 	</table>
 
 	<!-- 댓글 Section -->
+
 	<div class="comments-section">
-		<h2 class="comment-title">댓글</h2>
+		<h2 class="comment-title">COMMENT</h2>
 		<table class="comments-table">
 			<thead>
 				<tr>
@@ -52,30 +55,46 @@
 			</thead>
 			<tbody th:each="reply : ${community.replies}">
 				<tr class="reply">
-					<td class="reply-author" th:text="${reply.member.name}"></td>
-					<td class="reply-content" th:text="${reply.content}"></td>
+					<td class="reply-author"
+						th:classappend="${reply.member.memberId == currentUserId ? 'author-self' : ''}"
+						th:text="${reply.member != null ? reply.member.name : '알 수 없는 사용자'}"></td>
+					<td class="reply-content">
+						<!-- 게시글 작성자 또는 댓글 작성자에게만 비밀 댓글 내용 표시 -->
+						<span
+							th:if="${reply.isPrivate && (reply.member.memberId == currentUserId || community.member.memberId == currentUserId)}">
+							<i class="fas fa-lock"></i> <span th:text="${reply.content}"></span>
+							<form
+								th:if="${reply.member != null && #authentication.principal.username == reply.member.memberId}"
+								th:action="@{/deleteReply}" method="post" style="display: inline;">
+								<input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
+								<button type="submit" class="btn btn-link btn-delete-reply" title="댓글 삭제">
+									<i class="fas fa-times"></i>
+								</button>
+							</form>
+						</span>
+						<!-- 다른 사용자에게는 비밀 댓글 표시만 (내용은 숨김) -->
+						<span
+							th:if="${reply.isPrivate && reply.member.memberId != currentUserId && community.member.memberId != currentUserId}">
+							<i class="fas fa-lock"></i> 비밀 댓글입니다.
+						</span>
+						<!-- 일반 댓글 표시 -->
+						<span th:if="${!reply.isPrivate}" th:text="${reply.content}"></span>
+					</td>
 					<td class="reply-date" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 				</tr>
-				<!-- 댓글 삭제 버튼 폼 - 각 댓글에 대해 표시, 작성자와 현재 사용자가 동일한 경우에만 표시 -->
-				<tr th:if="${#authentication.principal.username == reply.member.memberId}">
-					<td colspan="3">
-						<form th:action="@{/deleteReply}" method="post">
-							<input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
-							<button type="submit" class="btn btn-danger mt-2">댓글 삭제</button>
-						</form>
-					</td>
-				</tr>
-
 			</tbody>
 		</table>
 	</div>
-
 	<div class="comment-form">
-		<h3 class="comment-title">댓글 작성</h3>
-		<form th:action="@{/addReply}" method="post">
+		<form th:action="@{/addReply}" method="post" class="form-inline d-flex">
 			<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
-			<textarea name="replycontent" class="form-control"></textarea>
-			<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
+			<textarea name="replycontent" class="form-control flex-grow-1 mr-2" rows="1"
+				placeholder="댓글을 작성하세요..."></textarea>
+			<div class="form-check form-check-inline mr-2">
+				<input type="checkbox" name="isPrivate" class="form-check-input" id="privateCheck">
+				<label class="form-check-label" for="privateCheck">비밀댓글로 설정</label>
+			</div>
+			<button type="submit" class="btn btn-primary">댓글 작성</button>
 		</form>
 	</div>
 
