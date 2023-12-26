@@ -27,10 +27,10 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 	@Query("SELECT r FROM Reply r WHERE r.parent.replyNo = :parentReplyNo ORDER BY r.regDate ASC")
     List<Reply> findByParentReplyNo(@Param("parentReplyNo") Long parentReplyNo);
 
-	@Query("SELECT r FROM Reply r WHERE r.community = :community AND r.parent IS NULL ORDER BY r.regDate DESC")
+	@Query("SELECT r FROM Reply r WHERE r.community = :community AND r.parent IS NULL ORDER BY r.regDate ASC")
 	List<Reply> findByCommunityAndParentIsNull(@Param("community") Community community);
 
-    @Query("SELECT r FROM Reply r WHERE r.tradeBoard = :tradeBoard AND r.parent IS NULL ORDER BY r.regDate DESC")
+    @Query("SELECT r FROM Reply r WHERE r.tradeBoard = :tradeBoard AND r.parent IS NULL ORDER BY r.regDate ASC")
     List<Reply> findByTradeBoardAndParentIsNull(@Param("tradeBoard") TradeBoard tradeBoard);
 
     @Query("SELECT r FROM Reply r WHERE r.community = :community")
@@ -39,6 +39,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Query("SELECT r FROM Reply r WHERE r.tradeBoard = :tradeBoard")
     List<Reply> findByTradeBoard(@Param("tradeBoard") TradeBoard tradeBoard);
     
-    @Query("SELECT r FROM Reply r WHERE r.parent.replyNo = :parentReplyNo ORDER BY r.regDate DESC")
+    @Query("SELECT r FROM Reply r WHERE r.parent.replyNo = :parentReplyNo ORDER BY r.regDate ASC")
     List<Reply> findChildrenByParentReplyNo(@Param("parentReplyNo") Long parentReplyNo);
 }
