@@ -132,7 +132,7 @@ public class ReplyController {
 	
 	// 대댓글 추가
     @PostMapping("/addCommuSubReply")
-    public String addCommuSubReply(@RequestParam("communityNo") Long communityNo, @RequestParam("parentReplyNo") Long parentReplyNo,
+    public String addCommuSubReply(@RequestParam("communityNo") Long communityNo, @RequestParam("parentReplyId") Long parentReplyNo,
                            @RequestParam("replyContent") String content,
                            Authentication authentication) {
         SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
@@ -147,7 +147,7 @@ public class ReplyController {
 
         // 대댓글이 추가된 부모 댓글이 속한 커뮤니티 또는 거래 게시판으로 리다이렉트
         // 이 부분은 시스템의 구조에 따라 달라질 수 있습니다.
-        return "redirect:/getCommuBoard?commnityBoardNo=" + communityNo;
+        return "redirect:/getCommuBoard?communityNo=" + communityNo;
     }
     
     // 대댓글 추가
