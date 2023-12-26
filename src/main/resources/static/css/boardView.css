@@ -9,9 +9,55 @@
 /* 댓글 및 댓글 작성 텍스트 스타일 */
 .comment-title {
     font-family: 'Arial', sans-serif; /* 원하는 폰트로 변경 가능 */
-    font-size: 16px; /* 원하는 크기로 조정 */
+    font-size: 20px; /* 원하는 크기로 조정 */
     color: #333; /* 글자 색상 */
     margin-bottom: 10px; /* 필요에 따라 조정 */
+    text-align: center;
+}
+.comment-form {
+    display: flex;
+    align-items: center;
+    padding: 0; /* 필요에 따라 조정 */
+    
+}
+
+.comment-form .form-control {
+    margin-right: 0.5rem; /* 체크박스와의 간격 */
+    flex-grow: 1; /* 가능한 모든 공간 차지 */
+}
+
+
+.comment-form .btn {
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+.comment-form .form-check {
+    margin-right: 0.5rem; /* 버튼과의 간격 */
+}
+
+.comment-form .form-check-input {
+    margin-top: 0; /* 체크박스 정렬 */
+}
+
+.comment-form .custom-control {
+    margin-right: 1rem; /* 체크박스 오른쪽 마진 */
+}
+
+.comment-form .custom-control-label {
+    margin-bottom: 0; /* 라벨 마진 제거 */
+}
+
+.comment-form .form-inline .form-group {
+    flex: 1; /* 폼 그룹을 유연하게 설정 */
+}
+
+/* 추가적인 미세 조정이 필요한 경우 */
+.form-inline .form-control {
+    display: inline-block;
+    width: auto; /* 폼 컨트롤 너비 자동 조정 */
+}
+
+.form-inline .form-group {
+    margin-bottom: 0; /* 폼 그룹 마진 제거 */
 }
 
 /* 좋아요 버튼 섹션 스타일링 */
@@ -126,10 +172,6 @@
     margin-bottom: 30px; /* 아래쪽에 30px의 공간을 추가 */
 }
 
-/* 또는 댓글 입력 폼에 대한 스타일을 추가 */
-.comment-form {
-    margin-top: 30px; /* 위쪽에 30px의 공간을 추가 */
-}
 
 /* 댓글 작성 폼 스타일링 */
 .comments-section form textarea {
@@ -145,6 +187,11 @@
 .management-section form {
     display: inline-block;
     margin-right: 10px;
+}
+
+/* 댓글 작성자 본인 표시*/
+.author-self {
+    color: blue;
 }
 
 /* 반응형 디자인 */

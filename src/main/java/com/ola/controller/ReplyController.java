@@ -33,6 +33,7 @@ public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
 
+
 	@PostMapping("/addCommuReply")
 	public String addCommuReply(@RequestParam("communityNo") Long communityNo, @RequestParam("replycontent") String content,
 			Authentication authentication) {
@@ -57,6 +58,7 @@ public class ReplyController {
 
 	@PostMapping("/deleteCommuReply")
 	public String deleteCommuReply(@RequestParam("replyNo") Long replyNo, Principal principal) {
+
 		// 현재 로그인한 사용자의 아이디를 가져옵니다.
 		String loggedInUserId = principal.getName();
 

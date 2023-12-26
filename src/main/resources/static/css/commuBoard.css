@@ -12,37 +12,41 @@
 }
 
 /* 검색 폼 스타일링 */
-.search-form {
-	text-align: center;
-	margin: 20px 0;
-}
+		/* commuBoard.css */
+		.form-inline .btn {
+			font-size: 16px;
+			/* 글꼴 크기 */
+			padding: 10px 15px;
+			/* 내부 여백 */
+			border-radius: 5px;
+			/* 테두리 둥글기 */
+			border: none;
+			/* 테두리 제거 */
+			line-height: 1.5;
+			/* 줄 간격 */
+			color: #ffffff;
+			/* 글꼴 색상 */
+			margin: auto;
+		}
 
-.search-form input[type="text"] {
-	padding: 10px;
-	margin-right: 5px;
-	border-radius: 4px;
-	border: 1px solid #ccc;
-}
+		.form-inline .btn-primary {
+			background-color: #007bff;
+			/* 기본 배경색 */
+		}
 
-.search-form button {
-	padding: 10px 15px;
-	border: none;
-	border-radius: 4px;
-	background-color: #4CAF50;
-	color: white;
-	cursor: pointer;
-}
+		.form-inline .btn-primary:hover {
+			background-color: #0056b3;
+			/* 호버 시 배경색 */
+		}
 
-.search-form button:hover {
-	background-color: #45a049;
-}
-
-/* 게시물 등록 버튼 스타일링 */
-.register-link,
-.btn-primary {
-	margin-bottom: 20px;
-	/* 버튼 하단 여백 */
-}
+		/* 검색 폼 입력 필드 스타일링 */
+		.form-inline .form-control {
+			border-radius: 10px;
+			/* 테두리 둥글기 */
+			border: 1px solid #ced4da;
+			/* 테두리 색상 */
+		}
+	</style>
 
 /* 페이징 섹션 스타일링 */
 /* 페이징 컨테이너 스타일링 */

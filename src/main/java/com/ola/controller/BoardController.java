@@ -60,7 +60,7 @@ public class BoardController {
 			return "redirect:/system/login";
 		}
 
-		List<TradeBoard> adminWrite = boardRepo.findByAdminWrite();
+		List<Community> adminWrite = comRepo.findByAdminWrite();
 		model.addAttribute("adminWrite", adminWrite);
 
 		Page<TradeBoard> tradeBoards;
@@ -165,19 +165,20 @@ public class BoardController {
 
 	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model, Authentication authentication) {
-		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
+	    Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
-		if (community != null) {
-			String currentUserId = authentication.getName();
-			boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
-					.anyMatch(member -> member.getMemberId().equals(currentUserId));
+	    if (community != null) {
+	        String currentUserId = authentication.getName();
+	        boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
+	                .anyMatch(member -> member.getMemberId().equals(currentUserId));
 
-			model.addAttribute("community", community);
-			model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
-			return "board/getCommuBoard"; // 커뮤니티 상세보기 페이지
-		} else {
-			return "errorPage";
-		}
+	        model.addAttribute("community", community);
+	        model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
+	        model.addAttribute("currentUserId", currentUserId); // 현재 로그인한 사용자의 아이디 추가
+	        return "board/getCommuBoard"; // 커뮤니티 상세보기 페이지
+	    } else {
+	        return "errorPage";
+	    }
 	}
 
 	@GetMapping("/board/communityInsert")
