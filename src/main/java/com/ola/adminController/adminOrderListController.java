@@ -58,6 +58,6 @@ public class adminOrderListController {
 		model.addAttribute("orderDetails", orderDetails);
 
 		// orderDetails.html로 이동
-		return "admin/orderDetails"; // 주문 세부 정보를 표시할 Thymeleaf 템플릿 파일명
+		return "admin/orderDetails"; // 주문 세부 정보를 표시할 Thymeleaf 템플릿 파일명 
 	}
 }
