@@ -20,10 +20,14 @@
 
 <body>
 	<header th:include="header :: body"></header>
-	<form method="get" th:action="@{/item/all}" class="search-form">
-		<input type="text" name="search" th:value="${search}" placeholder="검색어 입력" />
-		<button type="submit">검색</button>
-	</form>
+	<div class="d-flex justify-content-center mt-3">
+		<form method="get" class="search-form">
+			<div class="input-group mb-3" style="max-width: 500px;">
+				<input type="text" name="search" th:action="@{/item/all}" placeholder="검색어 입력" class="form-control" />
+				<button type="submit" class="btn btn-primary">검색</button>
+			</div>
+		</form>
+	</div>
 	<!-- Section-->
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 mt-5">

@@ -29,26 +29,31 @@ public class ReplyController {
 	private ReplyService replyService;
 
 	@PostMapping("/addReply")
-	public String addReply(@RequestParam("communityNo") Long communityNo, @RequestParam("replycontent") String content,
-			Authentication authentication) {
-		SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
-		Member currentMember = userDetails.getMember();
+	public String addReply(@RequestParam("communityNo") Long communityNo,
+	                       @RequestParam("replycontent") String content,
+	                       @RequestParam(value = "isPrivate", required = false) String isPrivateStr,
+	                       Authentication authentication) {
+	    SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
+	    Member currentMember = userDetails.getMember();
 
-		Community community = commuRepo.findById(communityNo)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid community No:" + communityNo));
+	    Community community = commuRepo.findById(communityNo)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid community No:" + communityNo));
 
-		Reply reply = new Reply();
-		reply.setMember(currentMember);
-		reply.setCommunity(community);
-		reply.setContent(content);
-		reply.setRegDate(new Date());
-		replyRepo.save(reply);
+	    Reply reply = new Reply();
+	    reply.setMember(currentMember);
+	    reply.setCommunity(community);
+	    reply.setContent(content);
+	    reply.setRegDate(new Date());
+	    boolean isPrivate = "on".equals(isPrivateStr);
+	    reply.setPrivate(isPrivate); // 비밀댓글 설정 
+	    replyRepo.save(reply);
 
-		community.setCommentCount(community.getCommentCount() + 1);
-		commuRepo.save(community);
+	    community.setCommentCount(community.getCommentCount() + 1);
+	    commuRepo.save(community);
 
-		return "redirect:/getCommuBoard?communityNo=" + communityNo;
+	    return "redirect:/getCommuBoard?communityNo=" + communityNo;
 	}
+
 
 	@PostMapping("/deleteReply")
 	public String deleteReply(@RequestParam("replyNo") Long replyNo, Principal principal) {

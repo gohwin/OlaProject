@@ -44,6 +44,10 @@ public class Reply {
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "CHAR(1) default 'N'")
     private char deleted = 'N'; // 기본값 'N'
+    
+    /* 비밀 댓글 */
+    @Column(name = "IS_PRIVATE")
+    private boolean isPrivate = false; // 기본값 false 설정
 
     // Getter와 Setter 추가
     public boolean isDeleted() {
