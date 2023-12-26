@@ -86,7 +86,8 @@
 		</table>
 	</div>
 	<div class="comment-form">
-		<form th:action="@{/addReply}" method="post" class="form-inline d-flex">
+		<h3 class="comment-title">댓글 작성</h3>
+		<form th:action="@{/addCommuReply}" method="post">
 			<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
 			<textarea name="replycontent" class="form-control flex-grow-1 mr-2" rows="1"
 				placeholder="댓글을 작성하세요..."></textarea>

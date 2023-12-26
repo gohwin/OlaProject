@@ -2,6 +2,7 @@ package com.ola.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ola.entity.Community;
+import com.ola.entity.Reply;
 import com.ola.entity.TradeBoard;
 import com.ola.repository.CommunityRepository;
+import com.ola.repository.ReplyRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
 import com.ola.service.BoardService;
@@ -44,6 +47,8 @@ public class BoardController {
 	private CommunityRepository comRepo;
 	@Autowired
 	private CommunityService communityService;
+	@Autowired
+	private ReplyRepository replyRepository;
 	
 
 	@GetMapping("/tradeBoardList")
@@ -136,16 +141,27 @@ public class BoardController {
 
 	@GetMapping("/getTradeBoard")
 	public String getTradeBoardView(@RequestParam("tradeBoardNo") Long tradeBoardNo, Model model) {
-		TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
+	    TradeBoard tradeBoard = boardRepo.findById(tradeBoardNo).orElse(null);
 
-		if (tradeBoard != null) {
-			model.addAttribute("tradeBoard", tradeBoard);
-			return "board/getTradeBoard";
-		} else {
-			return "errorPage";
-		}
+	    if (tradeBoard != null) {
+	        List<Reply> parentReplies = replyRepository.findByTradeBoardAndParentIsNull(tradeBoard);
 
+	        // 각 부모 댓글에 대한 대댓글 조회
+	        parentReplies.forEach(parentReply -> {
+	            List<Reply> childReplies = replyRepository.findChildrenByParentReplyNo(parentReply.getReplyNo());
+	            parentReply.setChildren(new HashSet<>(childReplies)); // Set으로 변환하여 설정
+	        });
+
+	        model.addAttribute("tradeBoard", tradeBoard);
+	        model.addAttribute("replies", parentReplies); // 부모 댓글 및 대댓글 목록 전달
+	        return "board/getTradeBoard";
+	    } else {
+	        return "errorPage";
+	    }
 	}
+
+
+
 
 	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam Long communityNo, Model model, Authentication authentication) {
