@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ola.entity.Basket;
 import com.ola.entity.Member;
 import com.ola.entity.OrderList;
+import com.ola.entity.OrderStatus;
 import com.ola.entity.Product;
 import com.ola.repository.BasketRepository;
 import com.ola.repository.OrderListRepository;
@@ -68,6 +69,10 @@ public class OrderController {
 		}
 
 		orderList.setProductQuantities(productQuantities);
+
+		// 주문 상태 설정
+		orderList.setOrderStatus(OrderStatus.ORDER_COMPLETED);
+		
 		orderRepo.save(orderList);
 		basketRepo.deleteById(basketId);
 
@@ -77,30 +82,30 @@ public class OrderController {
 	}
 
 	@GetMapping("/orderDetails")
-    public String orderDetails(@RequestParam("orderNo") Long orderNo, Model model) {
-        OrderList orderDetails = orderRepo.getOrderDetails(orderNo);
-        Map<Long, String> productNames = new HashMap<>();
-        Long totalOrderPrice = 0L;
+	public String orderDetails(@RequestParam("orderNo") Long orderNo, Model model) {
+		OrderList orderDetails = orderRepo.getOrderDetails(orderNo);
+		Map<Long, String> productNames = new HashMap<>();
+		Long totalOrderPrice = 0L;
 
-        if (orderDetails != null) {
-            for (Map.Entry<Long, Integer> entry : orderDetails.getProductQuantities().entrySet()) {
-                Long productId = entry.getKey();
-                Integer quantity = entry.getValue();
+		if (orderDetails != null) {
+			for (Map.Entry<Long, Integer> entry : orderDetails.getProductQuantities().entrySet()) {
+				Long productId = entry.getKey();
+				Integer quantity = entry.getValue();
 
-                Product product = prodRepo.findById(productId).orElse(null);
-                if (product != null) {
-                    productNames.put(productId, product.getProductName());
-                    totalOrderPrice += product.getPrice() * quantity;  // 총 주문가격 계산
-                }
-            }
-        }
+				Product product = prodRepo.findById(productId).orElse(null);
+				if (product != null) {
+					productNames.put(productId, product.getProductName());
+					totalOrderPrice += product.getPrice() * quantity; // 총 주문가격 계산
+				}
+			}
+		}
 
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("productNames", productNames);
-        model.addAttribute("totalOrderPrice", totalOrderPrice);
+		model.addAttribute("orderDetails", orderDetails);
+		model.addAttribute("productNames", productNames);
+		model.addAttribute("totalOrderPrice", totalOrderPrice);
 
-        return "order/orderDetail";
-    }
+		return "order/orderDetail";
+	}
 
 	@PostMapping("/insertBasket")
 	public String insertBasketAction(@RequestParam("productNo") Long productNo,
@@ -194,7 +199,8 @@ public class OrderController {
 		Map<Long, Integer> productQuantities = new HashMap<>();
 		productQuantities.put(productNo, quantity);
 		orderList.setProductQuantities(productQuantities);
-
+		// 주문 상태 설정
+		orderList.setOrderStatus(OrderStatus.ORDER_COMPLETED);
 		// 주문 저장
 		orderRepo.save(orderList);
 
