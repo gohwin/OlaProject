@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<link href="/css/tradeView.css" rel="stylesheet" />
-</head>
+<meta charset="UTF-8">
+<link href="/css/tradeView.css" rel="stylesheet" />
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('.reply').forEach(
+				function(replyRow) {
+					replyRow.addEventListener('click', function() {
+						var replyFormRow = this.nextElementSibling;
+						while (replyFormRow
+								&& !replyFormRow.classList
+										.contains('reply-form')) {
+							replyFormRow = replyFormRow.nextElementSibling;
+						}
+						if (replyFormRow) {
+							replyFormRow.classList.toggle('hidden');
+						}
+					});
+				});
+	});
+</script>
+<style>
+.hidden {
+	display: none;
+}
 
+.sub-reply {
+    margin-left: 20px;
+    padding-left: 20px;  /* 좌측 패딩 추가 */
+}
+</style>
+</head>
 <body>
 	<header th:include="header :: body"></header>
 
@@ -18,47 +44,102 @@
 				</tr>
 				<tr>
 					<th class="tradeAuthor-th">작성자</th>
-					<td class="tradeAuthor-td"><span th:text="${tradeBoard.member.name}"></span></td>
+					<td class="tradeAuthor-td"><span
+						th:text="${tradeBoard.member.name}"></span></td>
 				</tr>
 				<tr>
 					<th class="tradeContent-th">내용</th>
-					<td class="tradeContent-td"><span th:text="${tradeBoard.content}"></span></td>
+					<td class="tradeContent-td"><span
+						th:text="${tradeBoard.content}"></span></td>
 				</tr>
 				<tr>
 					<th class="tradeStatus-th">제품 상태</th>
-					<td class="tradeStatus-td"><span th:if="${tradeBoard.tradeType == 1}">판매중</span> <span
-							th:if="${tradeBoard.tradeType == 2}">구매중</span> <span
-							th:if="${tradeBoard.tradeType == 3}">판매완료</span> <span
-							th:if="${tradeBoard.tradeType == 4}">구매완료</span></td>
+					<td class="tradeStatus-td"><span
+						th:if="${tradeBoard.tradeType == 1}">판매중</span> <span
+						th:if="${tradeBoard.tradeType == 2}">구매중</span> <span
+						th:if="${tradeBoard.tradeType == 3}">판매완료</span> <span
+						th:if="${tradeBoard.tradeType == 4}">구매완료</span></td>
 				</tr>
 				<tr>
 					<th class="tradeDate-th">작성일</th>
 					<td class="tradeDate-td"><span
-							th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span></td>
+						th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 
-		<div class="management-section" th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
-			<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
+		<!-- 댓글 Section -->
+		<div class="comments-section">
+			<h2 class="comment-title">댓글</h2>
+			<table class="comments-table">
+				<!-- 생략된 댓글 테이블 헤더 부분 -->
+				<tbody>
+					<!-- 댓글과 대댓글 표시 -->
+					<th:block th:each="reply : ${replies}">
+						<!-- 부모 댓글 -->
+						<tr class="reply">
+							<td th:text="${reply.member.name}"></td>
+							<td th:text="${reply.content}"></td>
+							<td
+								th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						</tr>
+						<!-- 대댓글 작성 폼 -->
+						<tr class="reply-form hidden sub-reply">
+							<td></td>
+							<td>
+								<form th:action="@{/addTradeSubReply}" method="post">
+									<input type="hidden" name="tradeBoardNo"
+										th:value="${tradeBoard.tradeBoardNo}" /> <input type="hidden"
+										name="parentReplyNo" th:value="${reply.replyNo}" />
+									<textarea name="replyContent" class="form-control"
+										placeholder="대댓글 작성"></textarea>
+									<button type="submit" class="btn btn-primary mt-2">대댓글
+										작성</button>
+								</form>
+							</td>
+							<td></td>
+						</tr>
+						<!-- 대댓글 -->
+						<th:block th:if="${!reply.children.isEmpty()}"
+							th:each="child : ${reply.children}">
+							<tr>
+								<td class="sub-reply" th:text="${child.member.name}"></td>
+								<td class="sub-reply" th:text="${child.content}"></td>
+								<td class="sub-reply"
+									th:text="${#dates.format(child.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+							</tr>
+						</th:block>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="comment-form">
+			<h3 class="comment-title">댓글 작성</h3>
+			<form th:action="@{/addTradeReply}" method="post">
+				<input type="hidden" name="tradeBoardNo"
+					th:value="${tradeBoard.tradeBoardNo}" />
+				<textarea name="replycontent" class="form-control"
+					placeholder="댓글 작성"></textarea>
+				<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
+			</form>
+		</div>
+
+		<div class="management-section"
+			th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
+			<form
+				th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
+				method="get">
 				<button type="submit" class="btn btn-info">게시글 수정</button>
 			</form>
 			<form th:action="@{/deleteTradeBoard}" method="post">
-				<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
-				<button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
+				<input type="hidden" name="tradeBoardNo"
+					th:value="${tradeBoard.tradeBoardNo}" />
+				<button type="submit" class="btn btn-danger"
+					onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
 			</form>
-		</div>
-		<div class="chat-section">
-			<!-- 대화방 목록보기 버튼 -->
-			<form th:if="${#authentication.principal.username == tradeBoard.member.memberId}" method="get"
-				th:action="@{/chat/chatList}">
-				<button type="submit" class="btn btn-primary">대화방 목록보기</button>
-			</form>
-
-			<!-- '대화하기' 버튼 -->
-			<div th:unless="${#authentication.principal.username == tradeBoard.member.memberId}">
-				<button onclick="createRoomAndRedirect()" class="btn btn-success">대화하기</button>
-			</div>
 		</div>
 
 		<form method="get" th:action="@{/tradeBoardList}">
@@ -66,31 +147,6 @@
 		</form>
 	</div>
 
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		function goBack() {
-			window.history.back();
-		}
-		function createRoomAndRedirect() {
-			var userId = [[${#authentication.principal.username}]];
-			var roomName = userId + "님과의 대화방";
-
-			fetch('/chat/createRoom', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body: 'name=' + encodeURIComponent(roomName)
-			})
-				.then(response => response.json())
-				.then(data => {
-					window.location.href = '/chat/chatRoom?roomId=' + data.roomId;
-				})
-				.catch(error => console.error('Error:', error));
-		}
-        /*]]>*/
-	</script>
 	<th:block th:include="footer.html"></th:block>
 </body>
-
 </html>

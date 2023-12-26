@@ -2,6 +2,7 @@ package com.ola.entity;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -91,4 +92,17 @@ public class Member {
 
 	@ManyToMany(mappedBy = "likedByMembers")
 	private Set<Community> likedCommunities = new HashSet<>();
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(memberId, member.memberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberId);
+    }
 }

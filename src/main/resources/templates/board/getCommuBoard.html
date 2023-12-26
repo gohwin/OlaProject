@@ -59,7 +59,7 @@
 				<!-- 댓글 삭제 버튼 폼 - 각 댓글에 대해 표시, 작성자와 현재 사용자가 동일한 경우에만 표시 -->
 				<tr th:if="${#authentication.principal.username == reply.member.memberId}">
 					<td colspan="3">
-						<form th:action="@{/deleteReply}" method="post">
+						<form th:action="@{/deleteCommuReply}" method="post">
 							<input type="hidden" name="replyNo" th:value="${reply.replyNo}" />
 							<button type="submit" class="btn btn-danger mt-2">댓글 삭제</button>
 						</form>
@@ -72,7 +72,7 @@
 
 	<div class="comment-form">
 		<h3 class="comment-title">댓글 작성</h3>
-		<form th:action="@{/addReply}" method="post">
+		<form th:action="@{/addCommuReply}" method="post">
 			<input type="hidden" name="communityNo" th:value="${community.communityNo}" />
 			<textarea name="replycontent" class="form-control"></textarea>
 			<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
