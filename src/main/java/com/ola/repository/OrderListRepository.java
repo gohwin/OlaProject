@@ -29,4 +29,8 @@ public interface OrderListRepository extends JpaRepository<OrderList, Long> {
     @Modifying
     @Query("DELETE FROM OrderList o WHERE o.member.memberId LIKE %:memberId%")
 	void deleteByMember(@Param("memberId") String memberId);
+    
+    @Query("SELECT o FROM OrderList o JOIN o.productQuantities p WHERE KEY(p) = :productNo")
+    List<OrderList> findByProductNo(@Param("productNo") Long productNo);
+
 }

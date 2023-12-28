@@ -23,4 +23,12 @@ public class OrderListService {
     public List<OrderList> getOrderHistory(Member member) {
         return orderListRepository.findByMember(member);
     }
+    
+    public void removeProductFromOrders(Long productNo) {
+        List<OrderList> orders = orderListRepository.findByProductNo(productNo);
+        for (OrderList order : orders) {
+            order.getProductQuantities().remove(productNo);
+            orderListRepository.save(order);
+        }
+    }
 }
