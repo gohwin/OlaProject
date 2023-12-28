@@ -36,7 +36,8 @@ public class ReplyController {
 
 	@PostMapping("/addCommuReply")
 	public String addCommuReply(@RequestParam("communityNo") Long communityNo, @RequestParam("replycontent") String content,
-			Authentication authentication) {
+			@RequestParam(value = "isPrivate", required = false) String isPrivateStr,
+            Authentication authentication) {
 		SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
 		Member currentMember = userDetails.getMember();
 
@@ -48,6 +49,8 @@ public class ReplyController {
 		reply.setCommunity(community);
 		reply.setContent(content);
 		reply.setRegDate(new Date());
+		boolean isPrivate = "on".equals(isPrivateStr);
+	    reply.setPrivate(isPrivate); // 비밀댓글 설정 
 		replyRepo.save(reply);
 
 		community.setCommentCount(community.getCommentCount() + 1);

@@ -49,6 +49,11 @@ public class RepositoryTest {
 				.address("서울시 광진구").detailedAddress("건대2번 출구").role(Role.ROLE_MEMBER).memberId("member2")
 				.password(encoder.encode("2222")).zipNum("15314").build();
 		memberRepo.save(member);
+		Member member2 = Member.builder().name("강감찬").email("jgan@eamil.com").phoneNumber("010-2222-2222")
+				.address("서울시 광진구").detailedAddress("건대2번 출구").role(Role.ROLE_MEMBER).memberId("member3")
+				.password(encoder.encode("3333")).zipNum("15314").build();
+		memberRepo.save(member2);
+		
 	}
 
 	@Test

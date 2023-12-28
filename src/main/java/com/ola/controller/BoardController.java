@@ -164,10 +164,13 @@ public class BoardController {
 
 
 	@GetMapping("/getCommuBoard")
-	public String getCommunity(@RequestParam("communityNo") Long communityNo, Model model) {
+	public String getCommunity(@RequestParam("communityNo") Long communityNo, Model model, Authentication authentication) {
 		Community community = comRepo.findById(communityNo).orElse(null);
 
 	    if (community != null) {
+	    	String currentUserId = authentication.getName();
+	        boolean isLikedByCurrentUser = community.getLikedByMembers().stream()
+	                .anyMatch(member -> member.getMemberId().equals(currentUserId));
 	        List<Reply> parentReplies = replyRepository.findByCommunityAndParentIsNull(community);
 
 	        // 각 부모 댓글에 대한 대댓글 조회
@@ -177,6 +180,8 @@ public class BoardController {
 	        });
 
 	        model.addAttribute("community", community);
+	        model.addAttribute("isLikedByCurrentUser", isLikedByCurrentUser);
+	        model.addAttribute("currentUserId", currentUserId); // 현재 로그인한 사용자의 아이디 추가
 	        model.addAttribute("replies", parentReplies); // 부모 댓글 및 대댓글 목록 전달
 	        return "board/getCommuBoard";
 	    } else {
