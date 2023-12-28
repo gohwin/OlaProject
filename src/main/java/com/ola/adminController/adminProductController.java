@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ola.entity.Product;
 import com.ola.repository.ProductRepository;
+import com.ola.service.BasketService;
+import com.ola.service.OrderListService;
 import com.ola.service.ProductService;
 
 @Controller
@@ -22,8 +24,12 @@ public class adminProductController {
 
 	@Autowired
 	private ProductService productService;
+	
 	@Autowired
-	private ProductRepository productRepo;
+	private OrderListService orderService;
+	
+	@Autowired
+	private BasketService basketService;
 
 	/* 상품목록 페이지 이동 */
 	@GetMapping("/admin/products")
@@ -90,22 +96,33 @@ public class adminProductController {
 		}
 	}
 
-	/* 상품 수정 */
+	/* 상품 수정 처리 */
 	@PostMapping("/admin/updateProduct")
-	public String updateProduct(@RequestParam("productNo")Long productNo,
-								@ModelAttribute("product") Product newProduct,
-								@RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-		if (!imageFile.isEmpty()) {
-			String imagePath = productService.uploadImage(imageFile, newProduct.getProdCategory());
-			newProduct.setImage(imagePath);
-		} else {
-			Product product = productService.getProductById(productNo);
-			newProduct.setImage(product.getImage());
-		}
-		productService.updateProduct(newProduct);
+	public String updateProduct(@RequestParam("productNo") Long productNo,
+	                            @ModelAttribute("product") Product newProduct,
+	                            @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+	    
+	    // 이미지 업로드 처리
+	    if (!imageFile.isEmpty()) {
+	        String imagePath = productService.uploadImage(imageFile, newProduct.getProdCategory());
+	        newProduct.setImage(imagePath);
+	    } else {
+	        Product product = productService.getProductById(productNo);
+	        newProduct.setImage(product.getImage());
+	    }
 
-		return "redirect:/admin/products";
+	    // 상품 정보 업데이트
+	    productService.updateProduct(newProduct);
+
+	    // 카테고리가 'soldout'인 경우 주문 목록에서 해당 상품 제거
+	    if ("soldout".equals(getCategoryName(newProduct.getProdCategory()))) {
+//	        orderService.removeProductFromOrders(productNo);
+	        basketService.removeProductFromAllBaskets(productNo);
+	    }
+
+	    return "redirect:/admin/products";
 	}
+
 
 	/* 상품 삭제 */
 	@GetMapping("/admin/deleteProduct/{productId}")
