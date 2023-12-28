@@ -72,7 +72,7 @@ public class OrderController {
 
 		// 주문 상태 설정
 		orderList.setOrderStatus(OrderStatus.ORDER_COMPLETED);
-		
+
 		orderRepo.save(orderList);
 		basketRepo.deleteById(basketId);
 
@@ -92,9 +92,14 @@ public class OrderController {
 				Long productId = entry.getKey();
 				Integer quantity = entry.getValue();
 
-				Product product = prodRepo.findById(productId).orElse(null);
-				if (product != null) {
-					productNames.put(productId, product.getProductName());
+				Product product = prodRepo.findById(productId).orElseGet(() -> {
+					Product unavailableProduct = new Product();
+					unavailableProduct.setProductName("판매하지 않는 상품입니다.");
+					return unavailableProduct;
+				});
+
+				productNames.put(productId, product.getProductName());
+				if (product.getPrice() != null) {
 					totalOrderPrice += product.getPrice() * quantity; // 총 주문가격 계산
 				}
 			}

@@ -70,21 +70,24 @@ public class MyPageController {
 
 	@GetMapping("/orderHistory")
 	public String orderHistory(Model model, @AuthenticationPrincipal SecurityUser principal) {
-		Member user = principal.getMember();
-		List<OrderList> myOrders = orderRepo.findByMember(user);
-		Map<Long, Product> productsMap = new HashMap<>();
+	    Member user = principal.getMember();
+	    List<OrderList> myOrders = orderRepo.findByMember(user);
+	    Map<Long, Product> productsMap = new HashMap<>();
 
-		for (OrderList order : myOrders) {
-			for (Long productId : order.getProductQuantities().keySet()) {
-				if (!productsMap.containsKey(productId)) {
-					productsMap.put(productId, productRepository.findById(productId).orElse(null));
-				}
-			}
-		}
+	    for (OrderList order : myOrders) {
+	        for (Long productNo : order.getProductQuantities().keySet()) {
+	            Product product = productRepository.findById(productNo).orElseGet(() -> {
+	                Product unavailableProduct = new Product();
+	                unavailableProduct.setProductName("판매하지 않는 상품입니다.");
+	                return unavailableProduct;
+	            });
+	            productsMap.put(productNo, product);
+	        }
+	    }
 
-		model.addAttribute("myOrders", myOrders);
-		model.addAttribute("productsMap", productsMap);
-		return "mypage/orderHistory";
+	    model.addAttribute("myOrders", myOrders);
+	    model.addAttribute("productsMap", productsMap);
+	    return "mypage/orderHistory";
 	}
 
 	@GetMapping("/basket")

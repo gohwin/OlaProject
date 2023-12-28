@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ola.entity.Product;
-import com.ola.repository.ProductRepository;
 import com.ola.service.BasketService;
 import com.ola.service.OrderListService;
 import com.ola.service.ProductService;
@@ -125,9 +124,10 @@ public class adminProductController {
 
 
 	/* 상품 삭제 */
-	@GetMapping("/admin/deleteProduct/{productId}")
-	public String deleteProduct(@PathVariable Long productId) {
-		productService.deleteProduct(productId);
+	@GetMapping("/admin/deleteProduct/{productNo}")
+	public String deleteProduct(@PathVariable Long productNo) {
+		basketService.removeProductFromAllBaskets(productNo);
+		productService.deleteProduct(productNo);
 
 		return "redirect:/admin/products"; // 상품 목록으로 다시 리다이렉션
 	}
