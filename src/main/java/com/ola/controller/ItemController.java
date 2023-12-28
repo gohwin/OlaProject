@@ -34,7 +34,7 @@ public class ItemController {
 
 	@GetMapping("/item/all")
 	public String showAllPage(Model model, @RequestParam(name = "search", required = false) String search,
-			@PageableDefault(size = 20, sort = "productName", direction = Direction.DESC) Pageable pageable) {
+			@PageableDefault(size = Integer.MAX_VALUE, sort = "productNo", direction = Direction.ASC) Pageable pageable) {
 
 		Page<Product> prodPage;
 		if (search != null && !search.isEmpty()) {
