@@ -200,7 +200,7 @@ public class OrderController {
 		productQuantities.put(productNo, quantity);
 		orderList.setProductQuantities(productQuantities);
 		// 주문 상태 설정
-		orderList.setOrderStatus(OrderStatus.ORDER_COMPLETED);
+		orderList.setOrderStatus(OrderStatus.ORDER_STAY);
 		// 주문 저장
 		orderRepo.save(orderList);
 
