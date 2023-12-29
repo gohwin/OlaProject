@@ -3,12 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="/css/tradeInsert.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body th:align="center">
 	<header th:include="header :: body"></header>
 	<h1>게시글 등록</h1>
-	<form th:action="@{/board/tradeInsert}" method="post">
+	<form th:action="@{/board/tradeInsert}" method="post" id="tradeInsertForm">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
 				<td th:text="제목" width="80"></td>
@@ -53,6 +54,7 @@
 		}
 	</script>
 	<th:block th:include="footer.html"></th:block>
+	<script src="/js/tradeBoard.js"></script>
 </body>
 
 </html>

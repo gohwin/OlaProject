@@ -6,7 +6,12 @@
 	<meta charset="UTF-8">
 	<link href="/css/tradeBoardList.css" rel="stylesheet" />
 	<style>
-
+		.notice-section table {
+			width: 70%;
+			/* 너비를 80%로 조정 */
+			margin: auto;
+			/* 가운데 정렬 */
+		}
 
 		.card-header {
 			background-color: #f8f9fa;
@@ -44,6 +49,19 @@
 			font-weight: bold;
 			/* 글씨 굵기 */
 		}
+
+		.ellipsis-text {
+			max-width: 300px;
+			/* 최대 너비 설정 */
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block;
+			/* 인라인 블록 요소로 설정 */
+			vertical-align: top;
+			/* 수직 정렬 */
+		}
+
 	</style>
 
 </head>
@@ -61,7 +79,7 @@
 					<table class="table table-hover styled-table mx-auto">
 						<thead>
 							<tr>
-								<th colspan="2" class="text-center">공지 글</th>
+								<th colspan="2" class="text-center">공지사항</th>
 							</tr>
 							<tr>
 								<th class="text-center">제목</th>
@@ -111,9 +129,11 @@
 						</thead>
 						<tbody>
 							<tr th:each="tradeBoard : ${tradeBoards.content}">
-								<td class="text-center"><a
-										th:href="@{/getTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
-										th:text="${tradeBoard.title}"></a></td>
+								<td class="text-center">
+									<a th:href="@{/getTradeBoard(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
+										class="ellipsis-text" th:title="${tradeBoard.title}"
+										th:text="${tradeBoard.title}"></a>
+								</td>
 								<td class="text-center" th:text="${tradeBoard.member?.name}"></td>
 								<td class="text-center">
 									<span th:if="${tradeBoard.tradeType == 1}">판매중</span>
