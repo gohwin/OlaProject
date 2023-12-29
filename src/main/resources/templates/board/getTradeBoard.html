@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<link href="/css/tradeView.css" rel="stylesheet" />
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		document.querySelectorAll('.reply').forEach(
-				function(replyRow) {
-					replyRow.addEventListener('click', function() {
+	<meta charset="UTF-8">
+	<link href="/css/tradeView.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('.reply').forEach(
+				function (replyRow) {
+					replyRow.addEventListener('click', function () {
 						var replyFormRow = this.nextElementSibling;
 						while (replyFormRow
-								&& !replyFormRow.classList
-										.contains('reply-form')) {
+							&& !replyFormRow.classList
+								.contains('reply-form')) {
 							replyFormRow = replyFormRow.nextElementSibling;
 						}
 						if (replyFormRow) {
@@ -19,19 +21,21 @@
 						}
 					});
 				});
-	});
-</script>
-<style>
-.hidden {
-	display: none;
-}
+		});
+	</script>
+	<style>
+		.hidden {
+			display: none;
+		}
 
-.sub-reply {
-    margin-left: 20px;
-    padding-left: 20px;  /* 좌측 패딩 추가 */
-}
-</style>
+		.sub-reply {
+			margin-left: 20px;
+			padding-left: 20px;
+			/* 좌측 패딩 추가 */
+		}
+	</style>
 </head>
+
 <body>
 	<header th:include="header :: body"></header>
 
@@ -44,26 +48,23 @@
 				</tr>
 				<tr>
 					<th class="tradeAuthor-th">작성자</th>
-					<td class="tradeAuthor-td"><span
-						th:text="${tradeBoard.member.name}"></span></td>
+					<td class="tradeAuthor-td"><span th:text="${tradeBoard.member.name}"></span></td>
 				</tr>
 				<tr>
 					<th class="tradeContent-th">내용</th>
-					<td class="tradeContent-td"><span
-						th:text="${tradeBoard.content}"></span></td>
+					<td class="tradeContent-td"><span th:text="${tradeBoard.content}"></span></td>
 				</tr>
 				<tr>
 					<th class="tradeStatus-th">제품 상태</th>
-					<td class="tradeStatus-td"><span
-						th:if="${tradeBoard.tradeType == 1}">판매중</span> <span
-						th:if="${tradeBoard.tradeType == 2}">구매중</span> <span
-						th:if="${tradeBoard.tradeType == 3}">판매완료</span> <span
-						th:if="${tradeBoard.tradeType == 4}">구매완료</span></td>
+					<td class="tradeStatus-td"><span th:if="${tradeBoard.tradeType == 1}">판매중</span> <span
+							th:if="${tradeBoard.tradeType == 2}">구매중</span> <span
+							th:if="${tradeBoard.tradeType == 3}">판매완료</span> <span
+							th:if="${tradeBoard.tradeType == 4}">구매완료</span></td>
 				</tr>
 				<tr>
 					<th class="tradeDate-th">작성일</th>
 					<td class="tradeDate-td"><span
-						th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span>
+							th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span>
 					</td>
 				</tr>
 			</tbody>
@@ -81,19 +82,16 @@
 						<tr class="reply">
 							<td th:text="${reply.member.name}"></td>
 							<td th:text="${reply.content}"></td>
-							<td
-								th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 						</tr>
 						<!-- 대댓글 작성 폼 -->
 						<tr class="reply-form hidden sub-reply">
 							<td></td>
 							<td>
 								<form th:action="@{/addTradeSubReply}" method="post">
-									<input type="hidden" name="tradeBoardNo"
-										th:value="${tradeBoard.tradeBoardNo}" /> <input type="hidden"
-										name="parentReplyNo" th:value="${reply.replyNo}" />
-									<textarea name="replyContent" class="form-control"
-										placeholder="대댓글 작성"></textarea>
+									<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+									<input type="hidden" name="parentReplyNo" th:value="${reply.replyNo}" />
+									<textarea name="replyContent" class="form-control" placeholder="대댓글 작성"></textarea>
 									<button type="submit" class="btn btn-primary mt-2">대댓글
 										작성</button>
 								</form>
@@ -101,13 +99,12 @@
 							<td></td>
 						</tr>
 						<!-- 대댓글 -->
-						<th:block th:if="${!reply.children.isEmpty()}"
-							th:each="child : ${reply.children}">
+						<th:block th:if="${!reply.children.isEmpty()}" th:each="child : ${reply.children}">
 							<tr>
 								<td class="sub-reply" th:text="${child.member.name}"></td>
 								<td class="sub-reply" th:text="${child.content}"></td>
-								<td class="sub-reply"
-									th:text="${#dates.format(child.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td class="sub-reply" th:text="${#dates.format(child.regDate, 'yyyy-MM-dd HH:mm:ss')}">
+								</td>
 							</tr>
 						</th:block>
 					</th:block>
@@ -119,26 +116,19 @@
 		<div class="comment-form">
 			<h3 class="comment-title">댓글 작성</h3>
 			<form th:action="@{/addTradeReply}" method="post">
-				<input type="hidden" name="tradeBoardNo"
-					th:value="${tradeBoard.tradeBoardNo}" />
-				<textarea name="replycontent" class="form-control"
-					placeholder="댓글 작성"></textarea>
+				<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+				<textarea name="replycontent" class="form-control" placeholder="댓글 작성"></textarea>
 				<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
 			</form>
 		</div>
 
-		<div class="management-section"
-			th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
-			<form
-				th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}"
-				method="get">
+		<div class="management-section" th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
+			<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
 				<button type="submit" class="btn btn-info">게시글 수정</button>
 			</form>
-			<form th:action="@{/deleteTradeBoard}" method="post">
-				<input type="hidden" name="tradeBoardNo"
-					th:value="${tradeBoard.tradeBoardNo}" />
-				<button type="submit" class="btn btn-danger"
-					onclick="return confirm('정말 삭제하시겠습니까?');">게시글 삭제</button>
+			<form th:action="@{/deleteTradeBoard}" method="post" id="deleteForm">
+				<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+				<button type="button" class="btn btn-danger" id="deleteButton">게시글 삭제</button>
 			</form>
 		</div>
 
@@ -148,5 +138,26 @@
 	</div>
 
 	<th:block th:include="footer.html"></th:block>
+	<script>
+        // 삭제 버튼에 이벤트 리스너 추가
+        document.getElementById('deleteButton').addEventListener('click', function() {
+            Swal.fire({
+                title: '정말 삭제하시겠습니까?',
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '네, 삭제합니다',
+                cancelButtonText: '아니요'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 사용자가 '네, 삭제합니다'를 선택한 경우
+                    document.getElementById('deleteForm').submit(); // 폼 제출
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

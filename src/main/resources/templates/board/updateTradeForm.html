@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<link href="/css/editTrade.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -11,7 +12,7 @@
 
 	<h2>게시글 수정</h2>
 	<div class="form_wrap">
-		<form th:action="@{/updateBoard}" method="post">
+		<form id="updateForm" th:action="@{/updateBoard}" method="post">
 			<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
 
 
@@ -41,10 +42,27 @@
 		function goBack() {
 			window.history.back();
 		}
-				function updateCharCount(textarea) {
+		function updateCharCount(textarea) {
 			var charCountElement = document.getElementById('charCount');
 			charCountElement.textContent = textarea.value.length + ' / ' + textarea.maxLength;
 		}
+		document.getElementById('updateButton').addEventListener('click', function () {
+			Swal.fire({
+				title: '정말 수정하시겠습니까?',
+				text: "수정된 내용으로 게시글이 변경됩니다.",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: '네, 수정합니다',
+				cancelButtonText: '아니요'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					document.getElementById('updateForm').submit();
+				}
+			});
+		});
+
 	</script>
 	<th:block th:include="footer.html"></th:block>
 </body>
