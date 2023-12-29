@@ -45,6 +45,8 @@
 											th:value="${order.orderNo}" /> <label for="status">
 										</label> <select name="status" id="status">
 											<option value="ORDER_COMPLETED"
+												th:selected="${order.orderStatus == 'ORDER_CANCEL'}">주문취소</option>
+											<option value="ORDER_COMPLETED"
 												th:selected="${order.orderStatus == 'ORDER_COMPLETED'}">주문완료</option>
 											<option value="SHIPPING"
 												th:selected="${order.orderStatus == 'SHIPPING'}">배송중</option>

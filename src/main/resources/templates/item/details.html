@@ -8,7 +8,41 @@
 	<link rel="stylesheet" href="css/styles.css">
 	<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
+	<style>
+		.container {
+			display: flex;
+			justify-content: center;
+			/* 가로축에서 중앙 정렬 */
+			align-items: center;
+			/* 세로축에서 중앙 정렬 */
+		}
 
+		/* 이미지와 설명을 감싸는 row에 적용되는 스타일 */
+		.row {
+			flex-wrap: wrap;
+			/* 요소들이 너무 클 경우 다음 줄로 넘김 */
+		}
+
+		/* 이미지와 설명 컬럼에 적용되는 스타일 */
+		.col-lg-6-images,
+		.col-lg-6-data {
+			flex-basis: 50%;
+			/* 두 컬럼이 화면의 반씩 차지하도록 설정 */
+			max-width: 50%;
+			/* 최대 너비도 반씩 차지하도록 설정 */
+		}
+
+		.product-image {
+			width: 350px;
+			height: 400px;
+			object-fit: contain;
+			background-color: #f8f8f8;
+			margin-left: 80px;
+		}
+	</style>
+
+
+	</style>
 </head>
 
 <body>
@@ -17,12 +51,12 @@
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 mt-5">
 			<div class="row gx-4 gx-lg-5">
-				<div class="col-lg-6">
+				<div class="col-lg-6-images">
 					<!-- 상품 이미지 동적 로딩 -->
 					<img th:src="'/images/' + ${category} + '/' + ${product.image}" alt="Product Image"
 						class="product-image">
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6-data">
 					<!-- 상품 이름 및 가격 동적 표시 -->
 					<h3 class="product-name" th:text="${product.productName}"></h3>
 					<p class="product-price" th:text="'가격: ₩' + ${product.price}"></p>
