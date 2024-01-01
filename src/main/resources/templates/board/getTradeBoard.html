@@ -1,38 +1,183 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 	<meta charset="UTF-8">
 	<link href="/css/tradeView.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			document.querySelectorAll('.reply').forEach(
-				function (replyRow) {
-					replyRow.addEventListener('click', function () {
-						var replyFormRow = this.nextElementSibling;
-						while (replyFormRow
-							&& !replyFormRow.classList
-								.contains('reply-form')) {
-							replyFormRow = replyFormRow.nextElementSibling;
-						}
-						if (replyFormRow) {
-							replyFormRow.classList.toggle('hidden');
-						}
-					});
-				});
-		});
-	</script>
+	 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 	<style>
+		/* 텍스트 가독성 향상 */
+		.card-body,
+		.comment-item,
+		.sub-reply-item {
+			color: #333;
+			font-size: 1rem;
+		}
+
+		.comment-form .form-control {
+			min-height: 100px;
+			/* 댓글 입력란 높이 증가 */
+			margin-bottom: 10px;
+		}
+
+		.sub-reply-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid #e0e0e0;
+			padding: 10px 0;
+		}
+
+		.comment-details {
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+		}
+
+		.comment-author {
+			font-weight: bold;
+			margin-right: 10px;
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.comment-text {
+			flex-grow: 1;
+		}
+
+		.comment-date {
+			margin-left: 10px;
+			white-space: nowrap;
+		}
+
+		.container-trade {
+			max-width: 800px;
+			margin: auto;
+			padding: 20px;
+		}
+
+		.card {
+			margin-bottom: 20px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			transition: 0.3s;
+			background-color: #fff;
+			border-radius: 8px;
+		}
+
+		.card:hover {
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+		}
+
+		.card-body {
+			padding: 2em;
+		}
+
+		.card-title {
+			color: #333;
+			margin-bottom: 15px;
+		}
+
+		.comment-item,
+		.sub-reply-item {
+			border-bottom: 1px solid #e0e0e0;
+			padding: 10px 0;
+		}
+
+		.comment-item:last-child,
+		.sub-reply-item:last-child {
+			border-bottom: none;
+		}
+
 		.hidden {
 			display: none;
 		}
 
-		.sub-reply {
+		.reply-form {
+			margin-top: 10px;
+		}
+
+		.sub-replies {
 			margin-left: 20px;
 			padding-left: 20px;
-			/* 좌측 패딩 추가 */
+			border-left: 2px solid #f0f0f0;
 		}
+
+		.comment-details {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.comment-date {
+			color: #888;
+			font-size: 0.9em;
+		}
+
+		.comment-content {
+			text-align: right;
+		}
+
+		.comment-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid #e0e0e0;
+			padding: 10px 0;
+		}
+
+		.comment-body {
+			flex-grow: 1;
+			display: flex;
+			align-items: center;
+		}
+
+		.comment-author {
+			background-color: #f0f0f0;
+			padding: 3px 6px;
+			border-radius: 5px;
+			font-weight: bold;
+			margin-right: 10px;
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.comment-author i {
+			font-family: "Font Awesome 5 Free";
+			/* FontAwesome 아이콘 사용 시 */
+			margin-right: 5px;
+
+
+
+			/* 대댓글 스타일링 */
+			.sub-reply-item {
+				margin-left: 20px;
+				padding-left: 20px;
+				border-left: 2px solid #f0f0f0;
+			}
+
+			.comment-text {
+				flex-grow: 1;
+			}
+
+			.comment-date {
+				color: #888;
+				font-size: 0.9em;
+				white-space: nowrap;
+			}
+
+			.reply-toggle-btn,
+			.sub-reply-toggle-btn {
+				margin-top: 10px;
+				margin-right: 5px;
+			}
+
+			/* 버튼 호버 효과 */
+			.btn-primary:hover,
+			.btn-secondary:hover {
+				opacity: 0.9;
+			}
+			
 	</style>
 </head>
 
@@ -40,124 +185,160 @@
 	<header th:include="header :: body"></header>
 
 	<div class="container-trade">
-		<table class="table table-hover styled-table">
-			<tbody>
-				<tr>
-					<th class="tradeTitle-th">제목</th>
-					<td class="tradeTitle-td"><span th:text="${tradeBoard.title}"></span></td>
-				</tr>
-				<tr>
-					<th class="tradeAuthor-th">작성자</th>
-					<td class="tradeAuthor-td"><span th:text="${tradeBoard.member.name}"></span></td>
-				</tr>
-				<tr>
-					<th class="tradeContent-th">내용</th>
-					<td class="tradeContent-td"><span th:text="${tradeBoard.content}"></span></td>
-				</tr>
-				<tr>
-					<th class="tradeStatus-th">제품 상태</th>
-					<td class="tradeStatus-td"><span th:if="${tradeBoard.tradeType == 1}">판매중</span> <span
-							th:if="${tradeBoard.tradeType == 2}">구매중</span> <span
-							th:if="${tradeBoard.tradeType == 3}">판매완료</span> <span
-							th:if="${tradeBoard.tradeType == 4}">구매완료</span></td>
-				</tr>
-				<tr>
-					<th class="tradeDate-th">작성일</th>
-					<td class="tradeDate-td"><span
-							th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<!-- 게시글 정보 -->
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title" th:text="${tradeBoard.title}">게시글 제목</h5>
+				<p class="card-text" th:text="${tradeBoard.content}">게시글 내용</p>
 
-		<!-- 댓글 Section -->
-		<div class="comments-section">
-			<h2 class="comment-title">댓글</h2>
-			<table class="comments-table">
-				<!-- 생략된 댓글 테이블 헤더 부분 -->
-				<tbody>
-					<!-- 댓글과 대댓글 표시 -->
-					<th:block th:each="reply : ${replies}">
-						<!-- 부모 댓글 -->
-						<tr class="reply">
-							<td th:text="${reply.member.name}"></td>
-							<td th:text="${reply.content}"></td>
-							<td th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-						</tr>
-						<!-- 대댓글 작성 폼 -->
-						<tr class="reply-form hidden sub-reply">
-							<td></td>
-							<td>
-								<form th:action="@{/addTradeSubReply}" method="post">
-									<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
-									<input type="hidden" name="parentReplyNo" th:value="${reply.replyNo}" />
-									<textarea name="replyContent" class="form-control" placeholder="대댓글 작성"></textarea>
-									<button type="submit" class="btn btn-primary mt-2">대댓글
-										작성</button>
-								</form>
-							</td>
-							<td></td>
-						</tr>
-						<!-- 대댓글 -->
-						<th:block th:if="${!reply.children.isEmpty()}" th:each="child : ${reply.children}">
-							<tr>
-								<td class="sub-reply" th:text="${child.member.name}"></td>
-								<td class="sub-reply" th:text="${child.content}"></td>
-								<td class="sub-reply" th:text="${#dates.format(child.regDate, 'yyyy-MM-dd HH:mm:ss')}">
-								</td>
-							</tr>
-						</th:block>
-					</th:block>
-				</tbody>
-			</table>
+				<!-- 추가 게시글 정보 -->
+				<p class="card-text"><strong>작성자:</strong> <span th:text="${tradeBoard.member.name}"></span></p>
+				<p class="card-text">
+					<strong>제품 상태:</strong>
+					<span th:if="${tradeBoard.tradeType == 1}">판매중</span>
+					<span th:if="${tradeBoard.tradeType == 2}">구매중</span>
+					<span th:if="${tradeBoard.tradeType == 3}">판매완료</span>
+					<span th:if="${tradeBoard.tradeType == 4}">구매완료</span>
+				</p>
+				<p class="card-text"><strong>작성일:</strong> <span
+						th:text="${#dates.format(tradeBoard.registrationDate, 'yyyy-MM-dd')}"></span></p>
+			</div>
 		</div>
+		<!-- 댓글 섹션 -->
+		<div class="comments-section card">
+			<div class="card-body">
+				<h5 class="card-title">댓글</h5>
+				<div class="comments-list">
+					<th:block th:each="reply : ${replies}">
+						<div class="comment-item">
+							<div class="comment-body">
+								<span class="comment-author">
+									<i class="fas fa-user"></i>
+									<span th:text="${reply.member.name}">작성자</span>
+								</span>
+								<span class="comment-text" th:text="${reply.content}">댓글 내용</span>
+							</div>
+							<div class="comment-date" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm')}">날짜
+							</div>
+						</div>
+						<!-- 대댓글 토글 버튼 -->
+						<button class="btn btn-secondary reply-toggle-btn">
+							<i class="fas fa-paper-plane"></i>답글
+						</button>
 
+						<!-- 대댓글 보기 버튼 -->
+						<button class="btn btn-info sub-reply-toggle-btn">
+							<i class="fas fa-comments"></i> 대댓글 보기
+						</button>
+						<!-- 대댓글 폼 -->
+						<div class="reply-form hidden">
+							<form th:action="@{/addTradeSubReply}" method="post">
+								<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+								<input type="hidden" name="parentReplyNo" th:value="${reply.replyNo}" />
+								<textarea name="replyContent" class="form-control" placeholder="대댓글 작성"></textarea>
+								<button type="submit" class="btn btn-primary mt-2">대댓글 작성</button>
+							</form>
+						</div>
+						<!-- 대댓글 목록 -->
+						<div class="sub-replies hidden">
+							<th:block th:if="${!reply.children.isEmpty()}" th:each="child : ${reply.children}">
+								<div class="sub-reply-item">
+									<div class="comment-details">
+										<span class="comment-author">
+											<i class="fas fa-user"></i>
+											<span th:text="${child.member.name}">대댓글 작성자</span>
+										</span>
+										<span class="comment-text" th:text="${child.content}">대댓글 내용</span>
+										<span class="comment-date"
+											th:text="${#dates.format(child.regDate, 'yyyy-MM-dd HH:mm')}">날짜</span>
+									</div>
+								</div>
+							</th:block>
+						</div>
+				</div>
+				</th:block>
+			</div>
+		</div>
+	</div>
 
-		<div class="comment-form">
-			<h3 class="comment-title">댓글 작성</h3>
+	<!-- 댓글 작성 폼 -->
+	<div class="comment-form card">
+		<div class="card-body">
+			<h5 class="card-title">댓글 작성</h5>
 			<form th:action="@{/addTradeReply}" method="post">
 				<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
-				<textarea name="replycontent" class="form-control" placeholder="댓글 작성"></textarea>
+				<textarea name="replycontent" class="form-control" placeholder="댓글을 여기에 작성하세요..."></textarea>
 				<button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
 			</form>
 		</div>
-
-		<div class="management-section" th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
-			<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
-				<button type="submit" class="btn btn-info">게시글 수정</button>
-			</form>
-			<form th:action="@{/deleteTradeBoard}" method="post" id="deleteForm">
-				<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
-				<button type="button" class="btn btn-danger" id="deleteButton">게시글 삭제</button>
-			</form>
-		</div>
-
-		<form method="get" th:action="@{/tradeBoardList}">
-			<button type="submit" class="btn btn-secondary">뒤로 가기</button>
+	</div>
+	</div>
+	<div class="management-section" th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
+		<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
+			<button type="submit" class="btn btn-info">게시글 수정</button>
+		</form>
+		<form th:action="@{/deleteTradeBoard}" method="post" id="deleteForm">
+			<input type="hidden" name="tradeBoardNo" th:value="${tradeBoard.tradeBoardNo}" />
+			<button type="button" class="btn btn-danger" id="deleteButton">게시글 삭제</button>
 		</form>
 	</div>
 
+	<form method="get" th:action="@{/tradeBoardList}">
+		<button type="submit" class="btn btn-secondary">뒤로 가기</button>
+	</form>
+
 	<th:block th:include="footer.html"></th:block>
+
 	<script>
-        // 삭제 버튼에 이벤트 리스너 추가
-        document.getElementById('deleteButton').addEventListener('click', function() {
-            Swal.fire({
-                title: '정말 삭제하시겠습니까?',
-                text: "이 작업은 되돌릴 수 없습니다!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: '네, 삭제합니다',
-                cancelButtonText: '아니요'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // 사용자가 '네, 삭제합니다'를 선택한 경우
-                    document.getElementById('deleteForm').submit(); // 폼 제출
-                }
-            });
-        });
-    </script>
+
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('.reply-toggle-btn').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					// 버튼 다음 요소로 이동하여 reply-form 클래스를 찾습니다.
+					var nextElement = this.nextElementSibling;
+					while (nextElement && !nextElement.classList.contains('reply-form')) {
+						nextElement = nextElement.nextElementSibling;
+					}
+					if (nextElement) {
+						nextElement.classList.toggle('hidden');
+					}
+				});
+			});
+
+			document.querySelectorAll('.sub-reply-toggle-btn').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					// 버튼 다음 요소로 이동하여 sub-replies 클래스를 찾습니다.
+					var nextElement = this.nextElementSibling;
+					while (nextElement && !nextElement.classList.contains('sub-replies')) {
+						nextElement = nextElement.nextElementSibling;
+					}
+					if (nextElement) {
+						nextElement.classList.toggle('hidden');
+					}
+				});
+			});
+		});
+
+
+		// 삭제 버튼에 이벤트 리스너 추가
+		document.getElementById('deleteButton').addEventListener('click', function () {
+			Swal.fire({
+				title: '정말 삭제하시겠습니까?',
+				text: "이 작업은 되돌릴 수 없습니다!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: '네, 삭제합니다',
+				cancelButtonText: '아니요'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// 사용자가 '네, 삭제합니다'를 선택한 경우
+					document.getElementById('deleteForm').submit(); // 폼 제출
+				}
+			});
+		});
+	</script>
 </body>
 
 </html>

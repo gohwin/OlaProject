@@ -8,16 +8,8 @@
 	<link rel="stylesheet" href="css/styles.css">
 	<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	
-	<style>
-		.container {
-			display: flex;
-			justify-content: center;
-			/* 가로축에서 중앙 정렬 */
-			align-items: center;
-			/* 세로축에서 중앙 정렬 */
-		}
 
+	<style>
 		/* 이미지와 설명을 감싸는 row에 적용되는 스타일 */
 		.row {
 			flex-wrap: wrap;
@@ -103,31 +95,40 @@
 				window.location.href = '/item/details?productNo=' + productNo; // 'productNo' 파라미터를 전달
 			});
 		});
-		
+
 		// 장바구니담기 버튼 눌렀을떄 호출되는 알레트
-		document.getElementById('add-to-basket').addEventListener('click', function() {
-		    Swal.fire({
-		        title: '장바구니에 추가하시겠습니까?',
-		        showCancelButton: true,
-		        confirmButtonText: '추가',
-		        cancelButtonText: '취소'
-		    }).then((result) => {
-		        if (result.isConfirmed) {
-		            Swal.fire({
-		                title: '추가되었습니다!',
-		                text: '장바구니로 이동하시겠습니까, 아니면 쇼핑을 계속 하시겠습니까?',
-		                showDenyButton: true,
-		                confirmButtonText: '장바구니 보기',
-		                denyButtonText: '계속 쇼핑하기'
-		            }).then((result) => {
-		                if (result.isConfirmed) {
-		                    window.location.href = '/mypage/basket'; // 장바구니 페이지로 이동
-		                } else if (result.isDenied) {
-		                	window.history.back(); // 쇼핑 계속하기 (뒤 페이지로 이동)
-		                }
-		            });
-		        }
-		    });
+		document.getElementById('add-to-basket').addEventListener('click', function () {
+			Swal.fire({
+				title: '장바구니에 추가하시겠습니까?',
+				showCancelButton: true,
+				confirmButtonText: '추가',
+				cancelButtonText: '취소'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// 폼을 제출하지만, 리다이렉트는 중지합니다.
+					var form = this.closest('form');
+					var formData = new FormData(form);
+					fetch(form.action, {
+						method: 'POST',
+						body: formData
+					}).then(response => {
+						// 장바구니 추가 후 SweetAlert 표시
+						Swal.fire({
+							title: '추가되었습니다!',
+							text: '장바구니로 이동하시겠습니까, 아니면 쇼핑을 계속 하시겠습니까?',
+							showDenyButton: true,
+							confirmButtonText: '장바구니 보기',
+							denyButtonText: '계속 쇼핑하기'
+						}).then((result) => {
+							if (result.isConfirmed) {
+								window.location.href = '/mypage/basket'; // 장바구니 페이지로 이동
+							} else if (result.isDenied) {
+								window.history.back(); // 쇼핑 계속하기 (뒤 페이지로 이동)
+							}
+						});
+					});
+				}
+			});
 		});
 	</script>
 </body>
