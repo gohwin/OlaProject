@@ -165,7 +165,7 @@ public class CommunityBoardController {
 
 	@GetMapping("/getCommuBoard")
 	public String getCommunity(@RequestParam("communityNo") Long communityNo, Model model, Authentication authentication) {
-		Community community = comRepo.findById(communityNo).orElse(null);
+		Community community = boardService.getCommunityWithRepliesByNo(communityNo);
 
 	    if (community != null) {
 	    	String currentUserId = authentication.getName();
