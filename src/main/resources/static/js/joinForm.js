@@ -1,25 +1,25 @@
 /**
  * 
  */
+function validateAndSubmitForm() {
+    if (validateForm()) {
+        document.getElementById('registrationForm').submit();
+    }
+}
 
-
+// ID 유효성 검사
 function validateId() {
-  var idInput = document.getElementById('memberId');
-  var idValue = idInput.value;
+    var idInput = document.getElementById('memberId');
+    var idValue = idInput.value;
+    var idPattern = /^[a-zA-Z0-9]{6,12}$/;
 
-  // 정규표현식을 사용하여 영문과 숫자의 조합으로 6~12글자를 검사
-  var idPattern = /^[a-zA-Z0-9]{6,12}$/;
-
-  
-  if (!idPattern.test(idValue)) {
-      // 유효하지 않은 경우 메시지를 표시
-      document.getElementById('idErrorMessage').innerText = '영문과 숫자의 조합으로 6~12글자로 입력해 주세요.';
-      return false;
-  } else {
-      // 유효한 경우 메시지를 초기화
-      document.getElementById('idErrorMessage').innerText = '';
-      return true;
-  }
+    if (!idPattern.test(idValue)) {
+        document.getElementById('idErrorMessage').innerText = '영문과 숫자의 조합으로 6~12글자로 입력해 주세요.';
+        return false;
+    } else {
+        document.getElementById('idErrorMessage').innerText = '';
+        return true;
+    }
 }
 // 아이디 중복체크 검사
 
@@ -194,7 +194,7 @@ function sendVerificationCode() {
     fetch(`/send-verification-code?email=${encodeURIComponent(fullEmail)}`, {
         method: 'GET'
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
         alert("메일이 발송되었습니다.");
     })
@@ -221,7 +221,6 @@ function verifyCode() {
         if (data.message === "인증 성공") {
             messageElement.style.color = "green";
             messageElement.innerHTML = "인증이 완료되었습니다.";
-            document.getElementById("email").disabled = true; // 이메일 입력 필드 비활성화
             document.getElementById("emailVerified").value = "true";
         } else {
             messageElement.style.color = "red";
@@ -247,7 +246,8 @@ function validateForm() {
 	var pwdCheck = document.getElementById("pwdCheck").value;
 	var name = document.getElementById("name").value;
 	var phoneNumber = document.getElementById("phoneNumber").value;
-	var email = document.getElementById("email").value;
+	var emailId = document.getElementById("emailId").value;
+	console.log(emailId);
 	var address = document.getElementById("address").value;
 
 	// 비밀번호 길이에 따라서 부여되는 점수를 계산.
@@ -320,7 +320,7 @@ function validateForm() {
 	}
 	
 	// 이메일 입력되지 않았을때
-	if (email === "") {
+	if (emailId === "") {
 		alert("이메일을 입력해주세요!")
 		return false;
 	}

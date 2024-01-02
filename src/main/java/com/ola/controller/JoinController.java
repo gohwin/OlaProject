@@ -49,13 +49,12 @@ public class JoinController {
 	}
 
 	// 회원가입 처리
-	@PostMapping(value = "/register", consumes = "application/x-www-form-urlencoded")
+	@PostMapping("/register")
 	public String registerUser(@ModelAttribute Member member,
             @RequestParam(value = "emailId") String emailId,
             @RequestParam(value = "emailDomain") String emailDomain,
             @RequestParam(value = "memberId") String memberId,
             Model model, HttpServletRequest request) {
-		
 		// 이메일 주소를 조합
 	    String fullEmail = emailId + "@" + emailDomain;
 

@@ -18,7 +18,6 @@
 			margin-top: 5px;
 		}
 	</style>
-	<script src="/js/joinForm.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/js/daum_address_api.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -33,8 +32,7 @@
 					<div class="card-header">Register</div>
 					<div class="card-body">
 
-						<form class="form-horizontal" th:action="@{/register}" method="post"
-							onsubmit="return validateForm()">
+						<form class="form-horizontal" th:action="@{/register}" th:method="post" id="registrationForm">
 
 							<div class="form-group">
 								<label for="id" class="cols-sm-2 control-label">ID</label>
@@ -107,32 +105,37 @@
 							</div>
 
 							<div class="form-group">
-                                <label for="email" class="cols-sm-2 control-label">이메일</label>
-                                <div class="cols-sm-10">
-                                    <div class="input-group input-group-with-margin">
-                                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                        <input type="text" class="form-control" name="emailId" id="emailId" placeholder="이메일 주소" />
-                                        <span class="input-group-addon">@</span>
-                                        <input type="text" class="form-control" name="directEmail" id="directEmail" placeholder="도메인을 직접 입력하세요" style="display: none;" />
-                                    </div>
-                                    <div class="input-group input-group-with-margin">
-                                        <select class="form-control" name="emailDomain" id="emailDomain" onchange="checkDirectInput()">
-                                            <option value="gmail.com">gmail.com</option>
-                                            <option value="naver.com">naver.com</option>
-                                            <option value="yahoo.com">yahoo.com</option>
-                                            <option value="direct">직접 입력</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" class="btn btn-primary" onclick="sendVerificationCode()">인증하기</button>
-                                </div>
-                            </div>
-                            
+								<label for="email" class="cols-sm-2 control-label">이메일</label>
+								<div class="cols-sm-10">
+									<div class="input-group input-group-with-margin">
+										<span class="input-group-addon"><i class="fa fa-envelope fa"
+												aria-hidden="true"></i></span>
+										<input type="text" class="form-control" name="emailId" id="emailId"
+											placeholder="이메일 주소" />
+									</div>
+										<span class="input-group-addon">@</span>
+									<div class="input-group input-group-with-margin">
+										<select class="form-control" name="emailDomain" id="emailDomain"
+											onchange="checkDirectInput()">
+											<option value="gmail.com">gmail.com</option>
+											<option value="naver.com">naver.com</option>
+											<option value="yahoo.com">yahoo.com</option>
+											<option value="direct">직접 입력</option>
+										</select>
+										<input type="text" class="form-control" name="directEmail" id="directEmail"
+											placeholder="도메인을 직접 입력하세요" style="display: none;" />
+									</div>
+									<button type="button" class="btn btn-primary"
+										onclick="sendVerificationCode()">인증하기</button>
+								</div>
+							</div>
+
 							<div class="form-group">
 								<label for="verificationCode" class="cols-sm-2 control-label">인증번호</label>
 								<div class="cols-sm-10">
 									<div class="input-group input-group-with-margin">
-										<input type="text" class="form-control" name="verificationCode" id="verificationCode"
-											placeholder="인증번호 입력" />
+										<input type="text" class="form-control" name="verificationCode"
+											id="verificationCode" placeholder="인증번호 입력" />
 										<button type="button" class="btn btn-primary" onclick="verifyCode()">확인</button>
 									</div>
 									<p id="verificationMessage"></p>
@@ -159,20 +162,23 @@
 								</div>
 							</div>
 
-							<!-- 회원가입 버튼 -->
-    						<button type="submit" class="btn btn-primary">회원가입</button>
-							</div>
+							<!-- 이메일 인증 상태를 위한 숨겨진 입력 필드 -->
+							<input type="hidden" id="emailVerified" name="emailVerified" value="false">
 
-							<div class="login-register">
-								<a href="system/login">Login</a>
-							</div>
 						</form>
+						<!-- 회원가입 버튼 -->
+						<button type="button" class="btn btn-primary" onclick="validateAndSubmitForm()">회원가입</button>
+					</div>
+
+					<div class="login-register">
+						<a href="system/login">Login</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<script src="/js/joinForm.js"></script>
 </body>
 
 </html>
