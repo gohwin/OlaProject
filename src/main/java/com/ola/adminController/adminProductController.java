@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ola.entity.Product;
 import com.ola.service.BasketService;
 import com.ola.service.OrderListService;
-import com.ola.service.ProductService;
+import com.ola.service.product.ProductService;
 
 @Controller
 public class adminProductController {

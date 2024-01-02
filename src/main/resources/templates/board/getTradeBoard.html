@@ -272,7 +272,6 @@
 			</form>
 		</div>
 	</div>
-	</div>
 	<div class="management-section" th:if="${#authentication.principal.username == tradeBoard.member.memberId}">
 		<form th:action="@{/updateBoard/{tradeBoardNo}(tradeBoardNo=${tradeBoard.tradeBoardNo})}" method="get">
 			<button type="submit" class="btn btn-info">게시글 수정</button>

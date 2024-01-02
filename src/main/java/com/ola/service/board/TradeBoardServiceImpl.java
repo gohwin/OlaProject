@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.board;
 
 import java.util.List;
 

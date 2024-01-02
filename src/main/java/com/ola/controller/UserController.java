@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ola.dto.PasswordResetRequest;
-import com.ola.service.MemberService;
-import com.ola.service.UserService;
+import com.ola.service.member.MemberService;
+import com.ola.service.user.UserService;
 
 @RestController
 public class UserController {

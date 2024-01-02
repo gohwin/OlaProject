@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.product;
 
 import java.io.IOException;
 import java.util.List;

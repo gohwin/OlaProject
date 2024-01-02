@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.user;
 
 import com.ola.entity.Member;
 

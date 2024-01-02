@@ -20,11 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ola.entity.Product;
 import com.ola.repository.ProductRepository;
-import com.ola.service.ProductService;
+import com.ola.service.product.ProductService;
 
 @Controller
 @RequestMapping
-public class ItemController {
+public class ProductController {
 
 	@Autowired
 	private ProductRepository prodRepo;
@@ -218,26 +218,5 @@ public class ItemController {
 		default:
 			return "unknown"; // Default case if category does not match
 		}
-	}
-
-	@GetMapping("/item/add")
-	public String addProductView() {
-		return "admin/prodRegister";
-	}
-
-	@PostMapping("/item/add")
-	public String addProductAction(@RequestParam("productName") String productName,
-			@RequestParam("prodCategory") int prodCategory, @RequestParam("price") Long price,
-			@RequestParam("prodSize") String prodSize, @RequestParam("salesQuantity") Long salesQuantity,
-			@RequestParam("inventory") int inventory, @RequestParam("image") MultipartFile imageFile, Model model) {
-		try {
-			String imageUrl = productService.uploadImage(imageFile, prodCategory);
-			productService.addProduct(productName, prodCategory, price, prodSize, salesQuantity, inventory, imageUrl);
-			model.addAttribute("message", "Product added successfully.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("error", "Error adding product.");
-		}
-		return "redirect:/adminMain"; // 다시 제품 추가 폼으로 리다이렉트
 	}
 }

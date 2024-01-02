@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.board;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -22,7 +22,7 @@ import com.ola.repository.TradeBoardRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class BoardServiceImpl implements BoardService {
+public class CommunityBoardServiceImpl implements CommunityBoardService {
 
 	@Autowired
 	private TradeBoardRepository boardRepo;

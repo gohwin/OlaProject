@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ola.entity.Community;
 import com.ola.entity.Reply;
 import com.ola.repository.CommunityRepository;
-import com.ola.service.CommunityService;
-import com.ola.service.ReplyService;
+import com.ola.service.community.CommunityService;
+import com.ola.service.reply.ReplyService;
 
 @Controller
 public class adminCommunityController {

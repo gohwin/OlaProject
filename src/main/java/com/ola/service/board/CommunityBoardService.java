@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.board;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.ola.entity.Community;
 import com.ola.entity.TradeBoard;
 
-public interface BoardService {
+public interface CommunityBoardService {
 
 	void insertBoard(Community commu);
 
