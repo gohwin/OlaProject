@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.dto.PasswordResetRequest;
-import com.ola.service.EmailService;
-import com.ola.service.MemberService;
-import com.ola.service.UserService;
+import com.ola.service.member.MemberService;
+import com.ola.service.user.EmailService;
+import com.ola.service.user.UserService;
 
 import jakarta.servlet.http.HttpSession;
 

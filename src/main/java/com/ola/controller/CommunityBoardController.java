@@ -33,14 +33,14 @@ import com.ola.repository.CommunityRepository;
 import com.ola.repository.ReplyRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
-import com.ola.service.BoardService;
-import com.ola.service.CommunityService;
+import com.ola.service.board.CommunityBoardService;
+import com.ola.service.community.CommunityService;
 
 @Controller
-public class BoardController {
+public class CommunityBoardController {
 
 	@Autowired
-	private BoardService boardService;
+	private CommunityBoardService boardService;
 	@Autowired
 	private TradeBoardRepository boardRepo;
 	@Autowired

@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.member;
 
 import java.util.List;
 import java.util.Optional;

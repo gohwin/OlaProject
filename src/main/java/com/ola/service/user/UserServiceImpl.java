@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

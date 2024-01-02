@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ola.entity.Member;
 import com.ola.entity.Role;
 import com.ola.repository.MemberRepository;
-import com.ola.service.EmailService;
 import com.ola.service.VerificationCodeService;
+import com.ola.service.user.EmailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 

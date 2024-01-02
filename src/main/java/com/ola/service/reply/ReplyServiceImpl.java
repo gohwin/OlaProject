@@ -1,4 +1,4 @@
-package com.ola.service;
+package com.ola.service.reply;
 
 import java.util.Date;
 import java.util.List;

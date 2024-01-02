@@ -23,7 +23,7 @@ import com.ola.repository.BasketRepository;
 import com.ola.repository.OrderListRepository;
 import com.ola.repository.ProductRepository;
 import com.ola.security.SecurityUser;
-import com.ola.service.UserService;
+import com.ola.service.user.UserService;
 
 @Controller
 @RequestMapping("mypage")

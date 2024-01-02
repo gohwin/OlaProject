@@ -23,7 +23,7 @@ import com.ola.repository.OrderListRepository;
 import com.ola.repository.ProductRepository;
 import com.ola.repository.ReplyRepository;
 import com.ola.repository.TradeBoardRepository;
-import com.ola.service.MemberService;
+import com.ola.service.member.MemberService;
 
 @Controller
 public class adminMemberController {

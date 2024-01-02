@@ -15,7 +15,7 @@ import com.ola.repository.CommunityRepository;
 import com.ola.repository.OrderListRepository;
 import com.ola.repository.ProductRepository;
 import com.ola.repository.TradeBoardRepository;
-import com.ola.service.BoardService;
+import com.ola.service.board.CommunityBoardService;
 
 @Controller
 public class adminOrderListController {
@@ -26,7 +26,7 @@ public class adminOrderListController {
 	private TradeBoardRepository tradeRepo;
 
 	@Autowired
-	private BoardService boardService;
+	private CommunityBoardService boardService;
 
 	@Autowired
 	private ProductRepository prodRepo;

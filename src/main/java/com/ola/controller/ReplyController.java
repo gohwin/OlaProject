@@ -17,7 +17,7 @@ import com.ola.repository.CommunityRepository;
 import com.ola.repository.ReplyRepository;
 import com.ola.repository.TradeBoardRepository;
 import com.ola.security.SecurityUser;
-import com.ola.service.ReplyService;
+import com.ola.service.reply.ReplyService;
 
 @Controller
 public class ReplyController {

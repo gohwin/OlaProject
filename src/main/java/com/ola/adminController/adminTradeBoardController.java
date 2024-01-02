@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ola.entity.TradeBoard;
 import com.ola.repository.TradeBoardRepository;
-import com.ola.service.TradeBoardService;
+import com.ola.service.board.TradeBoardService;
 
 @Controller
 public class adminTradeBoardController {
