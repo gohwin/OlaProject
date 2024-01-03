@@ -31,8 +31,8 @@
 					<div class="header__top__right">
 						<!-- 로그인 전 -->
 						<div class="header__top__links" sec:authorize="!isAuthenticated()">
-							<a th:href="@{/system/login}">LogIn</a>
-							<a th:href="@{/join/contract}">Join</a>
+							<a th:href="@{/system/login}" style="color: black;">LogIn</a>
+							<a th:href="@{/join/contract}" style="color: black;">Join</a>
 						</div>
 						<!-- 로그인 후 사용자 정보 및 링크 표시 -->
 						<div sec:authorize="isAuthenticated()">
