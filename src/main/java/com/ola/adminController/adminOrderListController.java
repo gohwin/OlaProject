@@ -11,25 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ola.entity.OrderList;
 import com.ola.entity.OrderStatus;
-import com.ola.repository.CommunityRepository;
 import com.ola.repository.OrderListRepository;
-import com.ola.repository.ProductRepository;
-import com.ola.repository.TradeBoardRepository;
-import com.ola.service.board.CommunityBoardService;
 
 @Controller
 public class adminOrderListController {
-	@Autowired
-	private CommunityRepository communityRepo;
-
-	@Autowired
-	private TradeBoardRepository tradeRepo;
-
-	@Autowired
-	private CommunityBoardService boardService;
-
-	@Autowired
-	private ProductRepository prodRepo;
 
 	@Autowired
 	private OrderListRepository orderRepo;

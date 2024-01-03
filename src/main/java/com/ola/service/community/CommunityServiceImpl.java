@@ -11,15 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.ola.entity.Community;
 import com.ola.repository.CommunityRepository;
-import com.ola.repository.ReplyRepository;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
 
 	@Autowired
     private CommunityRepository communityRepository;
-	@Autowired
-	private ReplyRepository replyRepository;
 
 	/* 커뮤니티 게시글 목록 최신등록 날짜 순으로 출력*/
     @Override

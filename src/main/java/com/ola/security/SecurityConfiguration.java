@@ -2,8 +2,6 @@ package com.ola.security;
 
 import java.util.Set;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfiguration {
-
-	@Autowired
-	private DataSource dataSource;
 
 	@Autowired
 	private SecurityUserDetailsService securityUserDetailsService;

@@ -45,8 +45,6 @@ public class ReplyServiceImpl implements ReplyService {
 
 		// 사용자 정보 얻기
 		if (authentication != null && authentication.isAuthenticated()) {
-			// 사용자의 ID
-			String memberId = authentication.getName();
 
 			// 사용자의 이름
 			String memberName = ((SecurityUser) authentication.getPrincipal()).getMember().getName();
@@ -77,8 +75,6 @@ public class ReplyServiceImpl implements ReplyService {
 
 		// 사용자 정보 얻기
 		if (authentication != null && authentication.isAuthenticated()) {
-			// 사용자의 ID
-			String memberId = authentication.getName();
 
 			// 사용자의 이름
 			String memberName = ((SecurityUser) authentication.getPrincipal()).getMember().getName();

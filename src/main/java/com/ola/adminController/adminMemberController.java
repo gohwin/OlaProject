@@ -18,7 +18,6 @@ import com.ola.entity.OrderList;
 import com.ola.entity.Product;
 import com.ola.repository.BasketRepository;
 import com.ola.repository.CommunityRepository;
-import com.ola.repository.MemberRepository;
 import com.ola.repository.OrderListRepository;
 import com.ola.repository.ProductRepository;
 import com.ola.repository.ReplyRepository;
@@ -33,8 +32,6 @@ public class adminMemberController {
 	private OrderListRepository orderRepo;
 	@Autowired
 	private ProductRepository productRepo;
-	@Autowired
-	private MemberRepository memberRepo;
 	@Autowired
 	private CommunityRepository commuRepo;
 	@Autowired
