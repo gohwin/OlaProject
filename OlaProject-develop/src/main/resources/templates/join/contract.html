@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 약관 동의</title>
+    <link rel="stylesheet" href="/css/contract.css">
+    <script src="/js/contract.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>회원가입 약관 동의</h2>
+    
+    <form name="agreeForm" id="agreeForm" onsubmit="return validateForm()" th:action="@{/joinForm}" method="post">
+        <div class="terms">
+            <h3>이용약관</h3>
+            <div class="checkbox">
+                <input type="checkbox" name="agree1" id="agree1">
+                <label for="agree1">동의합니다<span>(필수)</span></label>
+            </div>
+            <p>이용약관 내용이 여기에 들어갑니다.</p>
+        </div>
+
+        <div class="terms">
+            <h3>개인정보 수집 및 이용 동의</h3>
+            <div class="checkbox">
+                <input type="checkbox" name="agree2" id="agree2">
+                <label for="agree2">동의합니다<span>(필수)</span></label>
+            </div>
+            <p>개인정보 수집 및 이용 동의 내용이 여기에 들어갑니다.</p>
+        </div>
+
+        <div class="checkbox">
+            <input type="checkbox" id="checkAll" onclick="checkAll_Condition()">
+            <label for="checkAll">전체 동의하기</label>
+        </div>
+
+        <div class="button-container">
+            <button type="submit">동의하고 가입하기</button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

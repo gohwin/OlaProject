@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="/css/tradeInsert.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body th:align="center">
+	<header th:include="header :: body"></header>
+	<h1>게시글 등록</h1>
+	<form th:action="@{/board/tradeInsert}" method="post" id="tradeInsertForm">
+		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+			<tr>
+				<td th:text="제목" width="80"></td>
+				<td><input name="title" type="text" size="50"></td>
+			</tr>
+			<tr>
+				<td th:text="작성자"></td>
+				<td><span sec:authentication='principal.member.name'></span></td>
+			</tr>
+			<tr>
+				<td th:text="'거래 유형'" width="80"></td>
+				<td>
+					<select name="tradeType">
+						<option th:value="1">판매중</option>
+						<option th:value="2">구매중</option>
+						<option th:value="3">판매완료</option>
+						<option th:value="4">구매완료</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="내용"></td>
+				<td><textarea name="content" cols="50" rows="10" maxlength="100" oninput="updateCharCount(this)"></textarea>
+					    <div class="charCount" style="display: block;"><small id="charCount">0 / 100</small></div>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="게시글 등록">
+					<button type="button" onclick="goBack()">뒤로 가기</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+		/* textarea의 입력 이벤트에 반응하여 글자 수를 업데이트하는 함수 */
+		function updateCharCount(textarea) {
+			var charCountElement = document.getElementById('charCount');
+			charCountElement.textContent = textarea.value.length + ' / ' + textarea.maxLength;
+		}
+	</script>
+	<th:block th:include="footer.html"></th:block>
+	<script src="/js/tradeBoard.js"></script>
+</body>
+
+</html>
