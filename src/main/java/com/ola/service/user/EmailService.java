@@ -8,26 +8,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-	@Autowired
+    @Autowired
     private JavaMailSender mailSender;
 
     public void sendVerificationEmail(String to, String code) {
-        String subject = "회원가입 이메일 인증";
-        String message = "귀하의 이메일 인증 코드 : " + code;
+        try {
+            String subject = "회원가입 이메일 인증";
+            String message = "귀하의 이메일 인증 코드 : " + code;
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-        mailSender.send(mailMessage);
-    }
-    
-    // 비밀번호 찾을떄 인증메일 보내는 메소드
-    public void sendVerificationCode(String email, String verificationCode) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("비밀번호 복구 인증번호");
-        message.setText("인증번호: " + verificationCode);
-        mailSender.send(message);
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(to);
+            mailMessage.setSubject(subject);
+            mailMessage.setText(message);
+
+            // 🔹 발신자 이메일을 설정 (spring.mail.username 값과 동일해야 함)
+            mailMessage.setFrom("jangsh4752@naver.com"); 
+
+            mailSender.send(mailMessage);
+            System.out.println("✅ 이메일 발송 성공: " + to);
+        } catch (Exception e) {
+            System.err.println("❌ 이메일 발송 실패: " + e.getMessage());
+        }
     }
 }

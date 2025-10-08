@@ -55,7 +55,7 @@ public class FindUserController {
 
         String verificationCode = String.format("%06d", new Random().nextInt(999999));
         httpSession.setAttribute("verificationCode", verificationCode);
-        emailService.sendVerificationCode(email, verificationCode);
+        emailService.sendVerificationEmail(email, verificationCode);
 
         return ResponseEntity.ok("인증번호가 이메일로 전송되었습니다.");
     }
